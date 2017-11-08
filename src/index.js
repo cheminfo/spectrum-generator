@@ -89,14 +89,17 @@ export class SpectrumGenerator {
         const firstValue = value - (width / 2 * gaussianFactor);
         const lastValue = value + (width / 2 * gaussianFactor);
 
-        const firstPoint = Math.max(Math.ceil(firstValue * this[kPointsPerUnit]), this[kStart]);
-        const lastPoint = Math.min(Math.floor(lastValue * this[kPointsPerUnit]), this[kEnd]);
+        const firstPoint = Math.floor(firstValue * this[kPointsPerUnit]);
+        const lastPoint = Math.ceil(lastValue * this[kPointsPerUnit]);
         const middlePoint = (firstPoint + lastPoint) / 2;
 
         for (var j = firstPoint; j <= lastPoint; j++) {
-            var gaussianIndex = Math.floor(gaussianWidth / width * (j - middlePoint) / this[kPointsPerUnit] + gaussianFactor * gaussianWidth / 2);
-            if (gaussianIndex >= 0 && gaussianIndex < gaussian.length) {
-                this[kSpectrum].y[j - this[kStart]] += gaussian[gaussianIndex] * intensity;
+            var index = j - this[kStart];
+            if (index >= 0 && index < this[kSize]) {
+                var gaussianIndex = Math.floor(gaussianWidth / width * (j - middlePoint) / this[kPointsPerUnit] + gaussianFactor * gaussianWidth / 2);
+                if (gaussianIndex >= 0 && gaussianIndex < gaussian.length) {
+                    this[kSpectrum].y[index] += gaussian[gaussianIndex] * intensity;
+                }
             }
         }
 

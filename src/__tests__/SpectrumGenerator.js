@@ -1,6 +1,47 @@
 import {SpectrumGenerator} from '..';
 
 describe('SpectrumGenerator', () => {
+    it('0 half peak', () => {
+        const generator = new SpectrumGenerator({
+            start: 0,
+            end: 2,
+            pointsPerUnit: 5
+        });
+
+        generator.addPeak([0, 1]);
+
+        const spectrum = generator.getSpectrum();
+        expectValue(spectrum, 0, 1);
+    });
+
+    it('1 middle peak', () => {
+        const generator = new SpectrumGenerator({
+            start: 0,
+            end: 2,
+            pointsPerUnit: 5
+        });
+
+        generator.addPeak([1, 1]);
+
+        const spectrum = generator.getSpectrum();
+        expectValue(spectrum, 1 * 5, 1);
+    });
+
+    it('1 middle peak check width', () => {
+        const generator = new SpectrumGenerator({
+            start: 0,
+            end: 2,
+            pointsPerUnit: 10
+        });
+
+        generator.addPeak([1, 1]);
+
+        const spectrum = generator.getSpectrum();
+        expect(spectrum.y[ 0.5 * 10]).toBeCloseTo(0.5, 2);
+        expect(spectrum.y[ 1.5 * 10]).toBeCloseTo(0.5, 2);
+        expectValue(spectrum, 1 * 10, 1);
+    });
+
     it('full generation', () => {
         const generator = new SpectrumGenerator();
 
