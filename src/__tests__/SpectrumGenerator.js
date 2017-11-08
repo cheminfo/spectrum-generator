@@ -14,6 +14,19 @@ describe('SpectrumGenerator', () => {
         expectValue(spectrum, 0, 1);
     });
 
+    it('end half peak', () => {
+        const generator = new SpectrumGenerator({
+            start: 0,
+            end: 2,
+            pointsPerUnit: 5
+        });
+
+        generator.addPeak([2, 1]);
+
+        const spectrum = generator.getSpectrum();
+        expectValue(spectrum, 2 * 5, 1);
+    });
+
     it('1 middle peak', () => {
         const generator = new SpectrumGenerator({
             start: 0,
