@@ -21,7 +21,10 @@
     "url": "git+https://github.com/cheminfo/spectrum-generator.git"
   },
   "keywords": [],
-  "author": "Michaël Zasso",
+  "author": "Luc Patiny",
+  "contributors": [
+    "Michaël Zasso"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/cheminfo/spectrum-generator/issues"

@@ -13,11 +13,31 @@ generate a spectrum from discrete peaks.
 
 ## Usage
 
-```js
-import library from 'spectrum-generator';
+The spectrum generator takes an array of discrete peaks (value and intensity)
+and generates peaks with a gaussian distribution.
 
-const result = library(args);
-// result is ...
+### generateSpectrum
+
+```js
+import {generateSpectrum} from 'spectrum-generator';
+
+const peaks = [[4, 10], [20, 30], [236, 1], [569, 76]];
+const spectrum = generateSpectrum(peaks, {pointsPerUnit: 1});
+```
+### class SpectrumGenerator
+
+```js
+import {SpectrumGenerator} from 'spectrum-generator';
+
+const generator = new SpectrumGenerator();
+generator.addPeak([5, 20]);
+generator.addPeak([30, 56]);
+generator.addPeaks([[40, 12], [10, 1]]);
+const spectrum = generator.getSpectrum();
+
+generator.reset();
+generator.addPeak([10, 50]);
+const otherSpectrum = generator.getSpectrum();
 ```
 
 ## [API Documentation](https://cheminfo.github.io/spectrum-generator/)
