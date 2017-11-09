@@ -17,11 +17,10 @@ const kGetWidth = Symbol('getWidth');
 const kSize = Symbol('size');
 const kSpectrum = Symbol('spectrum');
 
-/**
- * @class SpectrumGenerator
- */
 export class SpectrumGenerator {
     /**
+     * @class SpectrumGenerator
+     * @constructor
      * @param {object} [options]
      * @param {number} [options.start=0] - First x value (inclusive)
      * @param {number} [options.end=1000] - Last x value (inclusive)
@@ -59,7 +58,7 @@ export class SpectrumGenerator {
     }
 
     /**
-     * Add a serie of peaks to the spectrum.
+     * Add a series of peaks to the spectrum.
      * @param {Array<Array<number>>} peaks
      * @return {this}
      */
@@ -159,6 +158,12 @@ function assertInteger(value, name) {
     }
 }
 
+/**
+ * Generates a spectrum and returns it
+ * @param {Array<Array<number>>} peaks - list of peaks to put in the spectrum
+ * @param {object} [options] - same options as new SpectrumGenerator
+ * @return {object} spectrum
+ */
 export function generateSpectrum(peaks, options) {
     const generator = new SpectrumGenerator(options);
     generator.addPeaks(peaks);
