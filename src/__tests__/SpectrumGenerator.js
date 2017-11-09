@@ -64,7 +64,7 @@ describe('SpectrumGenerator', () => {
 
         const spectrum = generator.getSpectrum();
 
-        // expectValue(spectrum, 0, 1);
+        expectValue(spectrum, 0, 1);
         expectValue(spectrum, 50 * 5, 12);
         expectValue(spectrum, 100 * 5, 10);
         expectValue(spectrum, 14 * 5, 2);
