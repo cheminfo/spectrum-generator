@@ -28,6 +28,20 @@ describe('generateSpectrum', () => {
     });
 });
 
+describe.only('generateSpectrum with one peak and small window', () => {
+    it('should work from zero', () => {
+        const spectrum = generateSpectrum([[12, 1]], {
+            start: 11,
+            end: 13,
+            pointsPerUnit: 10,
+            getWidth: () => 0.1
+        });
+        expect(Math.max(...spectrum.y)).toBe(1);
+        console.log(spectrum);
+    });
+});
+
+
 function assertSimple({start, end, peak}) {
     const spectrum = generateSpectrum([[peak, 1]], {start, end, pointsPerUnit: 1, getWidth: simpleGetWidth});
     assertSize(spectrum, end - start + 1);
