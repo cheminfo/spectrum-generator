@@ -28,7 +28,7 @@ describe('generateSpectrum', () => {
     });
 });
 
-describe.only('generateSpectrum with one peak and small window', () => {
+describe('generateSpectrum with one peak and small window', () => {
     it('should work from zero', () => {
         const spectrum = generateSpectrum([[12, 1]], {
             start: 11,
@@ -37,7 +37,6 @@ describe.only('generateSpectrum with one peak and small window', () => {
             getWidth: () => 0.1
         });
         expect(Math.max(...spectrum.y)).toBe(1);
-        console.log(spectrum);
     });
 });
 

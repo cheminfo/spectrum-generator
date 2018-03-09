@@ -93,7 +93,7 @@ export class SpectrumGenerator {
         const middlePoint = (firstPoint + lastPoint) / 2;
 
         for (var j = firstPoint; j <= lastPoint; j++) {
-            var index = j - this[kStart];
+            var index = j - this[kStart] * this[kPointsPerUnit];
             if (index >= 0 && index < this[kSize]) {
                 var gaussianIndex = Math.floor(gaussianWidth / width * (j - middlePoint) / this[kPointsPerUnit] + gaussianFactor * gaussianWidth / 2);
                 if (gaussianIndex >= 0 && gaussianIndex < gaussian.length) {
