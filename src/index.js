@@ -24,7 +24,7 @@ export class SpectrumGenerator {
      * @param {object} [options]
      * @param {number} [options.start=0] - First x value (inclusive)
      * @param {number} [options.end=1000] - Last x value (inclusive)
-     * @param {number} [options.pointsPerUnit=5] - Number of values between each x
+     * @param {number} [options.pointsPerUnit=5] - Number of values between each unit of the x axis
      * @param {function} [options.getWidth] - Returns the width of a peak for a given value. Defaults to (1 + 3 * value / 1000)
      */
     constructor(options = {}) {
