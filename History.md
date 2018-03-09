@@ -1,3 +1,13 @@
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/cheminfo/spectrum-generator/compare/v1.0.0...v1.0.1) (2018-03-09)
+
+
+### Bug Fixes
+
+* fix bug when start not 0 and pointsPerUnit not 1 ([a41d3db](https://github.com/cheminfo/spectrum-generator/commit/a41d3db))
+
+
+
 <a name="1.0.0"></a>
 # 1.0.0 (2017-11-09)
 
