@@ -26,10 +26,12 @@ describe('generateSpectrum', () => {
             peak: -10
         });
     });
+
+
 });
 
 describe('generateSpectrum with one peak and small window', () => {
-    it('should work from zero', () => {
+    it('should work from 11', () => {
         const spectrum = generateSpectrum([[12, 1]], {
             start: 11,
             end: 13,
@@ -38,6 +40,32 @@ describe('generateSpectrum with one peak and small window', () => {
         });
         expect(Math.max(...spectrum.y)).toBe(1);
     });
+});
+
+describe('generateSpectrum check large size', () => {
+    let data = [];
+    for (let i = 0; i < 10000; i++) {
+        data.push([i, Math.random()]);
+    }
+    it('should throw error for huge array', () => {
+        expect(() => generateSpectrum(data, {
+            start: 0,
+            end: 10000,
+            pointsPerUnit: 1000,
+            getWidth: () => 0.1
+        })).toThrow('Generated array has size 10000001 larger than maxSize: 10000000');
+    });
+
+    it('should throw for simple array is maxSize=1', () => {
+        expect(() => generateSpectrum([[1, 1]], {
+            start: 0,
+            end: 2,
+            pointsPerUnit: 1,
+            maxSize: 1,
+            getWidth: () => 0.1
+        })).toThrow('Generated array has size 3 larger than maxSize: 1');
+    });
+
 });
 
 
@@ -59,3 +87,4 @@ function assertInterval(spectrum, start) {
         expected++;
     }
 }
+
