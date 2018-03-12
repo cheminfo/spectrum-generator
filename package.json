@@ -1,6 +1,6 @@
 {
   "name": "spectrum-generator",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "generate a spectrum from discrete peaks",
   "main": "lib/index.js",
   "module": "src/index.js",
