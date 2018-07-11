@@ -45,5 +45,7 @@
     "npm-run-all": "^4.1.2",
     "rollup": "^0.51.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "debug": "^3.1.0"
+  }
 }
