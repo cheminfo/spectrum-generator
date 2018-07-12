@@ -9,12 +9,10 @@ addBaseline(data, (x) => x ** 2);
 debug(data);
 
 /**
-    * @fuction addBaseline
-    * @constructor
-    * @param {object} [data] - Your spectrum data in the format {x:[x1, x2, ...], y:[y1, y2, ...]}
-    * @param {function} [baseline] - Mathematical function producing the baseline you want
-    */
-
+  * Add a baseline to the spectrum
+  * @param {object} [data] - Your spectrum data in the format {x:[x1, x2, ...], y:[y1, y2, ...]}
+  * @param {function} [baseline] - Mathematical function producing the baseline you want
+  */
 function addBaseline(data, baseline) {
   var xs = data.x;
   var ys = data.y;
@@ -24,4 +22,4 @@ function addBaseline(data, baseline) {
   }
 }
 
-module.exports = addBaseline;
+export default { addBaseline };

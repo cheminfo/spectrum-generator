@@ -1,3 +1,9 @@
+import Baseline from './functionalities/addBaseline.js';
+import Noise from './functionalities/addNoise.js';
+
+const addBaseline = Baseline.addBaseline;
+const addNoise = Noise.addNoise;
+
 const gaussianFactor = 5; // after 5 the value is nearly 0, nearly no artifacts
 const gaussianWidth = 1000; // half height peak Width in point
 const gaussian = [];
@@ -10,13 +16,9 @@ function defaultGetWidth(value) {
   return 1 + 3 * value / 1000;
 }
 
-const kStart = Symbol('start');
-const kEnd = Symbol('end');
-const kPointsPerUnit = Symbol('pointsPerUnit');
-const kGetWidth = Symbol('getWidth');
-const kSize = Symbol('size');
-const kSpectrum = Symbol('spectrum');
-const kMaxSize = Symbol('maxSize');
+function defaultBaseline(x) {
+  return x;
+}
 
 class SpectrumGenerator {
   /**
@@ -28,15 +30,22 @@ class SpectrumGenerator {
      * @param {number} [options.pointsPerUnit=5] - Number of values between each unit of the x axis
      * @param {number} [options.maxSize=1e7] - maximal array size
      * @param {function} [options.getWidth] - Returns the width of a peak for a given value. Defaults to (1 + 3 * value / 1000)
+     * @param {function} [options.baseline] - Mathematical function producing the baseline you want
+     * @param {number} [options.noise = 0] - Noise's amplitude in percents of the spectrum max value
      */
   constructor(options = {}) {
+    this.options = options;
+
     const {
       start = 0,
       end = 1000,
       pointsPerUnit = 5,
       getWidth = defaultGetWidth,
-      maxSize = 1e7
+      maxSize = 1e7,
+      baseline = defaultBaseline,
+      noise = 0
     } = options;
+
 
     assertInteger(start, 'start');
     assertInteger(end, 'end');
@@ -51,12 +60,9 @@ class SpectrumGenerator {
       throw new TypeError('getWidth option must be a function');
     }
 
-    this[kStart] = start;
-    this[kEnd] = end;
-    this[kPointsPerUnit] = pointsPerUnit;
-    this[kGetWidth] = getWidth;
-    this[kMaxSize] = maxSize;
-    this[kSize] = (end - start) * pointsPerUnit + 1;
+    if (typeof baseline !== 'function') {
+      throw new TypeError('baseline option must be a function');
+    }
 
     this.reset(maxSize);
   }
@@ -176,7 +182,10 @@ function assertInteger(value, name) {
 function generateSpectrum(peaks, options) {
   const generator = new SpectrumGenerator(options);
   generator.addPeaks(peaks);
-  return generator.getSpectrum();
+  var spectrum = generator.getSpectrum();
+  addBaseline(spectrum, options.baseline);
+  addNoise(spectrum, options.noise);
+  return spectrum;
 }
 
 export default {
