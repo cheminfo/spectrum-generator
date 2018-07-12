@@ -18,7 +18,7 @@ const kSize = Symbol('size');
 const kSpectrum = Symbol('spectrum');
 const kMaxSize = Symbol('maxSize');
 
-export class SpectrumGenerator {
+class SpectrumGenerator {
   /**
      * @class SpectrumGenerator
      * @constructor
@@ -173,8 +173,13 @@ function assertInteger(value, name) {
  * @param {object} [options] - same options as new SpectrumGenerator
  * @return {object} spectrum
  */
-export function generateSpectrum(peaks, options) {
+function generateSpectrum(peaks, options) {
   const generator = new SpectrumGenerator(options);
   generator.addPeaks(peaks);
   return generator.getSpectrum();
 }
+
+export default {
+  SpectrumGenerator,
+  generateSpectrum
+};
