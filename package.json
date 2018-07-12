@@ -41,6 +41,7 @@
     "eslint-plugin-import": "^2.9.0",
     "eslint-plugin-jest": "^21.15.0",
     "eslint-plugin-no-only-tests": "^2.0.0",
+    "esm": "^3.0.69",
     "jest": "^21.2.1",
     "npm-run-all": "^4.1.2",
     "rollup": "^0.51.0"
