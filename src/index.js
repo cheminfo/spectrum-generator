@@ -1,8 +1,6 @@
-import Baseline from './functionalities/addBaseline.js';
-import Noise from './functionalities/addNoise.js';
+import addBaseline from './functionalities/addBaseline.js';
+import addNoise from './functionalities/addNoise.js';
 
-const addBaseline = Baseline.addBaseline;
-const addNoise = Noise.addNoise;
 
 const gaussianFactor = 5; // after 5 the value is nearly 0, nearly no artifacts
 const gaussianWidth = 1000; // half height peak Width in point
@@ -12,15 +10,8 @@ for (let i = 0; i <= gaussianWidth * gaussianFactor; i++) {
   gaussian.push(Math.exp(-1 / 2 * Math.pow((i - (gaussianFactor * gaussianWidth / 2)) * 2 / gaussianWidth * ratio, 2)));
 }
 
-function defaultGetWidth(value) {
-  return 1 + 3 * value / 1000;
-}
 
-function defaultBaseline(x) {
-  return x;
-}
-
-class SpectrumGenerator {
+export default class SpectrumGenerator {
   /**
      * @class SpectrumGenerator
      * @constructor
@@ -29,42 +20,62 @@ class SpectrumGenerator {
      * @param {number} [options.end=1000] - Last x value (inclusive)
      * @param {number} [options.pointsPerUnit=5] - Number of values between each unit of the x axis
      * @param {number} [options.maxSize=1e7] - maximal array size
-     * @param {function} [options.getWidth] - Returns the width of a peak for a given value. Defaults to (1 + 3 * value / 1000)
+     * @param {function} [options.peakWidthFct] - Returns the width of a peak for a given value. Defaults to (1 + 3 * value / 1000)
      * @param {function} [options.baseline] - Mathematical function producing the baseline you want
      * @param {number} [options.noise = 0] - Noise's amplitude in percents of the spectrum max value
+     *
+     * @example
+     * import SG from 'spectrum-generator';
+     * const sg = new SG({ start: 0, end: 100, pointsPerUnit: 1 });
+     * sg.addPeak(1,2);
+     * sg.addPeaks([ [2,3], [3,2], [4,2] ]);
+     * sg.addNoise(10);
+     * sg.addBaseline( (x) => 2 * x );
+     * var spectrum = sg.getSpectrum();
+     *
+     * @example
+     * import SG from 'spectrum-generator';
+     * const spectrum=SG.generateSpectrum([ [2,3], [3,2], [4,2] ], {
+     *  start: 0,
+     *  end: 100,
+     *  pointsPerUnit: 1,
+     *  noise: {
+     *    percent: 10,
+     *    distribution: 'normal',
+     *    seed: true
+     *  },
+     *  baseline: (x) => 2 * x
+     * })
      */
   constructor(options = {}) {
-    this.options = options;
+    this.start = options.start || 0;
+    this.end = options.end || 1000;
+    this.pointsPerUnit = options.pointsPerUnit || 5;
+    this.peakWidthFct = options.peakWidthFct || ((x) => 1 + 3 * x / 1000);
+    this.maxSize = options.maxSize || 1e7;
 
-    const {
-      start = 0,
-      end = 1000,
-      pointsPerUnit = 5,
-      getWidth = defaultGetWidth,
-      maxSize = 1e7,
-      baseline = defaultBaseline,
-      noise = 0
-    } = options;
+    assertInteger(this.start, 'start');
+    assertInteger(this.end, 'end');
+    assertInteger(this.pointsPerUnit, 'pointsPerUnit');
+    assertInteger(this.maxSize, 'maxSize');
 
-
-    assertInteger(start, 'start');
-    assertInteger(end, 'end');
-    assertInteger(pointsPerUnit, 'pointsPerUnit');
-    assertInteger(maxSize, 'maxSize');
-
-    if (end <= start) {
+    if (this.end <= this.start) {
       throw new RangeError('end option must be larger than start');
     }
 
-    if (typeof getWidth !== 'function') {
-      throw new TypeError('getWidth option must be a function');
+    if (typeof this.peakWidthFct !== 'function') {
+      throw new TypeError('peakWidthFct option must be a function');
     }
 
-    if (typeof baseline !== 'function') {
+    if (typeof this.baseline !== 'function') {
       throw new TypeError('baseline option must be a function');
     }
 
-    this.reset(maxSize);
+    this.reset();
+  }
+
+  get size() {
+    return (this.end - this.start) * this.pointsPerUnit + 1;
   }
 
   /**
@@ -94,25 +105,33 @@ class SpectrumGenerator {
 
     const value = peak[0];
     const intensity = peak[1];
-    const width = this[kGetWidth](value);
+    const width = this.peakWidthFct(value);
     const firstValue = value - (width / 2 * gaussianFactor);
     const lastValue = value + (width / 2 * gaussianFactor);
 
-    const firstPoint = Math.floor(firstValue * this[kPointsPerUnit]);
-    const lastPoint = Math.ceil(lastValue * this[kPointsPerUnit]);
+    const firstPoint = Math.floor(firstValue * this.pointsPerUnit);
+    const lastPoint = Math.ceil(lastValue * this.pointsPerUnit);
     const middlePoint = (firstPoint + lastPoint) / 2;
 
     for (var j = firstPoint; j <= lastPoint; j++) {
-      var index = j - this[kStart] * this[kPointsPerUnit];
-      if (index >= 0 && index < this[kSize]) {
-        var gaussianIndex = Math.floor(gaussianWidth / width * (j - middlePoint) / this[kPointsPerUnit] + gaussianFactor * gaussianWidth / 2);
+      var index = j - this.start * this.pointsPerUnit;
+      if (index >= 0 && index < this.size) {
+        var gaussianIndex = Math.floor(gaussianWidth / width * (j - middlePoint) / this.pointsPerUnit + gaussianFactor * gaussianWidth / 2);
         if (gaussianIndex >= 0 && gaussianIndex < gaussian.length) {
-          this[kSpectrum].y[index] += gaussian[gaussianIndex] * intensity;
+          this.data.y[index] += gaussian[gaussianIndex] * intensity;
         }
       }
     }
 
     return this;
+  }
+
+  addBaseline(baselineFct) {
+    addBaseline(this.data, baselineFct);
+  }
+
+  addNoise(percent, options) {
+    addNoise(this.data, percent, options);
   }
 
   /**
@@ -124,11 +143,11 @@ class SpectrumGenerator {
   getSpectrum(copy = true) {
     if (copy) {
       return {
-        x: this[kSpectrum].x.slice(),
-        y: this[kSpectrum].y.slice()
+        x: this.data.x.slice(),
+        y: this.data.y.slice()
       };
     } else {
-      return this[kSpectrum];
+      return this.data;
     }
   }
 
@@ -137,31 +156,28 @@ class SpectrumGenerator {
      * @return {this}
      */
   reset() {
-    let finalSize = (this[kEnd] - this[kStart]) * this[kPointsPerUnit] + 1;
-    if (finalSize > this[kMaxSize]) {
-      throw new Error(`Generated array has size ${finalSize} larger than maxSize: ${this[kMaxSize]}`);
+    if (this.size > this.maxSize) {
+      throw new Error(`Generated array has size ${this.size} larger than maxSize: ${this.maxSize}`);
     }
 
-    const spectrum = this[kSpectrum] = {
+    const spectrum = this.data = {
       x: [],
-      y: []
+      y: new Array(this.size).fill(0)
     };
 
-    const interval = 1 / this[kPointsPerUnit];
+    const interval = 1 / this.pointsPerUnit;
     const js = [];
-    for (let j = 0; j < this[kPointsPerUnit]; j++) {
+    for (let j = 0; j < this.pointsPerUnit; j++) {
       js.push(j * interval);
     }
 
-    for (let i = this[kStart]; i < this[kEnd]; i++) {
-      for (let j = 0; j < this[kPointsPerUnit]; j++) {
+    for (let i = this.start; i < this.end; i++) {
+      for (let j = 0; j < this.pointsPerUnit; j++) {
         spectrum.x.push(i + js[j]);
-        spectrum.y.push(0);
       }
     }
 
-    spectrum.x.push(this[kEnd]);
-    spectrum.y.push(0);
+    spectrum.x.push(this.end);
 
     return this;
   }
@@ -179,16 +195,10 @@ function assertInteger(value, name) {
  * @param {object} [options] - same options as new SpectrumGenerator
  * @return {object} spectrum
  */
-function generateSpectrum(peaks, options) {
+SpectrumGenerator.generateSpectrum(peaks, options = {}) {
   const generator = new SpectrumGenerator(options);
   generator.addPeaks(peaks);
-  var spectrum = generator.getSpectrum();
-  addBaseline(spectrum, options.baseline);
-  addNoise(spectrum, options.noise);
-  return spectrum;
+  generator.addBaseline(options.baseline);
+  generator.addNoise(options);
+  return generator.getSpectrum();
 }
-
-export default {
-  SpectrumGenerator,
-  generateSpectrum
-};

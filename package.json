@@ -47,6 +47,8 @@
     "rollup": "^0.51.0"
   },
   "dependencies": {
-    "debug": "^3.1.0"
+    "debug": "^3.1.0",
+    "random": "^2.0.12",
+    "seedrandom": "^2.4.3"
   }
 }

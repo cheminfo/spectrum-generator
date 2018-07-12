@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+Object {
+  "x": Array [
+    1,
+    2,
+    3,
+  ],
+  "y": Array [
+    4,
+    7,
+    10,
+  ],
+}
+`;
