@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Test addNoise 1`] = `
 Object {
   "x": Array [
     1,

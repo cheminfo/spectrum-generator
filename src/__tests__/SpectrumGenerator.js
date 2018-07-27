@@ -1,4 +1,4 @@
-import { SpectrumGenerator } from '..';
+import SpectrumGenerator from '..';
 
 describe('SpectrumGenerator', () => {
   it('0 half peak', () => {

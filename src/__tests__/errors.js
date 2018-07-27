@@ -1,8 +1,8 @@
-import { SpectrumGenerator } from '..';
+import SpectrumGenerator from '..';
 
 const integerReg = /^\w+ option must be an integer$/;
 const endStartReg = /^end option must be larger than start$/;
-const getWidthReg = /^getWidth option must be a function$/;
+const peakWidthReg = /^peakWidthFct option must be a function$/;
 const addPeaksReg = /^peaks must be an array$/;
 const addPeakReg = /^peak must be an array with two values$/;
 
@@ -20,7 +20,7 @@ describe('errors', () => {
     expect(() => new SpectrumGenerator({ start: 0, end: 0 })).toThrow(endStartReg);
     expect(() => new SpectrumGenerator({ start: 0, end: -10 })).toThrow(endStartReg);
 
-    expect(() => new SpectrumGenerator({ getWidth: null })).toThrow(getWidthReg);
+    expect(() => new SpectrumGenerator({ peakWidthFct: null })).toThrow(peakWidthReg);
   });
 
   it('addPeaks not an array', () => {

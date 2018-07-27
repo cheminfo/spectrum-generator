@@ -1,4 +1,5 @@
 // generate a spectrum with spectrum-generator
+
 import SG from '..';
 
 const debug = require('debug')('example');

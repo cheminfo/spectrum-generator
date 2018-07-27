@@ -20,10 +20,7 @@ export default class SpectrumGenerator {
      * @param {number} [options.end=1000] - Last x value (inclusive)
      * @param {number} [options.pointsPerUnit=5] - Number of values between each unit of the x axis
      * @param {number} [options.maxSize=1e7] - maximal array size
-     * @param {function} [options.peakWidthFct] - Returns the width of a peak for a given value. Defaults to (1 + 3 * value / 1000)
-     * @param {function} [options.baseline] - Mathematical function producing the baseline you want
-     * @param {number} [options.noise = 0] - Noise's amplitude in percents of the spectrum max value
-     *
+      *
      * @example
      * import SG from 'spectrum-generator';
      * const sg = new SG({ start: 0, end: 100, pointsPerUnit: 1 });
@@ -48,11 +45,18 @@ export default class SpectrumGenerator {
      * })
      */
   constructor(options = {}) {
-    this.start = options.start || 0;
-    this.end = options.end || 1000;
-    this.pointsPerUnit = options.pointsPerUnit || 5;
-    this.peakWidthFct = options.peakWidthFct || ((x) => 1 + 3 * x / 1000);
-    this.maxSize = options.maxSize || 1e7;
+    options = Object.assign({}, {
+      start: 0,
+      end: 1000,
+      pointsPerUnit: 5,
+      peakWidthFct: ((x) => 1 + 3 * x / 1000),
+      maxSize: 1e7
+    }, options);
+    this.start = options.start;
+    this.end = options.end;
+    this.pointsPerUnit = options.pointsPerUnit;
+    this.peakWidthFct = options.peakWidthFct;
+    this.maxSize = options.maxSize;
 
     assertInteger(this.start, 'start');
     assertInteger(this.end, 'end');
@@ -65,10 +69,6 @@ export default class SpectrumGenerator {
 
     if (typeof this.peakWidthFct !== 'function') {
       throw new TypeError('peakWidthFct option must be a function');
-    }
-
-    if (typeof this.baseline !== 'function') {
-      throw new TypeError('baseline option must be a function');
     }
 
     this.reset();
@@ -195,10 +195,10 @@ function assertInteger(value, name) {
  * @param {object} [options] - same options as new SpectrumGenerator
  * @return {object} spectrum
  */
-SpectrumGenerator.generateSpectrum(peaks, options = {}) {
+export function generateSpectrum(peaks, options = {}) {
   const generator = new SpectrumGenerator(options);
   generator.addPeaks(peaks);
-  generator.addBaseline(options.baseline);
-  generator.addNoise(options);
+  if (options.baseline) generator.addBaseline(options.baseline);
+  if (options.noise) generator.addNoise(options.noise.percent, options.noise);
   return generator.getSpectrum();
 }
