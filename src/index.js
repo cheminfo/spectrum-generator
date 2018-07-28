@@ -24,8 +24,9 @@ export default class SpectrumGenerator {
       *
      * @example
      * import SG from 'spectrum-generator';
-     * const sg = new SG({ start: 0, end: 100, pointsPerUnit: 5 });
+     * const sg = new SG({start: 0, end: 100, pointsPerUnit: 5, peakWidthFct: (x) => 1 + 3 * x / 1000 });
      * sg.addPeak( [5, 50] );
+     * sg.addPeak([20, 100], { width: 3 });
      * sg.addPeak([35, 100], { widthLeft: 10, widthRight: 30 });
      * sg.addPeak([50, 10], { widthLeft: 5, widthRight: 5 });
      * sg.addPeaks([ [70,20], [80,40], [90,10] ]);
