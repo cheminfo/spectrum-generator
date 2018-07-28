@@ -18,21 +18,24 @@ export default class SpectrumGenerator {
      * @param {object} [options]
      * @param {number} [options.start=0] - First x value (inclusive)
      * @param {number} [options.end=1000] - Last x value (inclusive)
+     * @param {number} [options.peakWidthFct=(x) => 5] - Width of peak depending the x value
      * @param {number} [options.pointsPerUnit=5] - Number of values between each unit of the x axis
      * @param {number} [options.maxSize=1e7] - maximal array size
       *
      * @example
      * import SG from 'spectrum-generator';
-     * const sg = new SG({ start: 0, end: 100, pointsPerUnit: 1 });
-     * sg.addPeak([1,2]);
-     * sg.addPeaks([ [2,3], [3,2], [4,2] ]);
+     * const sg = new SG({ start: 0, end: 100, pointsPerUnit: 5 });
+     * sg.addPeak( [5, 50] );
+     * sg.addPeak([35, 100], { widthLeft: 10, widthRight: 30 });
+     * sg.addPeak([50, 10], { widthLeft: 5, widthRight: 5 });
+     * sg.addPeaks([ [70,20], [80,40], [90,10] ]);
      * sg.addNoise(10);
-     * sg.addBaseline( (x) => 2 * x );
+     * sg.addBaseline( (x) => x * x / 100 );
      * var spectrum = sg.getSpectrum();
      *
      * @example
      * import SG from 'spectrum-generator';
-     * const spectrum=SG.generateSpectrum([ [2,3], [3,2], [4,2] ], {
+     * const spectrum=SG.generateSpectrum([ [20,3], [30,2], [40,2] ], {
      *  start: 0,
      *  end: 100,
      *  pointsPerUnit: 1,
@@ -49,7 +52,7 @@ export default class SpectrumGenerator {
       start: 0,
       end: 1000,
       pointsPerUnit: 5,
-      peakWidthFct: ((x) => 1 + 3 * x / 1000),
+      peakWidthFct: (() => 5),
       maxSize: 1e7
     }, options);
     this.start = options.start;
