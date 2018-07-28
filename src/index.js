@@ -18,7 +18,7 @@ export default class SpectrumGenerator {
      * @param {object} [options]
      * @param {number} [options.start=0] - First x value (inclusive)
      * @param {number} [options.end=1000] - Last x value (inclusive)
-     * @param {number} [options.peakWidthFct=(x) => 5] - Width of peak depending the x value
+     * @param {function} [options.peakWidthFct=function(x){return(5)}] - Width of peak depending the x value
      * @param {number} [options.pointsPerUnit=5] - Number of values between each unit of the x axis
      * @param {number} [options.maxSize=1e7] - maximal array size
       *

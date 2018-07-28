@@ -119,8 +119,8 @@
     </h3>
     
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/cheminfo/spectrum-generator/blob/388342af53a3a4a0638efdfbac3f5c0b7bdd3d42/src/functionalities/addBaseline.js#L8-L16'>
-      <span>src/functionalities/addBaseline.js</span>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/cheminfo/spectrum-generator/blob/4d8969d9be0de155bb72963582c0d90da9682c7f/src/util/addBaseline.js#L8-L16'>
+      <span>src/util/addBaseline.js</span>
       </a>
     
   </div>
@@ -209,8 +209,8 @@ y1, y2, ...
     </h3>
     
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/cheminfo/spectrum-generator/blob/388342af53a3a4a0638efdfbac3f5c0b7bdd3d42/src/functionalities/addNoise.js#L12-L39'>
-      <span>src/functionalities/addNoise.js</span>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/cheminfo/spectrum-generator/blob/4d8969d9be0de155bb72963582c0d90da9682c7f/src/util/addNoise.js#L12-L39'>
+      <span>src/util/addNoise.js</span>
       </a>
     
   </div>
@@ -347,7 +347,7 @@ y1, y2, ...
     </h3>
     
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/cheminfo/spectrum-generator/blob/388342af53a3a4a0638efdfbac3f5c0b7bdd3d42/src/index.js#L47-L75'>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/cheminfo/spectrum-generator/blob/4d8969d9be0de155bb72963582c0d90da9682c7f/src/index.js#L51-L79'>
       <span>src/index.js</span>
       </a>
     
@@ -413,6 +413,17 @@ y1, y2, ...
 
               
                 <tr>
+  <td class='break-word'><span class='code bold'>options.peakWidthFct</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a></code>
+  
+    (default <code>function(x){return(5)}</code>)
+  </td>
+  <td class='break-word'><span>Width of peak depending the x value
+</span></td>
+</tr>
+
+
+              
+                <tr>
   <td class='break-word'><span class='code bold'>options.pointsPerUnit</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>
   
     (default <code>5</code>)
@@ -453,16 +464,19 @@ y1, y2, ...
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">import</span> SG <span class="hljs-keyword">from</span> <span class="hljs-string">'spectrum-generator'</span>;
-<span class="hljs-keyword">const</span> sg = <span class="hljs-keyword">new</span> SG({ <span class="hljs-attr">start</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">end</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">pointsPerUnit</span>: <span class="hljs-number">1</span> });
-sg.addPeak(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>);
-sg.addPeaks([ [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>], [<span class="hljs-number">3</span>,<span class="hljs-number">2</span>], [<span class="hljs-number">4</span>,<span class="hljs-number">2</span>] ]);
+<span class="hljs-keyword">const</span> sg = <span class="hljs-keyword">new</span> SG({<span class="hljs-attr">start</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">end</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">pointsPerUnit</span>: <span class="hljs-number">5</span>, <span class="hljs-attr">peakWidthFct</span>: <span class="hljs-function">(<span class="hljs-params">x</span>) =&gt;</span> <span class="hljs-number">1</span> + <span class="hljs-number">3</span> * x / <span class="hljs-number">1000</span> });
+sg.addPeak( [<span class="hljs-number">5</span>, <span class="hljs-number">50</span>] );
+sg.addPeak([<span class="hljs-number">20</span>, <span class="hljs-number">100</span>], { <span class="hljs-attr">width</span>: <span class="hljs-number">3</span> });
+sg.addPeak([<span class="hljs-number">35</span>, <span class="hljs-number">100</span>], { <span class="hljs-attr">widthLeft</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">widthRight</span>: <span class="hljs-number">30</span> });
+sg.addPeak([<span class="hljs-number">50</span>, <span class="hljs-number">10</span>], { <span class="hljs-attr">widthLeft</span>: <span class="hljs-number">5</span>, <span class="hljs-attr">widthRight</span>: <span class="hljs-number">5</span> });
+sg.addPeaks([ [<span class="hljs-number">70</span>,<span class="hljs-number">20</span>], [<span class="hljs-number">80</span>,<span class="hljs-number">40</span>], [<span class="hljs-number">90</span>,<span class="hljs-number">10</span>] ]);
 sg.addNoise(<span class="hljs-number">10</span>);
-sg.addBaseline( <span class="hljs-function">(<span class="hljs-params">x</span>) =&gt;</span> <span class="hljs-number">2</span> * x );
+sg.addBaseline( <span class="hljs-function">(<span class="hljs-params">x</span>) =&gt;</span> x * x / <span class="hljs-number">100</span> );
 <span class="hljs-keyword">var</span> spectrum = sg.getSpectrum();</pre>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">import</span> SG <span class="hljs-keyword">from</span> <span class="hljs-string">'spectrum-generator'</span>;
-<span class="hljs-keyword">const</span> spectrum=SG.generateSpectrum([ [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>], [<span class="hljs-number">3</span>,<span class="hljs-number">2</span>], [<span class="hljs-number">4</span>,<span class="hljs-number">2</span>] ], {
+<span class="hljs-keyword">const</span> spectrum=SG.generateSpectrum([ [<span class="hljs-number">20</span>,<span class="hljs-number">3</span>], [<span class="hljs-number">30</span>,<span class="hljs-number">2</span>], [<span class="hljs-number">40</span>,<span class="hljs-number">2</span>] ], {
  <span class="hljs-attr">start</span>: <span class="hljs-number">0</span>,
  <span class="hljs-attr">end</span>: <span class="hljs-number">100</span>,
  <span class="hljs-attr">pointsPerUnit</span>: <span class="hljs-number">1</span>,
@@ -486,7 +500,7 @@ sg.addBaseline( <span class="hljs-function">(<span class="hljs-params">x</span>)
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>addPeak(peak)</span>
+            <span class='code strong strong truncate'>addPeak(peak, options)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -496,7 +510,7 @@ sg.addBaseline( <span class="hljs-function">(<span class="hljs-params">x</span>)
   <div class='clearfix'>
     
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/cheminfo/spectrum-generator/blob/388342af53a3a4a0638efdfbac3f5c0b7bdd3d42/src/index.js#L101-L127'>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/cheminfo/spectrum-generator/blob/4d8969d9be0de155bb72963582c0d90da9682c7f/src/index.js#L109-L156'>
       <span>src/index.js</span>
       </a>
     
@@ -506,7 +520,7 @@ sg.addBaseline( <span class="hljs-function">(<span class="hljs-params">x</span>)
   <p>Add a single peak to the spectrum.</p>
 
 
-  <div class='pre p1 fill-light mt0'>addPeak(peak: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>>): this</div>
+  <div class='pre p1 fill-light mt0'>addPeak(peak: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>>, options: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): this</div>
   
   
 
@@ -526,6 +540,58 @@ sg.addBaseline( <span class="hljs-function">(<span class="hljs-params">x</span>)
             <span class='code bold'>peak</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>>)</code>
 	    
           </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>
+            = <code>{}</code>)</code>
+	    
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.width</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>?</code>
+  </td>
+  <td class='break-word'><span>Half-height width
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.widthLeft</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>?</code>
+  </td>
+  <td class='break-word'><span>Half-height width left (asymmetric peak)
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.widthRight</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>?</code>
+  </td>
+  <td class='break-word'><span>Half-height width right (asymmetric peak)
+</span></td>
+</tr>
+
+
+              
+            </tbody>
+          </table>
           
         </div>
       
@@ -572,7 +638,7 @@ sg.addBaseline( <span class="hljs-function">(<span class="hljs-params">x</span>)
   <div class='clearfix'>
     
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/cheminfo/spectrum-generator/blob/388342af53a3a4a0638efdfbac3f5c0b7bdd3d42/src/index.js#L86-L94'>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/cheminfo/spectrum-generator/blob/4d8969d9be0de155bb72963582c0d90da9682c7f/src/index.js#L90-L98'>
       <span>src/index.js</span>
       </a>
     
@@ -648,7 +714,7 @@ sg.addBaseline( <span class="hljs-function">(<span class="hljs-params">x</span>)
   <div class='clearfix'>
     
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/cheminfo/spectrum-generator/blob/388342af53a3a4a0638efdfbac3f5c0b7bdd3d42/src/index.js#L143-L152'>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/cheminfo/spectrum-generator/blob/4d8969d9be0de155bb72963582c0d90da9682c7f/src/index.js#L172-L181'>
       <span>src/index.js</span>
       </a>
     
@@ -727,7 +793,7 @@ Otherwise, return the internal value that can be mutated if subsequent calls to 
   <div class='clearfix'>
     
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/cheminfo/spectrum-generator/blob/388342af53a3a4a0638efdfbac3f5c0b7bdd3d42/src/index.js#L158-L183'>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/cheminfo/spectrum-generator/blob/4d8969d9be0de155bb72963582c0d90da9682c7f/src/index.js#L187-L212'>
       <span>src/index.js</span>
       </a>
     
@@ -796,7 +862,7 @@ Otherwise, return the internal value that can be mutated if subsequent calls to 
     </h3>
     
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/cheminfo/spectrum-generator/blob/388342af53a3a4a0638efdfbac3f5c0b7bdd3d42/src/index.js#L198-L204'>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/cheminfo/spectrum-generator/blob/4d8969d9be0de155bb72963582c0d90da9682c7f/src/index.js#L227-L233'>
       <span>src/index.js</span>
       </a>
     
