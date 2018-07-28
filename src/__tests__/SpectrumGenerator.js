@@ -40,6 +40,16 @@ describe('SpectrumGenerator', () => {
     expectValue(spectrum, 1 * 5, 1);
   });
 
+  it('check asymmetric peak', () => {
+    const generator = new SpectrumGenerator({
+      start: 0,
+      end: 100,
+      pointsPerUnit: 2
+    });
+    generator.addPeak([35, 100], { widthLeft: 10, widthRight: 30 });
+    expect(generator.getSpectrum()).toMatchSnapshot();
+  });
+
   it('1 middle peak check width', () => {
     const generator = new SpectrumGenerator({
       start: 0,

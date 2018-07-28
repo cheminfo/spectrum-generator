@@ -1,5 +1,5 @@
-import addBaseline from './functionalities/addBaseline.js';
-import addNoise from './functionalities/addNoise.js';
+import addBaseline from './util/addBaseline.js';
+import addNoise from './util/addNoise.js';
 
 
 const gaussianFactor = 5; // after 5 the value is nearly 0, nearly no artifacts
@@ -24,7 +24,7 @@ export default class SpectrumGenerator {
      * @example
      * import SG from 'spectrum-generator';
      * const sg = new SG({ start: 0, end: 100, pointsPerUnit: 1 });
-     * sg.addPeak(1,2);
+     * sg.addPeak([1,2]);
      * sg.addPeaks([ [2,3], [3,2], [4,2] ]);
      * sg.addNoise(10);
      * sg.addBaseline( (x) => 2 * x );
@@ -96,27 +96,52 @@ export default class SpectrumGenerator {
   /**
      * Add a single peak to the spectrum.
      * @param {Array<number>} peak
+     * @param {object} [options={}]
+     * @param {number} [options.width] Half-height width
+     * @param {number} [options.widthLeft] Half-height width left (asymmetric peak)
+     * @param {number} [options.widthRight] Half-height width right (asymmetric peak)
      * @return {this}
      */
-  addPeak(peak) {
+  addPeak(peak, options = {}) {
     if (!Array.isArray(peak) || peak.length !== 2) {
       throw new Error('peak must be an array with two values');
     }
 
     const value = peak[0];
     const intensity = peak[1];
-    const width = this.peakWidthFct(value);
-    const firstValue = value - (width / 2 * gaussianFactor);
-    const lastValue = value + (width / 2 * gaussianFactor);
+
+    let {
+      width = this.peakWidthFct(value),
+      widthLeft,
+      widthRight
+    } = options;
+
+    if (!widthLeft) widthLeft = width;
+    if (!widthRight) widthRight = width;
+
+    const firstValue = value - (widthLeft / 2 * gaussianFactor);
+    const lastValue = value + (widthRight / 2 * gaussianFactor);
 
     const firstPoint = Math.floor(firstValue * this.pointsPerUnit);
     const lastPoint = Math.ceil(lastValue * this.pointsPerUnit);
-    const middlePoint = (firstPoint + lastPoint) / 2;
+    const middlePoint = value * this.pointsPerUnit;
 
-    for (var j = firstPoint; j <= lastPoint; j++) {
-      var index = j - this.start * this.pointsPerUnit;
+    // we calculate the left part of the gaussian
+    for (let j = firstPoint; j < middlePoint; j++) {
+      let index = j - this.start * this.pointsPerUnit;
       if (index >= 0 && index < this.size) {
-        var gaussianIndex = Math.floor(gaussianWidth / width * (j - middlePoint) / this.pointsPerUnit + gaussianFactor * gaussianWidth / 2);
+        let gaussianIndex = Math.floor(gaussianWidth / widthLeft * (j - middlePoint) / this.pointsPerUnit + gaussianFactor * gaussianWidth / 2);
+        if (gaussianIndex >= 0 && gaussianIndex < gaussian.length) {
+          this.data.y[index] += gaussian[gaussianIndex] * intensity;
+        }
+      }
+    }
+
+    // we calculate the right part of the gaussian
+    for (let j = middlePoint; j <= lastPoint; j++) {
+      let index = j - this.start * this.pointsPerUnit;
+      if (index >= 0 && index < this.size) {
+        let gaussianIndex = Math.floor(gaussianWidth / widthRight * (j - middlePoint) / this.pointsPerUnit + gaussianFactor * gaussianWidth / 2);
         if (gaussianIndex >= 0 && gaussianIndex < gaussian.length) {
           this.data.y[index] += gaussian[gaussianIndex] * intensity;
         }
