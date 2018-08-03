@@ -11,6 +11,7 @@
   "scripts": {
     "eslint": "eslint src",
     "eslint-fix": "npm run eslint -- --fix",
+    "example": "node -r esm examples/generateSpectrum.js",
     "prepublishOnly": "rollup -c",
     "test": "run-s testonly eslint",
     "test-travis": "eslint src && jest --coverage && codecov",

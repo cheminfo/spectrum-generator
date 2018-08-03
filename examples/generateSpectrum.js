@@ -7,7 +7,6 @@ with transpilation on the fly using
 node -r esm generateSpectrum.js
 */
 
-
 import { generateSpectrum } from '../src';
 
 const fs = require('fs');
