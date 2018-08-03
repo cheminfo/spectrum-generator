@@ -1,3 +1,8 @@
+<a name="2.0.1"></a>
+## [2.0.1](https://github.com/cheminfo/spectrum-generator/compare/v2.0.0...v2.0.1) (2018-08-03)
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/cheminfo/spectrum-generator/compare/v1.1.0...v2.0.0) (2018-07-28)
 
