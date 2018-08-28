@@ -11,7 +11,7 @@ for (let i = 0; i <= gaussianWidth * gaussianFactor; i++) {
 }
 
 
-export default class SpectrumGenerator {
+export class SpectrumGenerator {
   /**
      * @class SpectrumGenerator
      * @constructor

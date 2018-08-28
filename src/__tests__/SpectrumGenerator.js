@@ -1,4 +1,4 @@
-import SpectrumGenerator from '..';
+import { SpectrumGenerator } from '..';
 
 describe('SpectrumGenerator', () => {
   it('0 half peak', () => {
@@ -55,7 +55,7 @@ describe('SpectrumGenerator', () => {
       start: 0,
       end: 2,
       pointsPerUnit: 10,
-      peakWidthFct: (x) => 1 + 3 * x / 1000
+      peakWidthFct: (x) => 1 + (3 * x) / 1000
     });
 
     generator.addPeak([1, 1]);
