@@ -39,4 +39,4 @@ jspm_packages
 lib
 
 # Automatically created data file
-src/examples/data.json
+src/examples/*.json
