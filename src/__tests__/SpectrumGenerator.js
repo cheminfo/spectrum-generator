@@ -47,7 +47,8 @@ describe('SpectrumGenerator', () => {
       pointsPerUnit: 2
     });
     generator.addPeak([35, 100], { widthLeft: 10, widthRight: 30 });
-    expect(generator.getSpectrum()).toMatchSnapshot();
+    const spectrum = generator.getSpectrum();
+    expect(spectrum).toMatchSnapshot();
   });
 
   it('1 middle peak check width', () => {
