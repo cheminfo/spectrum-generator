@@ -1,9 +1,9 @@
 # spectrum-generator
 
-  [![NPM version][npm-image]][npm-url]
-  [![build status][travis-image]][travis-url]
-  [![Test coverage][codecov-image]][codecov-url]
-  [![npm download][download-image]][download-url]
+[![NPM version][npm-image]][npm-url]
+[![build status][travis-image]][travis-url]
+[![Test coverage][codecov-image]][codecov-url]
+[![npm download][download-image]][download-url]
 
 generate a spectrum from discrete peaks.
 
@@ -19,15 +19,16 @@ and generates peaks with a gaussian distribution.
 ### generateSpectrum
 
 ```js
-import {generateSpectrum} from 'spectrum-generator';
+import { generateSpectrum } from 'spectrum-generator';
 
 const peaks = [[4, 10], [20, 30], [236, 1], [569, 76]];
-const spectrum = generateSpectrum(peaks, {pointsPerUnit: 1});
+const spectrum = generateSpectrum(peaks, { pointsPerUnit: 1 });
 ```
+
 ### class SpectrumGenerator
 
 ```js
-import {SpectrumGenerator} from 'spectrum-generator';
+import { SpectrumGenerator } from 'spectrum-generator';
 
 const generator = new SpectrumGenerator();
 generator.addPeak([5, 20]);
@@ -44,7 +45,7 @@ const otherSpectrum = generator.getSpectrum();
 
 ## License
 
-  [MIT](./LICENSE)
+[MIT](./LICENSE)
 
 [npm-image]: https://img.shields.io/npm/v/spectrum-generator.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/spectrum-generator
