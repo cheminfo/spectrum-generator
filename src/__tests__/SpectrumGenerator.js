@@ -67,6 +67,26 @@ describe('SpectrumGenerator', () => {
     expectValue(spectrum, 1 * 10, 1);
   });
 
+  it('non-integer middle point', () => {
+    const generator = new SpectrumGenerator({
+      start: 0,
+      end: 5,
+      pointsPerUnit: 5
+    });
+
+    generator.addPeak([2.5, 2]);
+
+    // The middle point (peak's summit) is not exactly on an indexable place
+    // We check that the peak is symmetric and its values never go higher than
+    // the peak's height
+    const spectrum = generator.getSpectrum();
+    const nPoints = spectrum.x.length;
+    for (let i = 0; i < nPoints / 2; i++) {
+      expect(spectrum.y[i]).toBe(spectrum.y[nPoints - 1 - i]);
+      expect(spectrum.y[i]).toBeLessThan(2);
+    }
+  });
+
   it('full generation', () => {
     const generator = new SpectrumGenerator();
 

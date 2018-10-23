@@ -153,7 +153,7 @@ export class SpectrumGenerator {
     }
 
     // we calculate the right part of the gaussian
-    for (let j = middlePoint; j <= lastPoint; j++) {
+    for (let j = Math.ceil(middlePoint); j <= lastPoint; j++) {
       let index = j - this.start * this.pointsPerUnit;
       if (index >= 0 && index < this.size) {
         let gaussianIndex = Math.floor(
