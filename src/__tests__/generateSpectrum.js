@@ -46,28 +46,38 @@ describe('generateSpectrum check large size', () => {
     data.push([i, Math.random()]);
   }
   it('should throw error for huge array', () => {
-    expect(() => generateSpectrum(data, {
-      start: 0,
-      end: 10000,
-      pointsPerUnit: 1000,
-      getWidth: () => 0.1
-    })).toThrow('Generated array has size 10000001 larger than maxSize: 10000000');
+    expect(() =>
+      generateSpectrum(data, {
+        start: 0,
+        end: 10000,
+        pointsPerUnit: 1000,
+        getWidth: () => 0.1
+      })
+    ).toThrow(
+      'Generated array has size 10000001 larger than maxSize: 10000000'
+    );
   });
 
   it('should throw for simple array is maxSize=1', () => {
-    expect(() => generateSpectrum([[1, 1]], {
-      start: 0,
-      end: 2,
-      pointsPerUnit: 1,
-      maxSize: 1,
-      getWidth: () => 0.1
-    })).toThrow('Generated array has size 3 larger than maxSize: 1');
+    expect(() =>
+      generateSpectrum([[1, 1]], {
+        start: 0,
+        end: 2,
+        pointsPerUnit: 1,
+        maxSize: 1,
+        getWidth: () => 0.1
+      })
+    ).toThrow('Generated array has size 3 larger than maxSize: 1');
   });
 });
 
-
 function assertSimple({ start, end, peak }) {
-  const spectrum = generateSpectrum([[peak, 1]], { start, end, pointsPerUnit: 1, getWidth: simpleGetWidth });
+  const spectrum = generateSpectrum([[peak, 1]], {
+    start,
+    end,
+    pointsPerUnit: 1,
+    getWidth: simpleGetWidth
+  });
   assertSize(spectrum, end - start + 1);
   assertInterval(spectrum, start);
 }
@@ -84,4 +94,3 @@ function assertInterval(spectrum, start) {
     expected++;
   }
 }
-
