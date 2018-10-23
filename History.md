@@ -1,3 +1,13 @@
+<a name="3.0.1"></a>
+## [3.0.1](https://github.com/cheminfo/spectrum-generator/compare/v3.0.0...v3.0.1) (2018-10-23)
+
+
+### Bug Fixes
+
+* **addPeak:** fix peak generation with non-integer middlepoint index ([#3](https://github.com/cheminfo/spectrum-generator/issues/3)) ([baf1a6e](https://github.com/cheminfo/spectrum-generator/commit/baf1a6e))
+
+
+
 <a name="3.0.0"></a>
 # [3.0.0](https://github.com/cheminfo/spectrum-generator/compare/v2.0.1...v3.0.0) (2018-10-23)
 
