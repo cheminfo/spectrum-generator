@@ -1,3 +1,4 @@
+/* eslint-disable jest/expect-expect */
 import { SpectrumGenerator } from '..';
 
 describe('SpectrumGenerator', () => {
@@ -102,6 +103,23 @@ describe('SpectrumGenerator', () => {
     expectValue(spectrum, 14 * 5, 2);
   });
 
+  it('full generation with threshold', () => {
+    const generator = new SpectrumGenerator({
+      pointsPerUnit: 10000,
+      start: -1000,
+      end: 1000,
+      maxSize: 1e8,
+      peakWidthFct: () => 0.001
+    });
+
+    generator.addPeak([0, 1]);
+    generator.addPeak([50, 12]);
+    generator.addPeaks([[100, 10], [14, 2]]);
+
+    const spectrum = generator.getSpectrum({ threshold: 0.001 });
+    expect(spectrum).toMatchSnapshot();
+  });
+
   it('getSpectrum', () => {
     const generator = new SpectrumGenerator();
 
@@ -115,6 +133,12 @@ describe('SpectrumGenerator', () => {
 
     expect(s3).toBe(s4);
     expect(s3).not.toBe(s2);
+
+    const s5 = generator.getSpectrum({ copy: false });
+    const s6 = generator.getSpectrum({ copy: false });
+
+    expect(s5).toBe(s6);
+    expect(s5).not.toBe(s2);
   });
 });
 

@@ -22,7 +22,7 @@ export class SpectrumGenerator {
   /**
    * @class SpectrumGenerator
    * @constructor
-   * @param {object} [options]
+   * @param {object} [options={}]
    * @param {number} [options.start=0] - First x value (inclusive)
    * @param {number} [options.end=1000] - Last x value (inclusive)
    * @param {function} [options.peakWidthFct=function(x){return(5)}] - Width of peak depending the x value
@@ -52,7 +52,7 @@ export class SpectrumGenerator {
    *    distribution: 'normal',
    *    seed: 42
    *  },
-   *  baseline: (x) => 2 * x
+   *  baseline: (x) => 2 * x,
    * })
    */
   constructor(options = {}) {
@@ -72,6 +72,7 @@ export class SpectrumGenerator {
     this.pointsPerUnit = options.pointsPerUnit;
     this.peakWidthFct = options.peakWidthFct;
     this.maxSize = options.maxSize;
+    this.maxPeakHeight = Number.MIN_SAFE_INTEGER;
 
     assertInteger(this.start, 'start');
     assertInteger(this.end, 'end');
@@ -124,6 +125,7 @@ export class SpectrumGenerator {
 
     const value = peak[0];
     const intensity = peak[1];
+    if (intensity > this.maxPeakHeight) this.maxPeakHeight = intensity;
 
     let { width = this.peakWidthFct(value), widthLeft, widthRight } = options;
 
@@ -180,11 +182,29 @@ export class SpectrumGenerator {
 
   /**
    * Get the generated spectrum.
-   * @param {boolean} [copy=true] - If true, returns a copy of the spectrum.
+   *     @param {object} [options={}]
+   * @param {number} [options.threshold=0] - minimal ratio of Y to keep the value
+   * @param {boolean} [options.copy=true] - If true, returns a copy of the spectrum.
    * Otherwise, return the internal value that can be mutated if subsequent calls to addPeak are made.
    * @return {object}
    */
-  getSpectrum(copy = true) {
+  getSpectrum(options = {}) {
+    if (typeof options === 'boolean') {
+      options = { copy: options };
+    }
+    const { copy = true, threshold = 0 } = options;
+    if (threshold) {
+      let minPeakHeight = this.maxPeakHeight * threshold;
+      let x = [];
+      let y = [];
+      for (let i = 0; i < this.data.x.length; i++) {
+        if (this.data.y[i] >= minPeakHeight) {
+          x.push(this.data.x[i]);
+          y.push(this.data.y[i]);
+        }
+      }
+      return { x, y };
+    }
     if (copy) {
       return {
         x: this.data.x.slice(),
@@ -248,5 +268,7 @@ export function generateSpectrum(peaks, options = {}) {
   generator.addPeaks(peaks);
   if (options.baseline) generator.addBaseline(options.baseline);
   if (options.noise) generator.addNoise(options.noise.percent, options.noise);
-  return generator.getSpectrum();
+  return generator.getSpectrum({
+    threshold: options.threshold
+  });
 }
