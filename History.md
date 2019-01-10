@@ -1,3 +1,7 @@
+# [3.1.0](https://github.com/cheminfo/spectrum-generator/compare/v3.0.1...v3.1.0) (2019-01-10)
+
+
+
 <a name="3.0.1"></a>
 ## [3.0.1](https://github.com/cheminfo/spectrum-generator/compare/v3.0.0...v3.0.1) (2018-10-23)
 
