@@ -6,8 +6,8 @@
  */
 export default function addBaseline(data, baselineFct) {
   if (!baselineFct) return data;
-  var xs = data.x;
-  var ys = data.y;
+  let xs = data.x;
+  let ys = data.y;
   for (let i = 0; i < xs.length; i++) {
     ys[i] += baselineFct(xs[i]);
   }

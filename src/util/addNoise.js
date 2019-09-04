@@ -27,8 +27,8 @@ export default function addNoise(data, percent = 0, options = {}) {
   }
 
   if (!percent) return data;
-  var ys = data.y;
-  var factor = (percent * findMax(ys)) / 100;
+  let ys = data.y;
+  let factor = (percent * findMax(ys)) / 100;
   for (let i = 0; i < ys.length; i++) {
     ys[i] += generateRandomNumber() * factor;
   }

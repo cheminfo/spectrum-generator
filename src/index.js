@@ -12,9 +12,9 @@ for (let i = 0; i <= gaussianWidth * gaussianFactor; i++) {
         Math.pow(
           (((i - (gaussianFactor * gaussianWidth) / 2) * 2) / gaussianWidth) *
             ratio,
-          2
-        )
-    )
+          2,
+        ),
+    ),
   );
 }
 
@@ -63,9 +63,9 @@ export class SpectrumGenerator {
         end: 1000,
         pointsPerUnit: 5,
         peakWidthFct: () => 5,
-        maxSize: 1e7
+        maxSize: 1e7,
       },
-      options
+      options,
     );
     this.start = options.start;
     this.end = options.end;
@@ -146,7 +146,7 @@ export class SpectrumGenerator {
         let gaussianIndex = Math.floor(
           ((gaussianWidth / widthLeft) * (j - middlePoint)) /
             this.pointsPerUnit +
-            (gaussianFactor * gaussianWidth) / 2
+            (gaussianFactor * gaussianWidth) / 2,
         );
         if (gaussianIndex >= 0 && gaussianIndex < gaussian.length) {
           this.data.y[index] += gaussian[gaussianIndex] * intensity;
@@ -161,7 +161,7 @@ export class SpectrumGenerator {
         let gaussianIndex = Math.floor(
           ((gaussianWidth / widthRight) * (j - middlePoint)) /
             this.pointsPerUnit +
-            (gaussianFactor * gaussianWidth) / 2
+            (gaussianFactor * gaussianWidth) / 2,
         );
         if (gaussianIndex >= 0 && gaussianIndex < gaussian.length) {
           this.data.y[index] += gaussian[gaussianIndex] * intensity;
@@ -208,7 +208,7 @@ export class SpectrumGenerator {
     if (copy) {
       return {
         x: this.data.x.slice(),
-        y: this.data.y.slice()
+        y: this.data.y.slice(),
       };
     } else {
       return this.data;
@@ -222,15 +222,13 @@ export class SpectrumGenerator {
   reset() {
     if (this.size > this.maxSize) {
       throw new Error(
-        `Generated array has size ${this.size} larger than maxSize: ${
-          this.maxSize
-        }`
+        `Generated array has size ${this.size} larger than maxSize: ${this.maxSize}`,
       );
     }
 
     const spectrum = (this.data = {
       x: [],
-      y: new Array(this.size).fill(0)
+      y: new Array(this.size).fill(0),
     });
 
     const interval = 1 / this.pointsPerUnit;
@@ -269,6 +267,6 @@ export function generateSpectrum(peaks, options = {}) {
   if (options.baseline) generator.addBaseline(options.baseline);
   if (options.noise) generator.addNoise(options.noise.percent, options.noise);
   return generator.getSpectrum({
-    threshold: options.threshold
+    threshold: options.threshold,
   });
 }

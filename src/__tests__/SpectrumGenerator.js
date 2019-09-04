@@ -6,7 +6,7 @@ describe('SpectrumGenerator', () => {
     const generator = new SpectrumGenerator({
       start: 0,
       end: 2,
-      pointsPerUnit: 5
+      pointsPerUnit: 5,
     });
 
     generator.addPeak([0, 1]);
@@ -19,7 +19,7 @@ describe('SpectrumGenerator', () => {
     const generator = new SpectrumGenerator({
       start: 0,
       end: 2,
-      pointsPerUnit: 5
+      pointsPerUnit: 5,
     });
 
     generator.addPeak([2, 1]);
@@ -32,7 +32,7 @@ describe('SpectrumGenerator', () => {
     const generator = new SpectrumGenerator({
       start: 0,
       end: 2,
-      pointsPerUnit: 5
+      pointsPerUnit: 5,
     });
 
     generator.addPeak([1, 1]);
@@ -45,7 +45,7 @@ describe('SpectrumGenerator', () => {
     const generator = new SpectrumGenerator({
       start: 0,
       end: 100,
-      pointsPerUnit: 2
+      pointsPerUnit: 2,
     });
     generator.addPeak([35, 100], { widthLeft: 10, widthRight: 30 });
     const spectrum = generator.getSpectrum();
@@ -57,7 +57,7 @@ describe('SpectrumGenerator', () => {
       start: 0,
       end: 2,
       pointsPerUnit: 10,
-      peakWidthFct: (x) => 1 + (3 * x) / 1000
+      peakWidthFct: (x) => 1 + (3 * x) / 1000,
     });
 
     generator.addPeak([1, 1]);
@@ -72,7 +72,7 @@ describe('SpectrumGenerator', () => {
     const generator = new SpectrumGenerator({
       start: 0,
       end: 5,
-      pointsPerUnit: 5
+      pointsPerUnit: 5,
     });
 
     generator.addPeak([2.5, 2]);
@@ -109,7 +109,7 @@ describe('SpectrumGenerator', () => {
       start: -1000,
       end: 1000,
       maxSize: 1e8,
-      peakWidthFct: () => 0.001
+      peakWidthFct: () => 0.001,
     });
 
     generator.addPeak([0, 1]);

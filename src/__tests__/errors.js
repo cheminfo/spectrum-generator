@@ -15,21 +15,21 @@ describe('errors', () => {
     expect(() => new SpectrumGenerator({ end: false })).toThrow(integerReg);
 
     expect(() => new SpectrumGenerator({ pointsPerUnit: 0.5 })).toThrow(
-      integerReg
+      integerReg,
     );
     expect(() => new SpectrumGenerator({ pointsPerUnit: false })).toThrow(
-      integerReg
+      integerReg,
     );
 
     expect(() => new SpectrumGenerator({ start: 0, end: 0 })).toThrow(
-      endStartReg
+      endStartReg,
     );
     expect(() => new SpectrumGenerator({ start: 0, end: -10 })).toThrow(
-      endStartReg
+      endStartReg,
     );
 
     expect(() => new SpectrumGenerator({ peakWidthFct: null })).toThrow(
-      peakWidthReg
+      peakWidthReg,
     );
   });
 

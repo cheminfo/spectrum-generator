@@ -8,7 +8,7 @@ describe('generateSpectrum', () => {
     assertSimple({
       start: 0,
       end: 10,
-      peak: 5
+      peak: 5,
     });
   });
 
@@ -16,7 +16,7 @@ describe('generateSpectrum', () => {
     assertSimple({
       start: 5,
       end: 15,
-      peak: 10
+      peak: 10,
     });
   });
 
@@ -24,7 +24,7 @@ describe('generateSpectrum', () => {
     assertSimple({
       start: -15,
       end: -5,
-      peak: -10
+      peak: -10,
     });
   });
 });
@@ -35,7 +35,7 @@ describe('generateSpectrum with one peak and small window', () => {
       start: 11,
       end: 13,
       pointsPerUnit: 10,
-      getWidth: () => 0.1
+      getWidth: () => 0.1,
     });
     expect(Math.max(...spectrum.y)).toBe(1);
   });
@@ -52,10 +52,10 @@ describe('generateSpectrum check large size', () => {
         start: 0,
         end: 10000,
         pointsPerUnit: 1000,
-        getWidth: () => 0.1
-      })
+        getWidth: () => 0.1,
+      }),
     ).toThrow(
-      'Generated array has size 10000001 larger than maxSize: 10000000'
+      'Generated array has size 10000001 larger than maxSize: 10000000',
     );
   });
 
@@ -66,8 +66,8 @@ describe('generateSpectrum check large size', () => {
         end: 2,
         pointsPerUnit: 1,
         maxSize: 1,
-        getWidth: () => 0.1
-      })
+        getWidth: () => 0.1,
+      }),
     ).toThrow('Generated array has size 3 larger than maxSize: 1');
   });
 });
@@ -77,7 +77,7 @@ function assertSimple({ start, end, peak }) {
     start,
     end,
     pointsPerUnit: 1,
-    getWidth: simpleGetWidth
+    getWidth: simpleGetWidth,
   });
   assertSize(spectrum, end - start + 1);
   assertInterval(spectrum, start);
