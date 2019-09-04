@@ -9,6 +9,7 @@
     "src"
   ],
   "scripts": {
+    "build": "rollup -c && cheminfo build --root SpectrumGenerator --no-uglify",
     "eslint": "eslint src",
     "eslint-fix": "npm run eslint -- --fix",
     "example": "node -r esm examples/generateSpectrum.js",
