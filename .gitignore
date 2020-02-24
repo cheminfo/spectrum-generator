@@ -42,3 +42,4 @@ lib
 src/examples/*.json
 
 .eslintcache
+dist

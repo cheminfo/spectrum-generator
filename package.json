@@ -11,7 +11,7 @@
     "src"
   ],
   "scripts": {
-    "build": "cheminfo build --entry src/index.js --root SpectrumGenerator",
+    "build": "cheminfo-build --entry src/index.js --root SpectrumGenerator",
     "eslint": "eslint src --cache",
     "eslint-fix": "npm run eslint -- --fix",
     "example": "node -r esm examples/generateSpectrum.js",
