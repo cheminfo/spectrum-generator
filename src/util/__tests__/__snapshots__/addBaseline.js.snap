@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test addBaseline 1`] = `
+exports[`addBaseline 1`] = `
 Object {
   "x": Array [
     1,

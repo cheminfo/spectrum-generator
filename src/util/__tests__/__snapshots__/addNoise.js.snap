@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test addNoise 1`] = `
+exports[`addNoise 1`] = `
 Object {
   "x": Array [
     1,
@@ -8,9 +8,9 @@ Object {
     3,
   ],
   "y": Array [
-    1.8152341483105883,
-    2.8344985399814133,
-    4.036841599485438,
+    1.8588724613189698,
+    2.914162039756775,
+    4.052007699012757,
   ],
 }
 `;

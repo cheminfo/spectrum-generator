@@ -93,7 +93,10 @@ describe('SpectrumGenerator', () => {
 
     generator.addPeak([0, 1]);
     generator.addPeak([50, 12]);
-    generator.addPeaks([[100, 10], [14, 2]]);
+    generator.addPeaks([
+      [100, 10],
+      [14, 2],
+    ]);
 
     const spectrum = generator.getSpectrum();
 
@@ -114,7 +117,10 @@ describe('SpectrumGenerator', () => {
 
     generator.addPeak([0, 1]);
     generator.addPeak([50, 12]);
-    generator.addPeaks([[100, 10], [14, 2]]);
+    generator.addPeaks([
+      [100, 10],
+      [14, 2],
+    ]);
 
     const spectrum = generator.getSpectrum({ threshold: 0.001 });
     expect(spectrum).toMatchSnapshot();

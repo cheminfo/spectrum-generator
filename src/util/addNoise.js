@@ -1,14 +1,6 @@
 import { randomUniform, randomNormal } from 'd3-random';
-import seedrandom from 'seedrandom';
-/**
- * Add noise to the spectrum
- * @param {object} [data] - Your spectrum data in the format {x:[x1, x2, ...], y:[y1, y2, ...]}
- * @param {number} [percent = 0] - Noise's amplitude in percents of the spectrum max value
- * @param {object} [options={}]
- * @param {number} [options.seed] - Seed for a deterministic sequence of random number
- * @param {string} [options.distribution='uniform'] - Type of random: 'uniform' (true random), 'normal' (gaussian distribution),
- * @return {data} data
- */
+import XSAdd from 'ml-xsadd';
+
 export default function addNoise(data, percent = 0, options = {}) {
   const { distribution = 'uniform', seed } = options;
 
@@ -37,7 +29,7 @@ export default function addNoise(data, percent = 0, options = {}) {
 
 function getRandom(func, seed, ...args) {
   return typeof seed === 'number'
-    ? func.source(seedrandom(seed))(...args)
+    ? func.source(new XSAdd(seed).random)(...args)
     : func(...args);
 }
 

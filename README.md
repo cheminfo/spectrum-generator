@@ -1,15 +1,14 @@
 # spectrum-generator
 
 [![NPM version][npm-image]][npm-url]
-[![build status][travis-image]][travis-url]
-[![Test coverage][codecov-image]][codecov-url]
+[![build status][ci-image]][ci-url]
 [![npm download][download-image]][download-url]
 
-generate a spectrum from discrete peaks.
+Generate a spectrum from discrete peaks.
 
 ## Installation
 
-`$ npm install --save spectrum-generator`
+`$ npm i spectrum-generator`
 
 ## Usage
 
@@ -21,7 +20,12 @@ and generates peaks with a gaussian distribution.
 ```js
 import { generateSpectrum } from 'spectrum-generator';
 
-const peaks = [[4, 10], [20, 30], [236, 1], [569, 76]];
+const peaks = [
+  [4, 10],
+  [20, 30],
+  [236, 1],
+  [569, 76],
+];
 const spectrum = generateSpectrum(peaks, { pointsPerUnit: 1 });
 ```
 
@@ -33,7 +37,10 @@ import { SpectrumGenerator } from 'spectrum-generator';
 const generator = new SpectrumGenerator();
 generator.addPeak([5, 20]);
 generator.addPeak([30, 56]);
-generator.addPeaks([[40, 12], [10, 1]]);
+generator.addPeaks([
+  [40, 12],
+  [10, 1],
+]);
 const spectrum = generator.getSpectrum();
 
 generator.reset();
@@ -49,9 +56,6 @@ const otherSpectrum = generator.getSpectrum();
 
 [npm-image]: https://img.shields.io/npm/v/spectrum-generator.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/spectrum-generator
-[travis-image]: https://img.shields.io/travis/cheminfo/spectrum-generator/master.svg?style=flat-square
-[travis-url]: https://travis-ci.org/cheminfo/spectrum-generator
-[codecov-image]: https://img.shields.io/codecov/c/github/cheminfo/spectrum-generator.svg?style=flat-square
-[codecov-url]: https://codecov.io/gh/cheminfo/spectrum-generator
-[download-image]: https://img.shields.io/npm/dm/spectrum-generator.svg?style=flat-square
+[ci-image]: https://github.com/cheminfo/spectrum-generator/workflows/Node.js%20CI/badge.svg?branch=master
+[ci-url]: https://github.com/cheminfo/spectrum-generator/actions?query=workflow%3A%22Node.js+CI%22
 [download-url]: https://www.npmjs.com/package/spectrum-generator

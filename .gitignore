@@ -40,3 +40,5 @@ lib
 
 # Automatically created data file
 src/examples/*.json
+
+.eslintcache

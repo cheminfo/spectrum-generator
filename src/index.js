@@ -19,42 +19,6 @@ for (let i = 0; i <= gaussianWidth * gaussianFactor; i++) {
 }
 
 export class SpectrumGenerator {
-  /**
-   * @class SpectrumGenerator
-   * @constructor
-   * @param {object} [options={}]
-   * @param {number} [options.start=0] - First x value (inclusive)
-   * @param {number} [options.end=1000] - Last x value (inclusive)
-   * @param {function} [options.peakWidthFct=function(x){return(5)}] - Width of peak depending the x value
-   * @param {number} [options.pointsPerUnit=5] - Number of values between each unit of the x axis
-   * @param {number} [options.maxSize=1e7] - maximal array size
-   *
-   * @example
-   * import SG from 'spectrum-generator';
-   * const sg = new SG({start: 0, end: 100, pointsPerUnit: 5, peakWidthFct: (x) => 1 + 3 * x / 1000 });
-   * sg.addPeak( [5, 50] );
-   * sg.addPeak([20, 100], { width: 3 });
-   * sg.addPeak([35, 100], { widthLeft: 10, widthRight: 30 });
-   * sg.addPeak([50, 10], { widthLeft: 5, widthRight: 5 });
-   * sg.addPeaks([ [70,20], [80,40], [90,10] ]);
-   * sg.addNoise(10);
-   * sg.addBaseline( (x) => x * x / 100 );
-   * var spectrum = sg.getSpectrum();
-   *
-   * @example
-   * import SG from 'spectrum-generator';
-   * const spectrum=SG.generateSpectrum([ [20,3], [30,2], [40,2] ], {
-   *  start: 0,
-   *  end: 100,
-   *  pointsPerUnit: 1,
-   *  noise: {
-   *    percent: 10,
-   *    distribution: 'normal',
-   *    seed: 42
-   *  },
-   *  baseline: (x) => 2 * x,
-   * })
-   */
   constructor(options = {}) {
     options = Object.assign(
       {},
@@ -94,11 +58,6 @@ export class SpectrumGenerator {
     return (this.end - this.start) * this.pointsPerUnit + 1;
   }
 
-  /**
-   * Add a series of peaks to the spectrum.
-   * @param {Array<Array<number>>} peaks
-   * @return {this}
-   */
   addPeaks(peaks) {
     if (!Array.isArray(peaks)) {
       throw new TypeError('peaks must be an array');
@@ -109,15 +68,6 @@ export class SpectrumGenerator {
     return this;
   }
 
-  /**
-   * Add a single peak to the spectrum.
-   * @param {Array<number>} peak
-   * @param {object} [options={}]
-   * @param {number} [options.width] Half-height width
-   * @param {number} [options.widthLeft] Half-height width left (asymmetric peak)
-   * @param {number} [options.widthRight] Half-height width right (asymmetric peak)
-   * @return {this}
-   */
   addPeak(peak, options = {}) {
     if (!Array.isArray(peak) || peak.length !== 2) {
       throw new Error('peak must be an array with two values');
@@ -174,20 +124,14 @@ export class SpectrumGenerator {
 
   addBaseline(baselineFct) {
     addBaseline(this.data, baselineFct);
+    return this;
   }
 
   addNoise(percent, options) {
     addNoise(this.data, percent, options);
+    return this;
   }
 
-  /**
-   * Get the generated spectrum.
-   *     @param {object} [options={}]
-   * @param {number} [options.threshold=0] - minimal ratio of Y to keep the value
-   * @param {boolean} [options.copy=true] - If true, returns a copy of the spectrum.
-   * Otherwise, return the internal value that can be mutated if subsequent calls to addPeak are made.
-   * @return {object}
-   */
   getSpectrum(options = {}) {
     if (typeof options === 'boolean') {
       options = { copy: options };
@@ -215,10 +159,6 @@ export class SpectrumGenerator {
     }
   }
 
-  /**
-   * Resets the generator with an empty spectrum.
-   * @return {this}
-   */
   reset() {
     if (this.size > this.maxSize) {
       throw new Error(
@@ -255,12 +195,6 @@ function assertInteger(value, name) {
   }
 }
 
-/**
- * Generates a spectrum and returns it
- * @param {Array<Array<number>>} peaks - list of peaks to put in the spectrum
- * @param {object} [options] - same options as new SpectrumGenerator
- * @return {object} spectrum
- */
 export function generateSpectrum(peaks, options = {}) {
   const generator = new SpectrumGenerator(options);
   generator.addPeaks(peaks);

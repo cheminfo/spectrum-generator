@@ -1,9 +1,3 @@
-/**
- * Add a baseline to the spectrum
- * @param {object} [data] - Your spectrum data in the format {x:[x1, x2, ...], y:[y1, y2, ...]}
- * @param {function} [baselineFct] - Mathematical function producing the baseline you want
- * @return {object} data
- */
 export default function addBaseline(data, baselineFct) {
   if (!baselineFct) return data;
   let xs = data.x;
