@@ -54,8 +54,9 @@ const otherSpectrum = generator.getSpectrum();
 
 [MIT](./LICENSE)
 
-[npm-image]: https://img.shields.io/npm/v/spectrum-generator.svg?style=flat-square
+[npm-image]: https://img.shields.io/npm/v/spectrum-generator.svg
 [npm-url]: https://www.npmjs.com/package/spectrum-generator
 [ci-image]: https://github.com/cheminfo/spectrum-generator/workflows/Node.js%20CI/badge.svg?branch=master
 [ci-url]: https://github.com/cheminfo/spectrum-generator/actions?query=workflow%3A%22Node.js+CI%22
+[download-image]: https://img.shields.io/npm/dm/spectrum-generator.svg
 [download-url]: https://www.npmjs.com/package/spectrum-generator
