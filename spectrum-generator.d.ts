@@ -18,6 +18,18 @@ export interface SpectrumGeneratorOptions {
   peakWidthFct?: (x: number) => number;
 
   /**
+   * Define the shape of the peak.
+   * @default `shape: {
+          kind: 'gaussian',
+          options: {
+            fwhm: 1000,
+            length: 5001,
+          },
+        },`
+   */
+  shape?: object;
+
+  /**
    * Number of values between each unit of the x axis.
    * @default `5`
    */

@@ -1,22 +1,11 @@
+import normed from 'ml-array-normed';
+import { getShape } from 'ml-peak-shape-generator';
+
 import addBaseline from './util/addBaseline.js';
 import addNoise from './util/addNoise.js';
 
-const gaussianFactor = 5; // after 5 the value is nearly 0, nearly no artifacts
-const gaussianWidth = 1000; // half height peak Width in point
-const gaussian = [];
-const ratio = Math.sqrt(Math.log(4));
-for (let i = 0; i <= gaussianWidth * gaussianFactor; i++) {
-  gaussian.push(
-    Math.exp(
-      (-1 / 2) *
-        Math.pow(
-          (((i - (gaussianFactor * gaussianWidth) / 2) * 2) / gaussianWidth) *
-            ratio,
-          2,
-        ),
-    ),
-  );
-}
+const shapeFactor = 5; // after 5 the value is nearly 0, nearly no artifacts
+const shapeFWHM = 1000; // half height peak Width in point
 
 export class SpectrumGenerator {
   constructor(options = {}) {
@@ -28,6 +17,13 @@ export class SpectrumGenerator {
         pointsPerUnit: 5,
         peakWidthFct: () => 5,
         maxSize: 1e7,
+        shape: {
+          kind: 'gaussian',
+          options: {
+            fwhm: 1000,
+            length: 5001,
+          },
+        },
       },
       options,
     );
@@ -37,6 +33,9 @@ export class SpectrumGenerator {
     this.peakWidthFct = options.peakWidthFct;
     this.maxSize = options.maxSize;
     this.maxPeakHeight = Number.MIN_SAFE_INTEGER;
+    this.shape = normed(getShape(options.shape.kind, options.shape.options), {
+      algorithm: 'max',
+    });
 
     assertInteger(this.start, 'start');
     assertInteger(this.end, 'end');
@@ -82,8 +81,8 @@ export class SpectrumGenerator {
     if (!widthLeft) widthLeft = width;
     if (!widthRight) widthRight = width;
 
-    const firstValue = value - (widthLeft / 2) * gaussianFactor;
-    const lastValue = value + (widthRight / 2) * gaussianFactor;
+    const firstValue = value - (widthLeft / 2) * shapeFactor;
+    const lastValue = value + (widthRight / 2) * shapeFactor;
 
     const firstPoint = Math.floor(firstValue * this.pointsPerUnit);
     const lastPoint = Math.ceil(lastValue * this.pointsPerUnit);
@@ -94,12 +93,11 @@ export class SpectrumGenerator {
       let index = j - this.start * this.pointsPerUnit;
       if (index >= 0 && index < this.size) {
         let gaussianIndex = Math.floor(
-          ((gaussianWidth / widthLeft) * (j - middlePoint)) /
-            this.pointsPerUnit +
-            (gaussianFactor * gaussianWidth) / 2,
+          ((shapeFWHM / widthLeft) * (j - middlePoint)) / this.pointsPerUnit +
+            (shapeFactor * shapeFWHM) / 2,
         );
-        if (gaussianIndex >= 0 && gaussianIndex < gaussian.length) {
-          this.data.y[index] += gaussian[gaussianIndex] * intensity;
+        if (gaussianIndex >= 0 && gaussianIndex < this.shape.length) {
+          this.data.y[index] += this.shape[gaussianIndex] * intensity;
         }
       }
     }
@@ -109,12 +107,11 @@ export class SpectrumGenerator {
       let index = j - this.start * this.pointsPerUnit;
       if (index >= 0 && index < this.size) {
         let gaussianIndex = Math.floor(
-          ((gaussianWidth / widthRight) * (j - middlePoint)) /
-            this.pointsPerUnit +
-            (gaussianFactor * gaussianWidth) / 2,
+          ((shapeFWHM / widthRight) * (j - middlePoint)) / this.pointsPerUnit +
+            (shapeFactor * shapeFWHM) / 2,
         );
-        if (gaussianIndex >= 0 && gaussianIndex < gaussian.length) {
-          this.data.y[index] += gaussian[gaussianIndex] * intensity;
+        if (gaussianIndex >= 0 && gaussianIndex < this.shape.length) {
+          this.data.y[index] += this.shape[gaussianIndex] * intensity;
         }
       }
     }
