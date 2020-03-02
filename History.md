@@ -1,3 +1,12 @@
+# [3.2.0](https://github.com/cheminfo/spectrum-generator/compare/v3.1.3...v3.2.0) (2020-03-02)
+
+
+### Features
+
+* allow to specify the shape ([abb6a7d](https://github.com/cheminfo/spectrum-generator/commit/abb6a7df2cdbe198ae32162bb98765b2f66a0ae3))
+
+
+
 # [3.1.0](https://github.com/cheminfo/spectrum-generator/compare/v3.0.1...v3.1.0) (2019-01-10)
 
 
