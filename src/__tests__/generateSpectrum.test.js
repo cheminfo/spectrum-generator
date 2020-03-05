@@ -1,7 +1,7 @@
 /* eslint-disable jest/expect-expect */
 import { generateSpectrum } from '..';
 
-const simpleGetWidth = () => 1;
+const simplepeakWidthFct = () => 1;
 
 describe('generateSpectrum', () => {
   it('should work from zero', () => {
@@ -35,9 +35,29 @@ describe('generateSpectrum with one peak and small window', () => {
       start: 11,
       end: 13,
       pointsPerUnit: 10,
-      getWidth: () => 0.1,
+      peakWidthFct: () => 0.1,
     });
     expect(Math.max(...spectrum.y)).toBe(1);
+  });
+});
+
+describe('generateSpectrum with one peak and small window', () => {
+  it('should work from 11', () => {
+    const spectrum = generateSpectrum([[15, 1]], {
+      start: 0,
+      end: 30,
+      pointsPerUnit: 1,
+      peakWidthFct: () => 0.1,
+      shape: {
+        kind: 'gaussian',
+        options: {
+          fwhm: 3,
+        },
+      },
+    });
+    let maxValue = Math.max(...spectrum.y);
+    expect(maxValue).toBe(1);
+    expect(spectrum.y[15]).toBe(maxValue);
   });
 });
 
@@ -52,7 +72,7 @@ describe('generateSpectrum check large size', () => {
         start: 0,
         end: 10000,
         pointsPerUnit: 1000,
-        getWidth: () => 0.1,
+        peakWidthFct: () => 0.1,
       }),
     ).toThrow(
       'Generated array has size 10000001 larger than maxSize: 10000000',
@@ -66,7 +86,7 @@ describe('generateSpectrum check large size', () => {
         end: 2,
         pointsPerUnit: 1,
         maxSize: 1,
-        getWidth: () => 0.1,
+        peakWidthFct: () => 0.1,
       }),
     ).toThrow('Generated array has size 3 larger than maxSize: 1');
   });
@@ -77,7 +97,7 @@ function assertSimple({ start, end, peak }) {
     start,
     end,
     pointsPerUnit: 1,
-    getWidth: simpleGetWidth,
+    peakWidthFct: simplepeakWidthFct,
   });
   assertSize(spectrum, end - start + 1);
   assertInterval(spectrum, start);
