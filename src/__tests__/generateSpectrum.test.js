@@ -1,5 +1,6 @@
 /* eslint-disable jest/expect-expect */
 import { generateSpectrum } from '..';
+import { XY } from 'ml-spectra-processing';
 
 const simplepeakWidthFct = () => 1;
 
@@ -29,7 +30,7 @@ describe('generateSpectrum', () => {
   });
 });
 
-describe('generateSpectrum with one peak and small window', () => {
+describe.only('generateSpectrum with one peak and small window', () => {
   it('should work from 11', () => {
     const spectrum = generateSpectrum([[12, 1]], {
       start: 11,
@@ -37,15 +38,15 @@ describe('generateSpectrum with one peak and small window', () => {
       pointsPerUnit: 10,
       peakWidthFct: () => 0.1,
     });
-    expect(Math.max(...spectrum.y)).toBe(1);
+    let max = XY.maxYPoint(spectrum);
+    expect(max.x).toBe(12);
+    expect(max.y).toBe(1);
   });
-});
 
-describe('generateSpectrum with one peak and small window', () => {
-  it('should work from 11', () => {
-    const spectrum = generateSpectrum([[15, 1]], {
+  it('should work from 0 to 10 low res', () => {
+    const spectrum = generateSpectrum([[5, 1]], {
       start: 0,
-      end: 30,
+      end: 10,
       pointsPerUnit: 1,
       peakWidthFct: () => 0.1,
       shape: {
@@ -55,9 +56,33 @@ describe('generateSpectrum with one peak and small window', () => {
         },
       },
     });
-    let maxValue = Math.max(...spectrum.y);
-    expect(maxValue).toBe(1);
-    expect(spectrum.y[15]).toBe(maxValue);
+    let max = XY.maxYPoint(spectrum);
+    expect(max.x).toBe(5);
+    expect(max.y).toBe(1);
+  });
+
+  it.only('should work from 10 to 20 low res', () => {
+    const spectrum = generateSpectrum([[15, 1]], {
+      start: 10,
+      end: 20,
+      pointsPerUnit: 1,
+      peakWidthFct: () => 2,
+      shape: {
+        kind: 'gaussian',
+        options: {
+          fwhm: 3,
+        },
+      },
+    });
+    // check if peak is symmeric
+    for (let i = 0; i <= Math.floor(spectrum.y.length / 2); i++) {
+      expect(spectrum.y[i]).toStrictEqual(
+        spectrum.y[spectrum.y.length - i - 1],
+      );
+    }
+    let max = XY.maxYPoint(spectrum);
+    expect(max.x).toBe(15);
+    expect(max.y).toBe(1);
   });
 });
 
