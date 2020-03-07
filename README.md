@@ -4,7 +4,12 @@
 [![build status][ci-image]][ci-url]
 [![npm download][download-image]][download-url]
 
-Generate a spectrum from discrete peaks.
+Generates a spectrum from discrete peaks. The shape of the peaks can be customised.
+
+In order to increase the speed a `shape` is first generated and then the peaks in the final
+spectrum are resulting from sampling the `shape`.  A `shape` will therefore be generated with
+much more points (typically fwhm:1000).
+
 
 ## Installation
 
@@ -27,6 +32,34 @@ const peaks = [
   [569, 76],
 ];
 const spectrum = generateSpectrum(peaks, { pointsPerUnit: 1 });
+```
+
+Example to generate a high resolution spectrum using lorentzian peaks shape
+
+```js
+import { generateSpectrum } from 'spectrum-generator';
+
+const peaks = [
+  [1, 10],
+  [2, 30],
+  [3, 1],
+  [4, 76],
+];
+const spectrum = generateSpectrum(peaks, { 
+  pointsPerUnit: 1000,
+  from: 0,
+  to: 10,
+  shape: {
+    kind: 'lorentzian',
+    options: {
+      fwhm: 1000,
+      length: 10001,
+    }
+  }
+});
+
+
+
 ```
 
 ### class SpectrumGenerator
