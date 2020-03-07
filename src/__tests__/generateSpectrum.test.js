@@ -30,7 +30,7 @@ describe('generateSpectrum', () => {
   });
 });
 
-describe.only('generateSpectrum with one peak and small window', () => {
+describe('generateSpectrum with one peak and small window', () => {
   it('should work from 11', () => {
     const spectrum = generateSpectrum([[12, 1]], {
       start: 11,
@@ -61,7 +61,7 @@ describe.only('generateSpectrum with one peak and small window', () => {
     expect(max.y).toBe(1);
   });
 
-  it.only('should work from 10 to 20 low res', () => {
+  it('should work from 10 to 20 low res', () => {
     const spectrum = generateSpectrum([[15, 1]], {
       start: 10,
       end: 20,
@@ -74,12 +74,84 @@ describe.only('generateSpectrum with one peak and small window', () => {
         },
       },
     });
-    // check if peak is symmeric
     for (let i = 0; i <= Math.floor(spectrum.y.length / 2); i++) {
       expect(spectrum.y[i]).toStrictEqual(
         spectrum.y[spectrum.y.length - i - 1],
       );
     }
+    let max = XY.maxYPoint(spectrum);
+    expect(max.x).toBe(15);
+    expect(max.y).toBe(1);
+  });
+
+  it('should work from 10 to 20 high res width 2', () => {
+    const spectrum = generateSpectrum([[15, 1]], {
+      start: 10,
+      end: 20,
+      pointsPerUnit: 1,
+      peakWidthFct: () => 2,
+      shape: {
+        kind: 'gaussian',
+        options: {
+          fwhm: 1000,
+        },
+      },
+    });
+    for (let i = 0; i <= Math.floor(spectrum.y.length / 2); i++) {
+      expect(spectrum.y[i]).toStrictEqual(
+        spectrum.y[spectrum.y.length - i - 1],
+      );
+    }
+    expect(spectrum.y[4] + spectrum.y[6]).toBeCloseTo(1, 2);
+    let max = XY.maxYPoint(spectrum);
+    expect(max.x).toBe(15);
+    expect(max.y).toBe(1);
+  });
+  it('should work from 10 to 20 high res width 4', () => {
+    const spectrum = generateSpectrum([[15, 1]], {
+      start: 10,
+      end: 20,
+      pointsPerUnit: 1,
+      peakWidthFct: () => 4,
+      shape: {
+        kind: 'gaussian',
+        options: {
+          factor: 2,
+          fwhm: 1000,
+        },
+      },
+    });
+    for (let i = 0; i <= Math.floor(spectrum.y.length / 2); i++) {
+      expect(spectrum.y[i]).toStrictEqual(
+        spectrum.y[spectrum.y.length - i - 1],
+      );
+    }
+    expect(spectrum.y[3] + spectrum.y[7]).toBeCloseTo(1, 2);
+    let max = XY.maxYPoint(spectrum);
+    expect(max.x).toBe(15);
+    expect(max.y).toBe(1);
+  });
+
+  it('should work from 10 to 20 high res width 4 and pointsPerUnit 10', () => {
+    const spectrum = generateSpectrum([[15, 1]], {
+      start: 10,
+      end: 20,
+      pointsPerUnit: 10,
+      peakWidthFct: () => 2,
+      shape: {
+        kind: 'gaussian',
+        options: {
+          factor: 2,
+          fwhm: 1000,
+        },
+      },
+    });
+    for (let i = 0; i <= Math.floor(spectrum.y.length / 2); i++) {
+      expect(spectrum.y[i]).toStrictEqual(
+        spectrum.y[spectrum.y.length - i - 1],
+      );
+    }
+    expect(spectrum.y[40] + spectrum.y[60]).toBeCloseTo(1, 2);
     let max = XY.maxYPoint(spectrum);
     expect(max.x).toBe(15);
     expect(max.y).toBe(1);

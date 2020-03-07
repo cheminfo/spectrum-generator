@@ -92,11 +92,12 @@ export class SpectrumGenerator {
     // we calculate the left part of the shape
     for (let j = firstPoint; j < middlePoint; j++) {
       let index = j - this.start * this.pointsPerUnit;
+
       if (index >= 0 && index < this.size) {
-        let shapeIndex = Math.floor(
+        let shapeIndex = Math.ceil(
           ((this.shape.fwhm / widthLeft) * (j - middlePoint)) /
             this.pointsPerUnit +
-            (this.shapeFactor * this.shape.fwhm) / 2,
+            (this.shapeFactor * this.shape.fwhm - 1) / 2,
         );
 
         if (shapeIndex >= 0 && shapeIndex < this.shape.data.length) {
@@ -104,15 +105,15 @@ export class SpectrumGenerator {
         }
       }
     }
-
     // we calculate the right part of the gaussian
     for (let j = Math.ceil(middlePoint); j <= lastPoint; j++) {
       let index = j - this.start * this.pointsPerUnit;
+
       if (index >= 0 && index < this.size) {
         let shapeIndex = Math.floor(
           ((this.shape.fwhm / widthRight) * (j - middlePoint)) /
             this.pointsPerUnit +
-            (this.shapeFactor * this.shape.fwhm) / 2,
+            (this.shapeFactor * this.shape.fwhm - 1) / 2,
         );
         if (shapeIndex >= 0 && shapeIndex < this.shape.data.length) {
           this.data.y[index] += this.shape.data[shapeIndex] * intensity;
