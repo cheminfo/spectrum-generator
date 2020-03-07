@@ -1,6 +1,7 @@
 /* eslint-disable jest/expect-expect */
-import { generateSpectrum } from '..';
 import { XY } from 'ml-spectra-processing';
+
+import { generateSpectrum } from '..';
 
 const simplepeakWidthFct = () => 1;
 
