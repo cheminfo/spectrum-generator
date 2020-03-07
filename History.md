@@ -1,3 +1,12 @@
+## [3.2.1](https://github.com/cheminfo/spectrum-generator/compare/v3.2.0...v3.2.1) (2020-03-07)
+
+
+### Bug Fixes
+
+* ensure peak symmetry ([128def1](https://github.com/cheminfo/spectrum-generator/commit/128def19cf1932f1fd853bb6b983a91559022666))
+
+
+
 # [3.2.0](https://github.com/cheminfo/spectrum-generator/compare/v3.1.3...v3.2.0) (2020-03-02)
 
 
