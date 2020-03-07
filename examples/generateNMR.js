@@ -1,5 +1,5 @@
 /*
-This example with generate and save a spectrum as a 'data.json'
+This example with generate and save a spectrum as 'nmr.jdx'
 using directly the method generateSpectrum
 
 Because it use ES6 module you need to execute this code
