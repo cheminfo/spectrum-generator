@@ -157,6 +157,41 @@ describe('generateSpectrum with one peak and small window', () => {
     expect(max.x).toBe(15);
     expect(max.y).toBe(1);
   });
+  it('not integer start / end', () => {
+    const spectrum = generateSpectrum([[2, 1]], {
+      start: 1.5,
+      end: 2.5,
+      pointsPerUnit: 10,
+      peakWidthFct: () => 0.1,
+    });
+    for (let i = 0; i <= Math.floor(spectrum.y.length / 2); i++) {
+      expect(spectrum.y[i]).toStrictEqual(
+        spectrum.y[spectrum.y.length - i - 1],
+      );
+    }
+    expect(spectrum.y[5]).toBe(1);
+    let max = XY.maxYPoint(spectrum);
+    expect(max.x).toBe(2);
+    expect(max.y).toBe(1);
+  });
+
+  it.only('not integer start / end not integer pointsPerUnit', () => {
+    const spectrum = generateSpectrum([[2.5, 1]], {
+      start: 1.5,
+      end: 3.5,
+      pointsPerUnit: 2.5,
+      peakWidthFct: () => 0.1,
+    });
+    for (let i = 0; i <= Math.floor(spectrum.y.length / 2); i++) {
+      expect(spectrum.y[i]).toStrictEqual(
+        spectrum.y[spectrum.y.length - i - 1],
+      );
+    }
+    expect(spectrum.y[5]).toBe(1);
+    let max = XY.maxYPoint(spectrum);
+    expect(max.x).toBe(2);
+    expect(max.y).toBe(1);
+  });
 });
 
 describe('generateSpectrum check large size', () => {

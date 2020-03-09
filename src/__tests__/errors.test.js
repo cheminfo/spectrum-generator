@@ -1,5 +1,6 @@
 import { SpectrumGenerator } from '..';
 
+const numberReg = /^\w+ option must be a number$/;
 const integerReg = /^\w+ option must be an integer$/;
 const endStartReg = /^end option must be larger than start$/;
 const peakWidthReg = /^peakWidthFct option must be a function$/;
@@ -8,11 +9,11 @@ const addPeakReg = /^peak must be an array with two values$/;
 
 describe('errors', () => {
   it('wrong options', () => {
-    expect(() => new SpectrumGenerator({ start: 0.5 })).toThrow(integerReg);
-    expect(() => new SpectrumGenerator({ start: false })).toThrow(integerReg);
+    expect(() => new SpectrumGenerator({ start: 'abc' })).toThrow(numberReg);
+    expect(() => new SpectrumGenerator({ start: false })).toThrow(numberReg);
 
-    expect(() => new SpectrumGenerator({ end: 0.5 })).toThrow(integerReg);
-    expect(() => new SpectrumGenerator({ end: false })).toThrow(integerReg);
+    expect(() => new SpectrumGenerator({ end: 'abc' })).toThrow(numberReg);
+    expect(() => new SpectrumGenerator({ end: false })).toThrow(numberReg);
 
     expect(() => new SpectrumGenerator({ pointsPerUnit: 0.5 })).toThrow(
       integerReg,

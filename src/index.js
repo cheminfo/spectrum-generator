@@ -36,8 +36,8 @@ export class SpectrumGenerator {
     });
     this.shapeFactor = this.shape.data.length / this.shape.fwhm;
 
-    assertInteger(this.start, 'start');
-    assertInteger(this.end, 'end');
+    assertNumber(this.start, 'start');
+    assertNumber(this.end, 'end');
     assertInteger(this.pointsPerUnit, 'pointsPerUnit');
     assertInteger(this.maxSize, 'maxSize');
 
@@ -194,6 +194,13 @@ export class SpectrumGenerator {
 function assertInteger(value, name) {
   if (!Number.isInteger(value)) {
     throw new TypeError(`${name} option must be an integer`);
+  }
+}
+
+function assertNumber(value, name) {
+  console.log(value, isNaN(value));
+  if (!Number.isFinite(value)) {
+    throw new TypeError(`${name} option must be a number`);
   }
 }
 
