@@ -4,8 +4,8 @@ import { SpectrumGenerator } from '..';
 describe('SpectrumGenerator', () => {
   it('0 half peak', () => {
     const generator = new SpectrumGenerator({
-      start: 0,
-      end: 2,
+      from: 0,
+      to: 2,
       pointsPerUnit: 5,
     });
 
@@ -15,10 +15,10 @@ describe('SpectrumGenerator', () => {
     expectValue(spectrum, 0, 1);
   });
 
-  it('end half peak', () => {
+  it('to half peak', () => {
     const generator = new SpectrumGenerator({
-      start: 0,
-      end: 2,
+      from: 0,
+      to: 2,
       pointsPerUnit: 5,
     });
 
@@ -30,8 +30,8 @@ describe('SpectrumGenerator', () => {
 
   it('1 middle peak', () => {
     const generator = new SpectrumGenerator({
-      start: 0,
-      end: 2,
+      from: 0,
+      to: 2,
       pointsPerUnit: 5,
     });
 
@@ -43,8 +43,8 @@ describe('SpectrumGenerator', () => {
 
   it('check asymmetric peak', () => {
     const generator = new SpectrumGenerator({
-      start: 0,
-      end: 100,
+      from: 0,
+      to: 100,
       pointsPerUnit: 2,
     });
     generator.addPeak([35, 100], { widthLeft: 10, widthRight: 30 });
@@ -54,8 +54,8 @@ describe('SpectrumGenerator', () => {
 
   it('1 middle peak check width', () => {
     const generator = new SpectrumGenerator({
-      start: 0,
-      end: 2,
+      from: 0,
+      to: 2,
       pointsPerUnit: 10,
       peakWidthFct: (x) => 1 + (3 * x) / 1000,
     });
@@ -70,8 +70,8 @@ describe('SpectrumGenerator', () => {
 
   it('non-integer middle point', () => {
     const generator = new SpectrumGenerator({
-      start: 0,
-      end: 5,
+      from: 0,
+      to: 5,
       pointsPerUnit: 5,
     });
 
@@ -109,8 +109,8 @@ describe('SpectrumGenerator', () => {
   it('full generation with threshold', () => {
     const generator = new SpectrumGenerator({
       pointsPerUnit: 10000,
-      start: -1000,
-      end: 1000,
+      from: -1000,
+      to: 1000,
       maxSize: 1e8,
       peakWidthFct: () => 0.001,
     });

@@ -93,3 +93,18 @@ const otherSpectrum = generator.getSpectrum();
 [ci-url]: https://github.com/cheminfo/spectrum-generator/actions?query=workflow%3A%22Node.js+CI%22
 [download-image]: https://img.shields.io/npm/dm/spectrum-generator.svg
 [download-url]: https://www.npmjs.com/package/spectrum-generator
+
+
+
+BREAKING CHANGES
+
+The current code was not dealing correctly with X scale that is not unit based. It was
+mainly designed for gas chromatography where X axis is defined in 's'.
+
+The way the spectrum is generated was completely rewritten to be more general and simpler to use.
+
+- rename `start` to `from`
+- rename `end` to `to`
+- addPeak should be of kind {x,y} instead of [x,y]
+- remove pointsPerUnit. Need to specify nbPoints now
+- returns a spectrum {x:Float64Array, y:Float64Array}

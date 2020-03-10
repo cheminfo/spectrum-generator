@@ -9,11 +9,10 @@ export class SpectrumGenerator {
     options = Object.assign(
       {},
       {
-        start: 0,
-        end: 1000,
-        pointsPerUnit: 5,
+        from: 0,
+        to: 1000,
+        nbPoints: 10001,
         peakWidthFct: () => 5,
-        maxSize: 1e7,
         shape: {
           kind: 'gaussian',
           options: {
@@ -24,25 +23,25 @@ export class SpectrumGenerator {
       },
       options,
     );
-    this.start = options.start;
-    this.end = options.end;
-    this.pointsPerUnit = options.pointsPerUnit;
+    this.from = options.from;
+    this.to = options.to;
+    this.nbPoints = options.nbPoints;
+    this.interval = (this.to - this.from) / (this.nbPoints - 1);
     this.peakWidthFct = options.peakWidthFct;
-    this.maxSize = options.maxSize;
     this.maxPeakHeight = Number.MIN_SAFE_INTEGER;
     this.shape = getShape(options.shape.kind, options.shape.options);
     this.shape.data = normed(this.shape.data, {
       algorithm: 'max',
     });
-    this.shapeFactor = this.shape.data.length / this.shape.fwhm;
+    this.shapeFactor = (this.shape.data.length - 1) / this.shape.fwhm;
+    this.shapeLength = this.shape.data.length;
+    this.shapeHalfLength = Math.floor(this.shape.data.length / 2);
+    assertNumber(this.from, 'from');
+    assertNumber(this.to, 'to');
+    assertInteger(this.nbPoints, 'nbPoints');
 
-    assertNumber(this.start, 'start');
-    assertNumber(this.end, 'end');
-    assertInteger(this.pointsPerUnit, 'pointsPerUnit');
-    assertInteger(this.maxSize, 'maxSize');
-
-    if (this.end <= this.start) {
-      throw new RangeError('end option must be larger than start');
+    if (this.to <= this.from) {
+      throw new RangeError('to option must be larger than from');
     }
 
     if (typeof this.peakWidthFct !== 'function') {
@@ -50,10 +49,6 @@ export class SpectrumGenerator {
     }
 
     this.reset();
-  }
-
-  get size() {
-    return (this.end - this.start) * this.pointsPerUnit + 1;
   }
 
   addPeaks(peaks) {
@@ -71,53 +66,53 @@ export class SpectrumGenerator {
       throw new Error('peak must be an array with two values');
     }
 
-    const [value, intensity] = peak;
+    const [xPosition, intensity] = peak;
 
     if (intensity > this.maxPeakHeight) this.maxPeakHeight = intensity;
 
-    let { width = this.peakWidthFct(value), widthLeft, widthRight } = options;
+    let {
+      width = this.peakWidthFct(xPosition),
+      widthLeft,
+      widthRight,
+    } = options;
 
     if (!widthLeft) widthLeft = width;
     if (!widthRight) widthRight = width;
 
-    const firstValue = value - (widthLeft / 2) * this.shapeFactor;
-    const lastValue = value + (widthRight / 2) * this.shapeFactor;
+    const firstValue = xPosition - (widthLeft / 2) * this.shapeFactor;
+    const lastValue = xPosition + (widthRight / 2) * this.shapeFactor;
 
-    const firstPoint = Math.floor(firstValue * this.pointsPerUnit);
-    const lastPoint = Math.ceil(lastValue * this.pointsPerUnit);
-    const middlePoint = value * this.pointsPerUnit;
+    const firstPoint = Math.max(
+      0,
+      Math.floor((firstValue - this.from) / this.interval),
+    );
+    const lastPoint = Math.min(
+      this.nbPoints - 1,
+      Math.ceil((lastValue - this.from) / this.interval),
+    );
+    const middlePoint = (xPosition - this.from) / this.interval;
 
-    // PEAK SHAPE MAY BE ASYMETRC (widthLeft and widthRight) !
-
+    // PEAK SHAPE MAY BE ASYMMETRC (widthLeft and widthRight) !
     // we calculate the left part of the shape
-    for (let j = firstPoint; j < middlePoint; j++) {
-      let index = j - this.start * this.pointsPerUnit;
+    for (let index = firstPoint; index < middlePoint; index++) {
+      let ratio = ((xPosition - this.data.x[index]) / widthLeft) * 2;
+      let shapeIndex = Math.round(
+        this.shapeHalfLength - (ratio * this.shape.fwhm) / 2,
+      );
 
-      if (index >= 0 && index < this.size) {
-        let shapeIndex = Math.ceil(
-          ((this.shape.fwhm / widthLeft) * (j - middlePoint)) /
-            this.pointsPerUnit +
-            (this.shapeFactor * this.shape.fwhm - 1) / 2,
-        );
-
-        if (shapeIndex >= 0 && shapeIndex < this.shape.data.length) {
-          this.data.y[index] += this.shape.data[shapeIndex] * intensity;
-        }
+      if (shapeIndex >= 0 && shapeIndex < this.shapeHalfLength) {
+        this.data.y[index] += this.shape.data[shapeIndex] * intensity;
       }
     }
     // we calculate the right part of the gaussian
-    for (let j = Math.ceil(middlePoint); j <= lastPoint; j++) {
-      let index = j - this.start * this.pointsPerUnit;
+    for (let index = Math.ceil(middlePoint); index <= lastPoint; index++) {
+      let ratio = ((this.data.x[index] - xPosition) / widthRight) * 2;
 
-      if (index >= 0 && index < this.size) {
-        let shapeIndex = Math.floor(
-          ((this.shape.fwhm / widthRight) * (j - middlePoint)) /
-            this.pointsPerUnit +
-            (this.shapeFactor * this.shape.fwhm - 1) / 2,
-        );
-        if (shapeIndex >= 0 && shapeIndex < this.shape.data.length) {
-          this.data.y[index] += this.shape.data[shapeIndex] * intensity;
-        }
+      let shapeIndex = Math.round(
+        this.shapeHalfLength - (ratio * this.shape.fwhm) / 2,
+      );
+      if (shapeIndex >= 0 && shapeIndex <= this.shapeHalfLength) {
+        this.data.y[index] += this.shape.data[shapeIndex] * intensity;
       }
     }
 
@@ -162,30 +157,14 @@ export class SpectrumGenerator {
   }
 
   reset() {
-    if (this.size > this.maxSize) {
-      throw new Error(
-        `Generated array has size ${this.size} larger than maxSize: ${this.maxSize}`,
-      );
-    }
-
     const spectrum = (this.data = {
-      x: [],
-      y: new Array(this.size).fill(0),
+      x: new Float64Array(this.nbPoints),
+      y: new Float64Array(this.nbPoints),
     });
 
-    const interval = 1 / this.pointsPerUnit;
-    const js = [];
-    for (let j = 0; j < this.pointsPerUnit; j++) {
-      js.push(j * interval);
+    for (let i = 0; i < this.nbPoints; i++) {
+      spectrum.x[i] = this.from + i * this.interval;
     }
-
-    for (let i = this.start; i < this.end; i++) {
-      for (let j = 0; j < this.pointsPerUnit; j++) {
-        spectrum.x.push(i + js[j]);
-      }
-    }
-
-    spectrum.x.push(this.end);
 
     return this;
   }
@@ -198,7 +177,6 @@ function assertInteger(value, name) {
 }
 
 function assertNumber(value, name) {
-  console.log(value, isNaN(value));
   if (!Number.isFinite(value)) {
     throw new TypeError(`${name} option must be a number`);
   }
