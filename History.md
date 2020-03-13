@@ -1,3 +1,12 @@
+## [3.2.2](https://github.com/cheminfo/spectrum-generator/compare/v3.2.1...v3.2.2) (2020-03-13)
+
+
+### Bug Fixes
+
+* remove cheminfo-tools from dependencies ([5c17e1c](https://github.com/cheminfo/spectrum-generator/commit/5c17e1c2b48f50309fc0f3f23fd596221e33d86a))
+
+
+
 ## [3.2.1](https://github.com/cheminfo/spectrum-generator/compare/v3.2.0...v3.2.1) (2020-03-07)
 
 
