@@ -4,5 +4,10 @@ export default {
     format: 'cjs',
     file: 'lib/index.js',
   },
-  external: ['d3-random', 'ml-xsadd'],
+  external: [
+    'd3-random',
+    'ml-array-normed',
+    'ml-peak-shape-generator',
+    'ml-xsadd',
+  ],
 };
