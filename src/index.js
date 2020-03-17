@@ -62,11 +62,22 @@ export class SpectrumGenerator {
   }
 
   addPeak(peak, options = {}) {
-    if (!Array.isArray(peak) || peak.length !== 2) {
-      throw new Error('peak must be an array with two values');
+    if (
+      typeof peak !== 'object' ||
+      (peak.length !== 2 && (peak.x === undefined || peak.y === undefined))
+    ) {
+      throw new Error(
+        'peak must be an array with two values or an object with {x,y}',
+      );
     }
-
-    const [xPosition, intensity] = peak;
+    let xPosition;
+    let intensity;
+    if (Array.isArray(peak)) {
+      [xPosition, intensity] = peak;
+    } else {
+      xPosition = peak.x;
+      intensity = peak.y;
+    }
 
     if (intensity > this.maxPeakHeight) this.maxPeakHeight = intensity;
 

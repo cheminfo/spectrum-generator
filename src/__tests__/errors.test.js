@@ -5,7 +5,7 @@ const integerReg = /^\w+ option must be an integer$/;
 const endStartReg = /^to option must be larger than from$/;
 const peakWidthReg = /^peakWidthFct option must be a function$/;
 const addPeaksReg = /^peaks must be an array$/;
-const addPeakReg = /^peak must be an array with two values$/;
+const addPeakReg = /^peak must be an array with two values or an object with {x,y}$/;
 
 describe('errors', () => {
   it('wrong options', () => {
@@ -15,10 +15,8 @@ describe('errors', () => {
     expect(() => new SpectrumGenerator({ to: 'abc' })).toThrow(numberReg);
     expect(() => new SpectrumGenerator({ to: false })).toThrow(numberReg);
 
-    expect(() => new SpectrumGenerator({ pointsPerUnit: 0.5 })).toThrow(
-      integerReg,
-    );
-    expect(() => new SpectrumGenerator({ pointsPerUnit: false })).toThrow(
+    expect(() => new SpectrumGenerator({ nbPoints: 0.5 })).toThrow(integerReg);
+    expect(() => new SpectrumGenerator({ nbPoints: false })).toThrow(
       integerReg,
     );
 

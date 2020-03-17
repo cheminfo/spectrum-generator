@@ -165,42 +165,11 @@ describe('generateSpectrum with one peak and small window', () => {
   });
 });
 
-describe('generateSpectrum check large size', () => {
-  let data = [];
-  for (let i = 0; i < 10000; i++) {
-    data.push([i, Math.random()]);
-  }
-  it('should throw error for huge array', () => {
-    expect(() =>
-      generateSpectrum(data, {
-        from: 0,
-        to: 10000,
-        pointsPerUnit: 1000,
-        peakWidthFct: () => 0.1,
-      }),
-    ).toThrow(
-      'Generated array has size 10000001 larger than maxSize: 10000000',
-    );
-  });
-
-  it('should throw for simple array is maxSize=1', () => {
-    expect(() =>
-      generateSpectrum([[1, 1]], {
-        from: 0,
-        to: 2,
-        pointsPerUnit: 1,
-        maxSize: 1,
-        peakWidthFct: () => 0.1,
-      }),
-    ).toThrow('Generated array has size 3 larger than maxSize: 1');
-  });
-});
-
 function assertSimple({ from, to, peak }) {
   const spectrum = generateSpectrum([[peak, 1]], {
     from,
     to,
-    pointsPerUnit: 1,
+    nbPoints: 11,
     peakWidthFct: simplepeakWidthFct,
   });
   assertSize(spectrum, to - from + 1);

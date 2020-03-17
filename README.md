@@ -31,7 +31,11 @@ const peaks = [
   [236, 1],
   [569, 76],
 ];
-const spectrum = generateSpectrum(peaks, { pointsPerUnit: 1 });
+const spectrum = generateSpectrum(peaks, { 
+  from: 0, // default value: 0
+  to: 1000,  // default value: 1000
+  nbPoints: 10001 // default value: 10001
+});
 ```
 
 Example to generate a high resolution spectrum using lorentzian peaks shape
@@ -45,8 +49,8 @@ const peaks = [
   [3, 1],
   [4, 76],
 ];
-const spectrum = generateSpectrum(peaks, { 
-  pointsPerUnit: 1000,
+const spectrum = generateSpectrum(peaks, {
+  nbPoints: 1001,
   from: 0,
   to: 10,
   shape: {
@@ -69,9 +73,10 @@ import { SpectrumGenerator } from 'spectrum-generator';
 
 const generator = new SpectrumGenerator();
 generator.addPeak([5, 20]);
+generator.addPeak({x: 5, y:20}); // we may either add an array of 2 elements or an object with x,y values
 generator.addPeak([30, 56]);
 generator.addPeaks([
-  [40, 12],
+  [40, 12], // it can also be an array of objects with x,y properties
   [10, 1],
 ]);
 const spectrum = generator.getSpectrum();
