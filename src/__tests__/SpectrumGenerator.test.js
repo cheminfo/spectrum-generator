@@ -4,59 +4,59 @@ import { SpectrumGenerator } from '..';
 describe('SpectrumGenerator', () => {
   it('0 half peak', () => {
     const generator = new SpectrumGenerator({
-      start: 0,
-      end: 2,
-      pointsPerUnit: 5,
+      from: 0,
+      to: 2,
+      nbPoints: 11,
     });
 
     generator.addPeak([0, 1]);
 
     const spectrum = generator.getSpectrum();
-    expectValue(spectrum, 0, 1);
+    expect(spectrum.y[0]).toBe(1);
   });
 
-  it('end half peak', () => {
+  it('to half peak', () => {
     const generator = new SpectrumGenerator({
-      start: 0,
-      end: 2,
-      pointsPerUnit: 5,
+      from: 0,
+      to: 2,
+      nbPoints: 11,
     });
 
     generator.addPeak([2, 1]);
 
     const spectrum = generator.getSpectrum();
-    expectValue(spectrum, 2 * 5, 1);
+    expect(spectrum.y[2 * 5]).toBe(1);
   });
 
   it('1 middle peak', () => {
     const generator = new SpectrumGenerator({
-      start: 0,
-      end: 2,
-      pointsPerUnit: 5,
+      from: 0,
+      to: 2,
+      nbPoints: 11,
     });
 
     generator.addPeak([1, 1]);
 
     const spectrum = generator.getSpectrum();
-    expectValue(spectrum, 1 * 5, 1);
+    expect(spectrum.y[1 * 5]).toBe(1);
   });
 
   it('check asymmetric peak', () => {
     const generator = new SpectrumGenerator({
-      start: 0,
-      end: 100,
-      pointsPerUnit: 2,
+      from: 0,
+      to: 100,
+      nbPoints: 201,
     });
-    generator.addPeak([35, 100], { widthLeft: 10, widthRight: 30 });
+    generator.addPeak([50, 100], { widthLeft: 10, widthRight: 30 });
     const spectrum = generator.getSpectrum();
     expect(spectrum).toMatchSnapshot();
   });
 
   it('1 middle peak check width', () => {
     const generator = new SpectrumGenerator({
-      start: 0,
-      end: 2,
-      pointsPerUnit: 10,
+      from: 0,
+      to: 2,
+      nbPoints: 21,
       peakWidthFct: (x) => 1 + (3 * x) / 1000,
     });
 
@@ -65,14 +65,14 @@ describe('SpectrumGenerator', () => {
     const spectrum = generator.getSpectrum();
     expect(spectrum.y[0.5 * 10]).toBeCloseTo(0.5, 2);
     expect(spectrum.y[1.5 * 10]).toBeCloseTo(0.5, 2);
-    expectValue(spectrum, 1 * 10, 1);
+    expect(spectrum.y[1 * 10]).toBe(1);
   });
 
   it('non-integer middle point', () => {
     const generator = new SpectrumGenerator({
-      start: 0,
-      end: 5,
-      pointsPerUnit: 5,
+      from: 0,
+      to: 5,
+      nbPoints: 26,
     });
 
     generator.addPeak([2.5, 2]);
@@ -100,18 +100,35 @@ describe('SpectrumGenerator', () => {
 
     const spectrum = generator.getSpectrum();
 
-    expectValue(spectrum, 0, 1);
-    expectValue(spectrum, 50 * 5, 12);
-    expectValue(spectrum, 100 * 5, 10);
-    expectValue(spectrum, 14 * 5, 2);
+    expect(spectrum.y[0]).toBe(1);
+    expect(spectrum.y[50 * 10]).toBe(12);
+    expect(spectrum.y[100 * 10]).toBe(10);
+    expect(spectrum.y[14 * 10]).toBe(2);
+  });
+
+  it('full generation with {x,y}', () => {
+    const generator = new SpectrumGenerator();
+
+    generator.addPeak({ x: 0, y: 1 });
+    generator.addPeak({ x: 50, y: 12 });
+    generator.addPeaks([
+      { x: 100, y: 10 },
+      { x: 14, y: 2 },
+    ]);
+
+    const spectrum = generator.getSpectrum();
+
+    expect(spectrum.y[0]).toBe(1);
+    expect(spectrum.y[50 * 10]).toBe(12);
+    expect(spectrum.y[100 * 10]).toBe(10);
+    expect(spectrum.y[14 * 10]).toBe(2);
   });
 
   it('full generation with threshold', () => {
     const generator = new SpectrumGenerator({
-      pointsPerUnit: 10000,
-      start: -1000,
-      end: 1000,
-      maxSize: 1e8,
+      from: -1000,
+      to: 1000,
+      nbPoints: 20000001,
       peakWidthFct: () => 0.001,
     });
 
@@ -147,7 +164,3 @@ describe('SpectrumGenerator', () => {
     expect(s5).not.toBe(s2);
   });
 });
-
-function expectValue(spectrum, index, value) {
-  expect(spectrum.y[index]).toBe(value);
-}

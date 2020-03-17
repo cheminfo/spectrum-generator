@@ -3,13 +3,13 @@ export interface SpectrumGeneratorOptions {
    * First x value (inclusive).
    * @default `0`
    */
-  start?: number;
+  from?: number;
 
   /**
    * Last x value (inclusive).
    * @default `1000`
    */
-  end?: number;
+  to?: number;
 
   /**
    * Function that returns the width of a peak depending the x value.
@@ -30,16 +30,10 @@ export interface SpectrumGeneratorOptions {
   shape?: object;
 
   /**
-   * Number of values between each unit of the x axis.
-   * @default `5`
+   * Number of points in the final spectrum.
+   * @default `10001`
    */
-  pointsPerUnit?: number;
-
-  /**
-   * Maximum array size.
-   * @default `1e7`
-   */
-  maxSize?: number;
+  nbPoints?: number;
 }
 
 export interface PeakOptions {
@@ -100,8 +94,9 @@ export class SpectrumGenerator {
    *
    * @example
    * import SG from 'spectrum-generator';
-   * const sg = new SG({start: 0, end: 100, pointsPerUnit: 5, peakWidthFct: (x) => 1 + 3 * x / 1000 });
-   * sg.addPeak( [5, 50] );
+   * const sg = new SG({from: 0, to: 100, nbPoints: 1001, peakWidthFct: (x) => 1 + 3 * x / 1000 });
+   * sg.addPeak([5, 50]);
+   * sg.addPeak({x:10, y:50}); // either an array of an object with x,y properties
    * sg.addPeak([20, 100], { width: 3 });
    * sg.addPeak([35, 100], { widthLeft: 10, widthRight: 30 });
    * sg.addPeak([50, 10], { widthLeft: 5, widthRight: 5 });
@@ -113,9 +108,9 @@ export class SpectrumGenerator {
    * @example
    * import SG from 'spectrum-generator';
    * const spectrum=SG.generateSpectrum([ [20,3], [30,2], [40,2] ], {
-   *  start: 0,
-   *  end: 100,
-   *  pointsPerUnit: 1,
+   *  from: 0,
+   *  to: 100,
+   *  nbPoints: 101,
    *  noise: {
    *    percent: 10,
    *    distribution: 'normal',
@@ -145,7 +140,7 @@ export class SpectrumGenerator {
    * Add a baseline to the spectrum.
    * @param baselineFct - Mathematical function producing the baseline you want.
    */
-  addBaseline(baslineFct: (y: number) => number): this;
+  addBaseline(baselineFct: (y: number) => number): this;
 
   /**
    * Add noise to the spectrum.
