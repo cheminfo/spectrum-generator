@@ -21,8 +21,6 @@ const peaks = [
 ];
 const spectrum = generateSpectrum(peaks, options);
 
-console.log(spectrum);
-
 fs.writeFileSync(
   `${__dirname}/data.json`,
   JSON.stringify({ x: Array.from(spectrum.x), y: Array.from(spectrum.y) }),
