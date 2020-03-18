@@ -116,6 +116,7 @@ export class SpectrumGenerator {
    *  from: 0,
    *  to: 100,
    *  nbPoints: 101,
+   *  peakWidthFct: (x) => 1 + 3 * x / 1000 },
    *  noise: {
    *    percent: 10,
    *    distribution: 'normal',
