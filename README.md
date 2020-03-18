@@ -7,9 +7,8 @@
 Generates a spectrum from discrete peaks. The shape of the peaks can be customised.
 
 In order to increase the speed a `shape` is first generated and then the peaks in the final
-spectrum are resulting from sampling the `shape`.  A `shape` will therefore be generated with
+spectrum are resulting from sampling the `shape`. A `shape` will therefore be generated with
 much more points (typically fwhm:1000).
-
 
 ## Installation
 
@@ -31,10 +30,10 @@ const peaks = [
   [236, 1],
   [569, 76],
 ];
-const spectrum = generateSpectrum(peaks, { 
+const spectrum = generateSpectrum(peaks, {
   from: 0, // default value: 0
-  to: 1000,  // default value: 1000
-  nbPoints: 10001 // default value: 10001
+  to: 1000, // default value: 1000
+  nbPoints: 10001, // default value: 10001
 });
 ```
 
@@ -58,12 +57,9 @@ const spectrum = generateSpectrum(peaks, {
     options: {
       fwhm: 1000,
       length: 10001,
-    }
-  }
+    },
+  },
 });
-
-
-
 ```
 
 ### class SpectrumGenerator
@@ -73,7 +69,7 @@ import { SpectrumGenerator } from 'spectrum-generator';
 
 const generator = new SpectrumGenerator();
 generator.addPeak([5, 20]);
-generator.addPeak({x: 5, y:20}); // we may either add an array of 2 elements or an object with x,y values
+generator.addPeak({ x: 5, y: 20 }); // we may either add an array of 2 elements or an object with x,y values
 generator.addPeak([30, 56]);
 generator.addPeaks([
   [40, 12], // it can also be an array of objects with x,y properties
@@ -98,18 +94,3 @@ const otherSpectrum = generator.getSpectrum();
 [ci-url]: https://github.com/cheminfo/spectrum-generator/actions?query=workflow%3A%22Node.js+CI%22
 [download-image]: https://img.shields.io/npm/dm/spectrum-generator.svg
 [download-url]: https://www.npmjs.com/package/spectrum-generator
-
-
-
-BREAKING CHANGES
-
-The current code was not dealing correctly with X scale that is not unit based. It was
-mainly designed for gas chromatography where X axis is defined in 's'.
-
-The way the spectrum is generated was completely rewritten to be more general and simpler to use.
-
-- rename `start` to `from`
-- rename `end` to `to`
-- addPeak should be of kind {x,y} instead of [x,y]
-- remove pointsPerUnit. Need to specify nbPoints now
-- returns a spectrum {x:Float64Array, y:Float64Array}
