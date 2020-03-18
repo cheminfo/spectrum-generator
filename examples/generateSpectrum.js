@@ -11,8 +11,20 @@ import { generateSpectrum } from '../src';
 
 const fs = require('fs');
 
-const options = { start: 0, end: 100, pointsPerUnit: 1 };
-const peaks = [[4, 10], [20, 30], [23, 10], [60, 35], [90, 20]];
+const options = { from: 0, to: 100, nbPoints: 101 };
+const peaks = [
+  [4, 10],
+  [20, 30],
+  [23, 10],
+  [60, 35],
+  [90, 20],
+];
 const spectrum = generateSpectrum(peaks, options);
 
-fs.writeFileSync(`${__dirname}/data.json`, JSON.stringify(spectrum), 'utf8');
+console.log(spectrum);
+
+fs.writeFileSync(
+  `${__dirname}/data.json`,
+  JSON.stringify({ x: Array.from(spectrum.x), y: Array.from(spectrum.y) }),
+  'utf8',
+);

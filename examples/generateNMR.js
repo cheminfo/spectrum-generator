@@ -18,9 +18,9 @@ for (let i = 1; i < 10; i++) {
 }
 
 const spectrum = generateSpectrum(peaks, {
-  pointsPerUnit: 10000,
-  start: 0,
-  end: 10,
+  nbPoints: 10001,
+  from: 0,
+  to: 10,
   peakWidthFct: () => 0.001, // at 500 MHz, 0.001 ppm = 0.5Hz of peak width
   shape: {
     kind: 'gaussian',
