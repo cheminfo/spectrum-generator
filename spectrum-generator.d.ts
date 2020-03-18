@@ -89,6 +89,11 @@ export interface Spectrum {
   y: number[];
 }
 
+export interface XYObject {
+  x: number;
+  y: number;
+}
+
 export class SpectrumGenerator {
   /**
    *
@@ -127,14 +132,14 @@ export class SpectrumGenerator {
    * Add a series of peaks to the spectrum.
    * @param peaks - Peaks to add.
    */
-  addPeaks(peaks: number[][]): this;
+  addPeaks(peaks: number[][] | XYObject[]): this;
 
   /**
    * Add a single peak to the spectrum.
    * @param peak
    * @param options
    */
-  addPeak(peak: number[], options?: PeakOptions): this;
+  addPeak(peak: number[] | XYObject, options?: PeakOptions): this;
 
   /**
    * Add a baseline to the spectrum.
