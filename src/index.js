@@ -109,7 +109,7 @@ export class SpectrumGenerator {
       let shapeIndex = Math.round(
         this.shapeHalfLength - (ratio * this.shape.fwhm) / 2,
       );
-      if (shapeIndex >= 0 && shapeIndex <= this.shapeHalfLength) {
+      if (shapeIndex >= 0 && shapeIndex < this.shape.data.length) {
         this.data.y[index] += this.shape.data[shapeIndex] * intensity;
       }
     }
@@ -120,7 +120,7 @@ export class SpectrumGenerator {
       let shapeIndex = Math.round(
         this.shapeHalfLength - (ratio * this.shape.fwhm) / 2,
       );
-      if (shapeIndex >= 0 && shapeIndex <= this.shapeHalfLength) {
+      if (shapeIndex >= 0 && shapeIndex <= this.shape.data.length) {
         this.data.y[index] += this.shape.data[shapeIndex] * intensity;
       }
     }
