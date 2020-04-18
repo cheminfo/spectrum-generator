@@ -1,3 +1,14 @@
+## [4.0.1](https://github.com/cheminfo/spectrum-generator/compare/v4.0.0...v4.0.1) (2020-04-18)
+
+
+### Bug Fixes
+
+* example SpectrumGenerator ([cf49ce1](https://github.com/cheminfo/spectrum-generator/commit/cf49ce1db859e542bb6324006ed338546b4d390f))
+* examples ([4a8289b](https://github.com/cheminfo/spectrum-generator/commit/4a8289bafc894d27158c7c4bbadc0d74f1c84206))
+* rouding problem in spectrum generation yield to zero values ([fcb1521](https://github.com/cheminfo/spectrum-generator/commit/fcb1521014441290b345d758412c9922f714a156))
+
+
+
 # [4.0.0](https://github.com/cheminfo/spectrum-generator/compare/v3.2.2...v4.0.0) (2020-03-18)
 
 
