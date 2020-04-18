@@ -49,7 +49,11 @@ describe('SpectrumGenerator', () => {
     });
     generator.addPeak([50, 100], { widthLeft: 10, widthRight: 30 });
     const spectrum = generator.getSpectrum();
-    expect(spectrum).toMatchSnapshot();
+
+    const sumX = spectrum.x.reduce((previous, value) => previous + value);
+    const sumY = spectrum.y.reduce((previous, value) => previous + value);
+    expect(sumX).toBe(10050);
+    expect(sumY).toBeCloseTo(4257.612704089137, 4);
   });
 
   it('1 middle peak check width', () => {
@@ -140,7 +144,11 @@ describe('SpectrumGenerator', () => {
     ]);
 
     const spectrum = generator.getSpectrum({ threshold: 0.001 });
-    expect(spectrum).toMatchSnapshot();
+
+    const sumX = spectrum.x.reduce((previous, value) => previous + value);
+    const sumY = spectrum.y.reduce((previous, value) => previous + value);
+    expect(sumX).toBeCloseTo(5028, 4);
+    expect(sumY).toBeCloseTo(265.9928557821358, 4);
   });
 
   it('getSpectrum', () => {
