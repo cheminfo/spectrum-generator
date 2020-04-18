@@ -1,3 +1,12 @@
+## [4.0.2](https://github.com/cheminfo/spectrum-generator/compare/v4.0.1...v4.0.2) (2020-04-18)
+
+
+### Bug Fixes
+
+* one more edge bug that leads to y=0 ([8bbca0f](https://github.com/cheminfo/spectrum-generator/commit/8bbca0fe8659290e15d413b6a8f2b28d071dd877))
+
+
+
 ## [4.0.1](https://github.com/cheminfo/spectrum-generator/compare/v4.0.0...v4.0.1) (2020-04-18)
 
 
