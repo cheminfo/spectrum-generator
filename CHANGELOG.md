@@ -1,3 +1,5 @@
+# Changelog
+
 ## [4.1.0](https://github.com/cheminfo/spectrum-generator/compare/v4.0.2...v4.1.0) (2020-10-12)
 
 
