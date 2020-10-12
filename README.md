@@ -48,6 +48,13 @@ const peaks = [
   [3, 1],
   [4, 76],
 ];
+
+/*
+Peaks can also be introduced as:
+- const peaks = [{x:1,y:10},{x:2,y:30},{x:3,y:1},{x:4,y:76}]
+- const peaks = {x:[1,2,3,4], y:[10,30,1,76]}
+*/
+
 const spectrum = generateSpectrum(peaks, {
   nbPoints: 1001,
   from: 0,

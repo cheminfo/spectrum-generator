@@ -133,7 +133,7 @@ export class SpectrumGenerator {
    * Add a series of peaks to the spectrum.
    * @param peaks - Peaks to add.
    */
-  addPeaks(peaks: number[][] | XYObject[]): this;
+  addPeaks(peaks: number[][] | XYObject[] | Spectrum): this;
 
   /**
    * Add a single peak to the spectrum.

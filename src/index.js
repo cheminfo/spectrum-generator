@@ -52,12 +52,29 @@ export class SpectrumGenerator {
   }
 
   addPeaks(peaks) {
-    if (!Array.isArray(peaks)) {
-      throw new TypeError('peaks must be an array');
+    if (
+      !Array.isArray(peaks) &&
+      (typeof peaks !== 'object' ||
+        peaks.x === undefined ||
+        peaks.y === undefined ||
+        !Array.isArray(peaks.x) ||
+        !Array.isArray(peaks.y) ||
+        peaks.x.length !== peaks.y.length)
+    ) {
+      throw new TypeError(
+        'peaks must be an array or an object containing x[] and y[]',
+      );
     }
-    for (const peak of peaks) {
-      this.addPeak(peak);
+    if (Array.isArray(peaks)) {
+      for (const peak of peaks) {
+        this.addPeak(peak);
+      }
+    } else {
+      for (let i = 0; i < peaks.x.length; i++) {
+        this.addPeak([peaks.x[i], peaks.y[i]]);
+      }
     }
+
     return this;
   }
 
