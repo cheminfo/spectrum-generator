@@ -1,4 +1,3 @@
-/* eslint-disable jest/expect-expect */
 import { xyMaxYPoint } from 'ml-spectra-processing';
 
 import { generateSpectrum } from '..';
