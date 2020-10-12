@@ -1,3 +1,10 @@
+## [4.1.0](https://github.com/cheminfo/spectrum-generator/compare/v4.0.2...v4.1.0) (2020-10-12)
+
+
+### Features
+
+* addPeaks with {x:[], y:[]} ([#11](https://github.com/cheminfo/spectrum-generator/issues/11)) ([3ac6f5e](https://github.com/cheminfo/spectrum-generator/commit/3ac6f5eb4f754a632fb1acd24890a1d08921de9a))
+
 ## [4.0.2](https://github.com/cheminfo/spectrum-generator/compare/v4.0.1...v4.0.2) (2020-04-18)
 
 
