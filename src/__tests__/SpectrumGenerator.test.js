@@ -128,6 +128,21 @@ describe('SpectrumGenerator', () => {
     expect(spectrum.y[14 * 10]).toBe(2);
   });
 
+  it('full generation with {x:[],y:[]}', () => {
+    const generator = new SpectrumGenerator();
+
+    generator.addPeak({ x: 0, y: 1 });
+    generator.addPeak({ x: 50, y: 12 });
+    generator.addPeaks({ x: [100, 14], y: [10, 2] });
+
+    const spectrum = generator.getSpectrum();
+
+    expect(spectrum.y[0]).toBe(1);
+    expect(spectrum.y[50 * 10]).toBe(12);
+    expect(spectrum.y[100 * 10]).toBe(10);
+    expect(spectrum.y[14 * 10]).toBe(2);
+  });
+
   it('full generation with threshold', () => {
     const generator = new SpectrumGenerator({
       from: -1000,

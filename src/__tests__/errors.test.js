@@ -4,7 +4,7 @@ const numberReg = /^\w+ option must be a number$/;
 const integerReg = /^\w+ option must be an integer$/;
 const endStartReg = /^to option must be larger than from$/;
 const peakWidthReg = /^peakWidthFct option must be a function$/;
-const addPeaksReg = /^peaks must be an array$/;
+const addPeaksReg = /^peaks must be an array/;
 const addPeakReg = /^peak must be an array with two values or an object with {x,y}$/;
 
 describe('errors', () => {
@@ -32,13 +32,13 @@ describe('errors', () => {
     );
   });
 
-  it('addPeaks not an array', () => {
+  it('addPeaks not an array or an object {x:[], y:[]', () => {
     const generator = new SpectrumGenerator();
     expect(() => generator.addPeaks()).toThrow(addPeaksReg);
     expect(() => generator.addPeaks({})).toThrow(addPeaksReg);
   });
 
-  it('addPeak not an array', () => {
+  it('addPeak not an array or an object {x,y}', () => {
     const generator = new SpectrumGenerator();
     expect(() => generator.addPeak()).toThrow(addPeakReg);
     expect(() => generator.addPeak({})).toThrow(addPeakReg);
