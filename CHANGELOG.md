@@ -1,5 +1,12 @@
 # Changelog
 
+### [4.1.1](https://www.github.com/cheminfo/spectrum-generator/compare/v4.1.0...v4.1.1) (2020-10-12)
+
+
+### Bug Fixes
+
+* remove docs to force rebuild with github actions ([9e2c964](https://www.github.com/cheminfo/spectrum-generator/commit/9e2c964b2f8c5d20a8511d1ca18cab698f86993f))
+
 ## [4.1.0](https://github.com/cheminfo/spectrum-generator/compare/v4.0.2...v4.1.0) (2020-10-12)
 
 
@@ -109,6 +116,3 @@
 ### Features
 
 * implement spectrum generator ([6199252](https://github.com/cheminfo/spectrum-generator/commit/6199252))
-
-
-
