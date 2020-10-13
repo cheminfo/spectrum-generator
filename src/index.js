@@ -27,15 +27,7 @@ export class SpectrumGenerator {
     this.to = options.to;
     this.nbPoints = options.nbPoints;
     this.interval = (this.to - this.from) / (this.nbPoints - 1);
-    this.peakWidthFct = options.peakWidthFct;
-    this.maxPeakHeight = Number.MIN_SAFE_INTEGER;
-    this.shape = getShape(options.shape.kind, options.shape.options);
-    this.shape.data = normed(this.shape.data, {
-      algorithm: 'max',
-    });
-    this.shapeFactor = (this.shape.data.length - 1) / this.shape.fwhm;
-    this.shapeLength = this.shape.data.length;
-    this.shapeHalfLength = Math.floor(this.shape.data.length / 2);
+    this.changeShape(options);
     assertNumber(this.from, 'from');
     assertNumber(this.to, 'to');
     assertInteger(this.nbPoints, 'nbPoints');
@@ -96,6 +88,10 @@ export class SpectrumGenerator {
       intensity = peak.y;
     }
 
+    if (options.shape) {
+      this.changeShape(options);
+    }
+
     if (intensity > this.maxPeakHeight) this.maxPeakHeight = intensity;
 
     let {
@@ -153,6 +149,18 @@ export class SpectrumGenerator {
   addNoise(percent, options) {
     addNoise(this.data, percent, options);
     return this;
+  }
+
+  changeShape(options) {
+    this.peakWidthFct = options.peakWidthFct;
+    this.maxPeakHeight = Number.MIN_SAFE_INTEGER;
+    this.shape = getShape(options.shape.kind, options.shape.options);
+    this.shape.data = normed(this.shape.data, {
+      algorithm: 'max',
+    });
+    this.shapeFactor = (this.shape.data.length - 1) / this.shape.fwhm;
+    this.shapeLength = this.shape.data.length;
+    this.shapeHalfLength = Math.floor(this.shape.data.length / 2);
   }
 
   getSpectrum(options = {}) {
