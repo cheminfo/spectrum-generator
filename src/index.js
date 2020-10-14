@@ -27,15 +27,9 @@ export class SpectrumGenerator {
     this.to = options.to;
     this.nbPoints = options.nbPoints;
     this.interval = (this.to - this.from) / (this.nbPoints - 1);
-    this.peakWidthFct = options.peakWidthFct;
     this.maxPeakHeight = Number.MIN_SAFE_INTEGER;
-    this.shape = getShape(options.shape.kind, options.shape.options);
-    this.shape.data = normed(this.shape.data, {
-      algorithm: 'max',
-    });
-    this.shapeFactor = (this.shape.data.length - 1) / this.shape.fwhm;
-    this.shapeLength = this.shape.data.length;
-    this.shapeHalfLength = Math.floor(this.shape.data.length / 2);
+    this.addShape(options.shape);
+    this.peakWidthFct = options.peakWidthFct;
     assertNumber(this.from, 'from');
     assertNumber(this.to, 'to');
     assertInteger(this.nbPoints, 'nbPoints');
@@ -51,7 +45,7 @@ export class SpectrumGenerator {
     this.reset();
   }
 
-  addPeaks(peaks) {
+  addPeaks(peaks, options = {}) {
     if (
       !Array.isArray(peaks) &&
       (typeof peaks !== 'object' ||
@@ -64,6 +58,9 @@ export class SpectrumGenerator {
       throw new TypeError(
         'peaks must be an array or an object containing x[] and y[]',
       );
+    }
+    if (options.shape) {
+      this.addShape(options.shape);
     }
     if (Array.isArray(peaks)) {
       for (const peak of peaks) {
@@ -96,6 +93,8 @@ export class SpectrumGenerator {
       intensity = peak.y;
     }
 
+    if (options.shape) this.addShape(options.shape);
+
     if (intensity > this.maxPeakHeight) this.maxPeakHeight = intensity;
 
     let {
@@ -107,8 +106,8 @@ export class SpectrumGenerator {
     if (!widthLeft) widthLeft = width;
     if (!widthRight) widthRight = width;
 
-    const firstValue = xPosition - (widthLeft / 2) * this.shapeFactor;
-    const lastValue = xPosition + (widthRight / 2) * this.shapeFactor;
+    const firstValue = xPosition - (widthLeft / 2) * this.shape.shapeFactor;
+    const lastValue = xPosition + (widthRight / 2) * this.shape.shapeFactor;
 
     const firstPoint = Math.max(
       0,
@@ -124,7 +123,7 @@ export class SpectrumGenerator {
     for (let index = firstPoint; index < middlePoint; index++) {
       let ratio = ((xPosition - this.data.x[index]) / widthLeft) * 2;
       let shapeIndex = Math.round(
-        this.shapeHalfLength - (ratio * this.shape.fwhm) / 2,
+        this.shape.shapeHalfLength - (ratio * this.shape.fwhm) / 2,
       );
       if (shapeIndex >= 0 && shapeIndex < this.shape.data.length) {
         this.data.y[index] += this.shape.data[shapeIndex] * intensity;
@@ -135,7 +134,7 @@ export class SpectrumGenerator {
       let ratio = ((this.data.x[index] - xPosition) / widthRight) * 2;
 
       let shapeIndex = Math.round(
-        this.shapeHalfLength - (ratio * this.shape.fwhm) / 2,
+        this.shape.shapeHalfLength - (ratio * this.shape.fwhm) / 2,
       );
       if (shapeIndex >= 0 && shapeIndex <= this.shape.data.length) {
         this.data.y[index] += this.shape.data[shapeIndex] * intensity;
@@ -152,6 +151,27 @@ export class SpectrumGenerator {
 
   addNoise(percent, options) {
     addNoise(this.data, percent, options);
+    return this;
+  }
+
+  addShape(options) {
+    if (!this.shapes) this.shapes = [];
+    const shapeID = generateShapeID(options);
+    let currentShape = this.shapes.find((e) => e.shapeID === shapeID);
+    if (!currentShape) {
+      currentShape = getShape(options.kind, options.options);
+      currentShape.shapeID = shapeID;
+      currentShape.data = normed(currentShape.data, {
+        algorithm: 'max',
+      });
+      currentShape.shapeFactor =
+        (currentShape.data.length - 1) / currentShape.fwhm;
+      currentShape.shapeLength = currentShape.data.length;
+      currentShape.shapeHalfLength = Math.floor(currentShape.shapeLength / 2);
+      this.shapes.push(currentShape);
+      if (this.shapes.length > 19) this.shapes.splice(0, 1);
+    }
+    this.shape = currentShape;
     return this;
   }
 
@@ -208,6 +228,18 @@ function assertNumber(value, name) {
   }
 }
 
+function generateShapeID(options) {
+  const kind = options.kind;
+  const { fwhm, length, mu = 0.5 } = options.options;
+  let shapeID = `${kind}-${fwhm}-${length}`;
+  switch (kind) {
+    case 'pseudovoigt':
+      shapeID += `-${mu}`;
+      break;
+    default:
+  }
+  return shapeID;
+}
 export function generateSpectrum(peaks, options = {}) {
   const generator = new SpectrumGenerator(options);
   generator.addPeaks(peaks);

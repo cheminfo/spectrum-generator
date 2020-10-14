@@ -1,6 +1,6 @@
 import { xyMaxYPoint } from 'ml-spectra-processing';
 
-import { generateSpectrum } from '..';
+import { generateSpectrum, SpectrumGenerator } from '..';
 
 const simplepeakWidthFct = () => 1;
 
@@ -92,6 +92,54 @@ describe('generateSpectrum with one peak and small window', () => {
     expect(spectrum.y[9]).toBeCloseTo(0.15749, 4);
     expect(max.x).toBe(10);
     expect(max.y).toBe(1);
+  });
+
+  it('should work for several kind of shapes', () => {
+    let spectrumGenerator = new SpectrumGenerator({
+      from: 0,
+      to: 10,
+      nbPoints: 101,
+      peakWidthFct: () => 0.1,
+      shape: {
+        kind: 'lorentzian',
+        options: {
+          length: 13,
+          fwhm: 4,
+        },
+      },
+    });
+    spectrumGenerator.addPeak(
+      { x: 2.5, y: 2 },
+      {
+        width: 0.1,
+        shape: {
+          kind: 'lorentzian',
+          options: {
+            length: 13,
+            fwhm: 4,
+          },
+        },
+      },
+    );
+    spectrumGenerator.addPeak(
+      { x: 5, y: 1 },
+      {
+        width: 0.2,
+        shape: {
+          kind: 'gaussian',
+          options: {
+            length: 13,
+            fwhm: 4,
+          },
+        },
+      },
+    );
+    const spectrum = spectrumGenerator.getSpectrum();
+    let max = xyMaxYPoint(spectrum);
+    expect(spectrum.y[49]).toBe(0.5);
+    expect(max.x).toBe(2.5);
+    expect(max.y).toBe(2);
+    expect(spectrumGenerator.shapes).toHaveLength(2);
   });
 
   it('should work from 0 to 10 low res', () => {

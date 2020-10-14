@@ -50,10 +50,22 @@ export interface PeakOptions {
   widthLeft?: number;
 
   /**
-   * Half-height width right (asymmetric peak).
-   * @default `width`
+   * Define the shape of the peak.
+   * @default `shape: {
+          kind: 'gaussian',
+          options: {
+            fwhm: 1000,
+            length: 5001,
+          },
+        },`
    */
   widthRight?: number;
+
+  /**
+   * Define the shape of the peak.
+   */
+  shape?: object;
+
 }
 
 export interface AddNoiseOptions {
@@ -133,7 +145,7 @@ export class SpectrumGenerator {
    * Add a series of peaks to the spectrum.
    * @param peaks - Peaks to add.
    */
-  addPeaks(peaks: number[][] | XYObject[] | Spectrum): this;
+  addPeaks(peaks: number[][] | XYObject[] | Spectrum, options?: PeakOptions): this;
 
   /**
    * Add a single peak to the spectrum.
@@ -153,6 +165,13 @@ export class SpectrumGenerator {
    * @param percent - Noise's amplitude in percents of the spectrum max value. Default: 0.
    */
   addNoise(percent: number, options: AddNoiseOptions): this;
+
+  /**
+   * Add a shape to the storage and set the last shape. Just the last 20 different shapes are store.
+   * @param options 
+   */
+
+  addShape(options: PeakOptions): this;
 
   /**
    * Get the generated spectrum.
