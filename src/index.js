@@ -29,13 +29,8 @@ export class SpectrumGenerator {
     this.interval = (this.to - this.from) / (this.nbPoints - 1);
     this.peakWidthFct = options.peakWidthFct;
     this.maxPeakHeight = Number.MIN_SAFE_INTEGER;
-    this.shape = getShape(options.shape.kind, options.shape.options);
-    this.shape.data = normed(this.shape.data, {
-      algorithm: 'max',
-    });
-    this.shapeFactor = (this.shape.data.length - 1) / this.shape.fwhm;
-    this.shapeLength = this.shape.data.length;
-    this.shapeHalfLength = Math.floor(this.shape.data.length / 2);
+    this.shape = createShape(options.shape.kind, options.shape.options);
+
     assertNumber(this.from, 'from');
     assertNumber(this.to, 'to');
     assertInteger(this.nbPoints, 'nbPoints');
@@ -51,7 +46,7 @@ export class SpectrumGenerator {
     this.reset();
   }
 
-  addPeaks(peaks) {
+  addPeaks(peaks, options) {
     if (
       !Array.isArray(peaks) &&
       (typeof peaks !== 'object' ||
@@ -67,11 +62,11 @@ export class SpectrumGenerator {
     }
     if (Array.isArray(peaks)) {
       for (const peak of peaks) {
-        this.addPeak(peak);
+        this.addPeak(peak, options);
       }
     } else {
       for (let i = 0; i < peaks.x.length; i++) {
-        this.addPeak([peaks.x[i], peaks.y[i]]);
+        this.addPeak([peaks.x[i], peaks.y[i]], options);
       }
     }
 
@@ -107,8 +102,8 @@ export class SpectrumGenerator {
     if (!widthLeft) widthLeft = width;
     if (!widthRight) widthRight = width;
 
-    const firstValue = xPosition - (widthLeft / 2) * this.shapeFactor;
-    const lastValue = xPosition + (widthRight / 2) * this.shapeFactor;
+    const firstValue = xPosition - (widthLeft / 2) * this.shape.factor;
+    const lastValue = xPosition + (widthRight / 2) * this.shape.factor;
 
     const firstPoint = Math.max(
       0,
@@ -124,7 +119,7 @@ export class SpectrumGenerator {
     for (let index = firstPoint; index < middlePoint; index++) {
       let ratio = ((xPosition - this.data.x[index]) / widthLeft) * 2;
       let shapeIndex = Math.round(
-        this.shapeHalfLength - (ratio * this.shape.fwhm) / 2,
+        this.shape.halfLength - (ratio * this.shape.fwhm) / 2,
       );
       if (shapeIndex >= 0 && shapeIndex < this.shape.data.length) {
         this.data.y[index] += this.shape.data[shapeIndex] * intensity;
@@ -135,7 +130,7 @@ export class SpectrumGenerator {
       let ratio = ((this.data.x[index] - xPosition) / widthRight) * 2;
 
       let shapeIndex = Math.round(
-        this.shapeHalfLength - (ratio * this.shape.fwhm) / 2,
+        this.shape.halfLength - (ratio * this.shape.fwhm) / 2,
       );
       if (shapeIndex >= 0 && shapeIndex <= this.shape.data.length) {
         this.data.y[index] += this.shape.data[shapeIndex] * intensity;
@@ -216,4 +211,17 @@ export function generateSpectrum(peaks, options = {}) {
   return generator.getSpectrum({
     threshold: options.threshold,
   });
+}
+
+function createShape(kind, options) {
+  let shape = {};
+  let newShape = getShape(kind, options);
+  shape.data = normed(newShape.data, {
+    algorithm: 'max',
+  });
+  shape.fwhm = newShape.fwhm;
+  shape.factor = (newShape.data.length - 1) / newShape.fwhm;
+  shape.length = newShape.data.length;
+  shape.halfLength = Math.floor(newShape.data.length / 2);
+  return shape;
 }
