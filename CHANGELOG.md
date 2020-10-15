@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.0](https://www.github.com/cheminfo/spectrum-generator/compare/v4.1.2...v4.2.0) (2020-10-15)
+
+
+### Features
+
+* addPeaks accepts options ([e0d3bec](https://www.github.com/cheminfo/spectrum-generator/commit/e0d3bec4c9347b959471ba2cd2917b3251149afe))
+
 ### [4.1.2](https://www.github.com/cheminfo/spectrum-generator/compare/v4.1.1...v4.1.2) (2020-10-12)
 
 
