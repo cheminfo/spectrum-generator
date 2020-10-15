@@ -141,7 +141,28 @@ generator.addPeaks([
 <span class="hljs-keyword">const</span> spectrum = generator.getSpectrum();
 
 generator.reset();
-generator.addPeak([<span class="hljs-number">10</span>, <span class="hljs-number">50</span>]);
+
+generator.addPeak([<span class="hljs-number">10</span>, <span class="hljs-number">50</span>], { <span class="hljs-comment">// customize peaks shape</span>
+  <span class="hljs-attr">width</span>: <span class="hljs-number">0.1</span>,
+  <span class="hljs-attr">shape</span>: {
+    <span class="hljs-attr">kind</span>: <span class="hljs-string">&#x27;lorentzian&#x27;</span>,
+    <span class="hljs-attr">options</span>: {
+      <span class="hljs-attr">fwhm</span>: <span class="hljs-number">1000</span>,
+      <span class="hljs-attr">length</span>: <span class="hljs-number">10001</span>,
+    },
+  }
+});
+
+generator.addPeak([<span class="hljs-number">10</span>, <span class="hljs-number">50</span>], { <span class="hljs-comment">// customize peaks shape</span>
+  <span class="hljs-attr">width</span>: <span class="hljs-number">0.1</span>,
+  <span class="hljs-attr">shape</span>: {
+    <span class="hljs-attr">kind</span>: <span class="hljs-string">&#x27;gaussian&#x27;</span>,
+    <span class="hljs-attr">options</span>: {
+      <span class="hljs-attr">fwhm</span>: <span class="hljs-number">1000</span>,
+      <span class="hljs-attr">length</span>: <span class="hljs-number">10001</span>,
+    },
+  }
+});
 <span class="hljs-keyword">const</span> otherSpectrum = generator.getSpectrum();</code></pre>
 				<a href="#api-documentation" id="api-documentation" style="color: inherit; text-decoration: none;">
 					<h2><a href="https://cheminfo.github.io/spectrum-generator/">API Documentation</a></h2>
