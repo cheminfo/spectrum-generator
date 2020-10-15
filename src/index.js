@@ -97,7 +97,12 @@ export class SpectrumGenerator {
       width = this.peakWidthFct(xPosition),
       widthLeft,
       widthRight,
+      shape: shapeOptions,
     } = options;
+
+    const shape = shapeOptions
+      ? createShape(shapeOptions.kind, shapeOptions.options)
+      : this.shape;
 
     if (!widthLeft) widthLeft = width;
     if (!widthRight) widthRight = width;
@@ -118,22 +123,18 @@ export class SpectrumGenerator {
     // we calculate the left part of the shape
     for (let index = firstPoint; index < middlePoint; index++) {
       let ratio = ((xPosition - this.data.x[index]) / widthLeft) * 2;
-      let shapeIndex = Math.round(
-        this.shape.halfLength - (ratio * this.shape.fwhm) / 2,
-      );
-      if (shapeIndex >= 0 && shapeIndex < this.shape.data.length) {
-        this.data.y[index] += this.shape.data[shapeIndex] * intensity;
+      let shapeIndex = Math.round(shape.halfLength - (ratio * shape.fwhm) / 2);
+      if (shapeIndex >= 0 && shapeIndex < shape.data.length) {
+        this.data.y[index] += shape.data[shapeIndex] * intensity;
       }
     }
     // we calculate the right part of the gaussian
     for (let index = middlePoint; index <= lastPoint; index++) {
       let ratio = ((this.data.x[index] - xPosition) / widthRight) * 2;
 
-      let shapeIndex = Math.round(
-        this.shape.halfLength - (ratio * this.shape.fwhm) / 2,
-      );
-      if (shapeIndex >= 0 && shapeIndex <= this.shape.data.length) {
-        this.data.y[index] += this.shape.data[shapeIndex] * intensity;
+      let shapeIndex = Math.round(shape.halfLength - (ratio * shape.fwhm) / 2);
+      if (shapeIndex >= 0 && shapeIndex <= shape.data.length) {
+        this.data.y[index] += shape.data[shapeIndex] * intensity;
       }
     }
 
