@@ -1,5 +1,12 @@
 # Changelog
 
+### [4.2.1](https://www.github.com/cheminfo/spectrum-generator/compare/v4.2.0...v4.2.1) (2020-10-15)
+
+
+### Bug Fixes
+
+* correct examples for typescript ([fa44388](https://www.github.com/cheminfo/spectrum-generator/commit/fa443880c0ff3f437c0c5228d127f652bf813a86))
+
 ## [4.2.0](https://www.github.com/cheminfo/spectrum-generator/compare/v4.1.2...v4.2.0) (2020-10-15)
 
 
