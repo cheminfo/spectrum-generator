@@ -98,6 +98,7 @@ export class SpectrumGenerator {
   /**
    *
    * @example
+   * ```js
    * import SG from 'spectrum-generator';
    * const sg = new SG({from: 0, to: 100, nbPoints: 1001, peakWidthFct: (x) => 1 + 3 * x / 1000 });
    * sg.addPeak([5, 50]);
@@ -108,9 +109,11 @@ export class SpectrumGenerator {
    * sg.addPeaks([ [70,20], [80,40], [90,10] ]);
    * sg.addNoise(10);
    * sg.addBaseline( (x) => x * x / 100 );
-   * var spectrum = sg.getSpectrum();
-   *
+   * const spectrum = sg.getSpectrum();
+   * ```
+   * 
    * @example
+   * ```js
    * import SG from 'spectrum-generator';
    * const spectrum=SG.generateSpectrum([ [20,3], [30,2], [40,2] ], {
    *  from: 0,
@@ -124,6 +127,7 @@ export class SpectrumGenerator {
    *  },
    *  baseline: (x) => 2 * x,
    * })
+   * ```
    */
   constructor(options?: SpectrumGeneratorOptions);
 
