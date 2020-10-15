@@ -85,7 +85,28 @@ generator.addPeaks([
 const spectrum = generator.getSpectrum();
 
 generator.reset();
-generator.addPeak([10, 50]);
+
+generator.addPeak([10, 50], { // customize peaks shape
+  width: 0.1,
+  shape: {
+    kind: 'lorentzian',
+    options: {
+      fwhm: 1000,
+      length: 10001,
+    },
+  }
+});
+
+generator.addPeak([10, 50], { // customize peaks shape
+  width: 0.1,
+  shape: {
+    kind: 'gaussian',
+    options: {
+      fwhm: 1000,
+      length: 10001,
+    },
+  }
+});
 const otherSpectrum = generator.getSpectrum();
 ```
 
