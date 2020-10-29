@@ -76,25 +76,31 @@ export class SpectrumGenerator {
   addPeak(peak, options = {}) {
     if (
       typeof peak !== 'object' ||
-      (peak.length !== 2 && (peak.x === undefined || peak.y === undefined))
+      (peak.length !== 2 &&
+        peak.length !== 3 &&
+        (peak.x === undefined || peak.y === undefined))
     ) {
       throw new Error(
-        'peak must be an array with two values or an object with {x,y}',
+        'peak must be an array with two (or three) values or an object with {x,y,width?}',
       );
     }
     let xPosition;
     let intensity;
+    let peakWidth;
     if (Array.isArray(peak)) {
-      [xPosition, intensity] = peak;
+      [xPosition, intensity, peakWidth] = peak;
     } else {
       xPosition = peak.x;
       intensity = peak.y;
+      peakWidth = peak.width;
     }
 
     if (intensity > this.maxPeakHeight) this.maxPeakHeight = intensity;
 
     let {
-      width = this.peakWidthFct(xPosition),
+      width = peakWidth === undefined
+        ? this.peakWidthFct(xPosition)
+        : peakWidth,
       widthLeft,
       widthRight,
       shape: shapeOptions,

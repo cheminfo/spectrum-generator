@@ -92,6 +92,7 @@ export interface Spectrum {
 export interface XYObject {
   x: number;
   y: number;
+  width?: number;
 }
 
 export class SpectrumGenerator {

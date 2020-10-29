@@ -5,7 +5,8 @@ const integerReg = /^\w+ option must be an integer$/;
 const endStartReg = /^to option must be larger than from$/;
 const peakWidthReg = /^peakWidthFct option must be a function$/;
 const addPeaksReg = /^peaks must be an array/;
-const addPeakReg = /^peak must be an array with two values or an object with {x,y}$/;
+const addPeakError =
+  'peak must be an array with two (or three) values or an object with {x,y,width?}';
 
 describe('errors', () => {
   it('wrong options', () => {
@@ -40,11 +41,11 @@ describe('errors', () => {
 
   it('addPeak not an array or an object {x,y}', () => {
     const generator = new SpectrumGenerator();
-    expect(() => generator.addPeak()).toThrow(addPeakReg);
-    expect(() => generator.addPeak({})).toThrow(addPeakReg);
-    expect(() => generator.addPeak({})).toThrow(addPeakReg);
-    expect(() => generator.addPeak([])).toThrow(addPeakReg);
-    expect(() => generator.addPeak([1])).toThrow(addPeakReg);
-    expect(() => generator.addPeak([1, 2, 3])).toThrow(addPeakReg);
+    expect(() => generator.addPeak()).toThrow(addPeakError);
+    expect(() => generator.addPeak({})).toThrow(addPeakError);
+    expect(() => generator.addPeak({})).toThrow(addPeakError);
+    expect(() => generator.addPeak([])).toThrow(addPeakError);
+    expect(() => generator.addPeak([1])).toThrow(addPeakError);
+    expect(() => generator.addPeak([1, 2, 3, 4])).toThrow(addPeakError);
   });
 });
