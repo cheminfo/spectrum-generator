@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.3.0](https://www.github.com/cheminfo/spectrum-generator/compare/v4.2.0...v4.3.0) (2020-10-29)
+
+
+### Features
+
+* allow x,y,width objects to addPeak ([d3da510](https://www.github.com/cheminfo/spectrum-generator/commit/d3da5107fce78867e7ff59e9f6c611d49d69fd3a))
+
+
+### Bug Fixes
+
+* correct examples for typescript ([fa44388](https://www.github.com/cheminfo/spectrum-generator/commit/fa443880c0ff3f437c0c5228d127f652bf813a86))
+
 ## [4.2.0](https://www.github.com/cheminfo/spectrum-generator/compare/v4.1.2...v4.2.0) (2020-10-15)
 
 
