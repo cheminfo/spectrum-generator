@@ -114,38 +114,38 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/cheminfo/spectrum-generator/blob/278e6b2/spectrum-generator.d.ts#L97">spectrum-generator.d.ts:97</a></li>
+									<li>Defined in <a href="https://github.com/cheminfo/spectrum-generator/blob/4330c16/spectrum-generator.d.ts#L98">spectrum-generator.d.ts:98</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<dl class="tsd-comment-tags">
 									<dt>example</dt>
-									<dd><p>import SG from &#39;spectrum-generator&#39;;
-											const sg = new SG({from: 0, to: 100, nbPoints: 1001, peakWidthFct: (x) =&gt; 1 + 3 * x / 1000 });
-											sg.addPeak([5, 50]);
-											sg.addPeak({x:10, y:50}); // either an array of an object with x,y properties
-											sg.addPeak([20, 100], { width: 3 });
-											sg.addPeak([35, 100], { widthLeft: 10, widthRight: 30 });
-											sg.addPeak([50, 10], { widthLeft: 5, widthRight: 5 });
-											sg.addPeaks([ [70,20], [80,40], [90,10] ]);
-											sg.addNoise(10);
-											sg.addBaseline( (x) =&gt; x * x / 100 );
-										var spectrum = sg.getSpectrum();</p>
+									<dd><pre><code class="language-js"><span class="hljs-keyword">import</span> SG <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;spectrum-generator&#x27;</span>;
+<span class="hljs-keyword">const</span> sg = <span class="hljs-keyword">new</span> SG({<span class="hljs-attr">from</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">to</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">nbPoints</span>: <span class="hljs-number">1001</span>, <span class="hljs-attr">peakWidthFct</span>: <span class="hljs-function">(<span class="hljs-params">x</span>) =&gt;</span> <span class="hljs-number">1</span> + <span class="hljs-number">3</span> * x / <span class="hljs-number">1000</span> });
+sg.addPeak([<span class="hljs-number">5</span>, <span class="hljs-number">50</span>]);
+sg.addPeak({<span class="hljs-attr">x</span>:<span class="hljs-number">10</span>, <span class="hljs-attr">y</span>:<span class="hljs-number">50</span>}); <span class="hljs-comment">// either an array of an object with x,y properties</span>
+sg.addPeak([<span class="hljs-number">20</span>, <span class="hljs-number">100</span>], { <span class="hljs-attr">width</span>: <span class="hljs-number">3</span> });
+sg.addPeak([<span class="hljs-number">35</span>, <span class="hljs-number">100</span>], { <span class="hljs-attr">widthLeft</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">widthRight</span>: <span class="hljs-number">30</span> });
+sg.addPeak([<span class="hljs-number">50</span>, <span class="hljs-number">10</span>], { <span class="hljs-attr">widthLeft</span>: <span class="hljs-number">5</span>, <span class="hljs-attr">widthRight</span>: <span class="hljs-number">5</span> });
+sg.addPeaks([ [<span class="hljs-number">70</span>,<span class="hljs-number">20</span>], [<span class="hljs-number">80</span>,<span class="hljs-number">40</span>], [<span class="hljs-number">90</span>,<span class="hljs-number">10</span>] ]);
+sg.addNoise(<span class="hljs-number">10</span>);
+sg.addBaseline( <span class="hljs-function">(<span class="hljs-params">x</span>) =&gt;</span> x * x / <span class="hljs-number">100</span> );
+<span class="hljs-keyword">const</span> spectrum = sg.getSpectrum();</code></pre>
 									</dd>
 									<dt>example</dt>
-									<dd><p>import SG from &#39;spectrum-generator&#39;;
-											const spectrum=SG.generateSpectrum([ [20,3], [30,2], [40,2] ], {
-											from: 0,
-											to: 100,
-											nbPoints: 101,
-											peakWidthFct: (x) =&gt; 1 + 3 * x / 1000 },
-											noise: {
-											percent: 10,
-											distribution: &#39;normal&#39;,
-											seed: 42
-											},
-											baseline: (x) =&gt; 2 * x,
-										})</p>
+									<dd><pre><code class="language-js"><span class="hljs-keyword">import</span> SG <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;spectrum-generator&#x27;</span>;
+<span class="hljs-keyword">const</span> spectrum=SG.generateSpectrum([ [<span class="hljs-number">20</span>,<span class="hljs-number">3</span>], [<span class="hljs-number">30</span>,<span class="hljs-number">2</span>], [<span class="hljs-number">40</span>,<span class="hljs-number">2</span>] ], {
+ <span class="hljs-attr">from</span>: <span class="hljs-number">0</span>,
+ <span class="hljs-attr">to</span>: <span class="hljs-number">100</span>,
+ <span class="hljs-attr">nbPoints</span>: <span class="hljs-number">101</span>,
+ <span class="hljs-attr">peakWidthFct</span>: <span class="hljs-function">(<span class="hljs-params">x</span>) =&gt;</span> <span class="hljs-number">1</span> + <span class="hljs-number">3</span> * x / <span class="hljs-number">1000</span> },
+ <span class="hljs-attr">noise</span>: {
+   <span class="hljs-attr">percent</span>: <span class="hljs-number">10</span>,
+   <span class="hljs-attr">distribution</span>: <span class="hljs-string">&#x27;normal&#x27;</span>,
+   <span class="hljs-attr">seed</span>: <span class="hljs-number">42</span>
+ },
+ <span class="hljs-attr">baseline</span>: <span class="hljs-function">(<span class="hljs-params">x</span>) =&gt;</span> <span class="hljs-number">2</span> * x,
+})</code></pre>
 									</dd>
 								</dl>
 							</div>
@@ -172,7 +172,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/cheminfo/spectrum-generator/blob/278e6b2/spectrum-generator.d.ts#L130">spectrum-generator.d.ts:130</a></li>
+									<li>Defined in <a href="https://github.com/cheminfo/spectrum-generator/blob/4330c16/spectrum-generator.d.ts#L135">spectrum-generator.d.ts:135</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -192,7 +192,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/cheminfo/spectrum-generator/blob/278e6b2/spectrum-generator.d.ts#L149">spectrum-generator.d.ts:149</a></li>
+									<li>Defined in <a href="https://github.com/cheminfo/spectrum-generator/blob/4330c16/spectrum-generator.d.ts#L154">spectrum-generator.d.ts:154</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -241,7 +241,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/cheminfo/spectrum-generator/blob/278e6b2/spectrum-generator.d.ts#L155">spectrum-generator.d.ts:155</a></li>
+									<li>Defined in <a href="https://github.com/cheminfo/spectrum-generator/blob/4330c16/spectrum-generator.d.ts#L160">spectrum-generator.d.ts:160</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -275,7 +275,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/cheminfo/spectrum-generator/blob/278e6b2/spectrum-generator.d.ts#L143">spectrum-generator.d.ts:143</a></li>
+									<li>Defined in <a href="https://github.com/cheminfo/spectrum-generator/blob/4330c16/spectrum-generator.d.ts#L148">spectrum-generator.d.ts:148</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -308,7 +308,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/cheminfo/spectrum-generator/blob/278e6b2/spectrum-generator.d.ts#L136">spectrum-generator.d.ts:136</a></li>
+									<li>Defined in <a href="https://github.com/cheminfo/spectrum-generator/blob/4330c16/spectrum-generator.d.ts#L141">spectrum-generator.d.ts:141</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -342,7 +342,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/cheminfo/spectrum-generator/blob/278e6b2/spectrum-generator.d.ts#L160">spectrum-generator.d.ts:160</a></li>
+									<li>Defined in <a href="https://github.com/cheminfo/spectrum-generator/blob/4330c16/spectrum-generator.d.ts#L165">spectrum-generator.d.ts:165</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -370,7 +370,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/cheminfo/spectrum-generator/blob/278e6b2/spectrum-generator.d.ts#L165">spectrum-generator.d.ts:165</a></li>
+									<li>Defined in <a href="https://github.com/cheminfo/spectrum-generator/blob/4330c16/spectrum-generator.d.ts#L170">spectrum-generator.d.ts:170</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
