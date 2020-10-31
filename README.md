@@ -10,6 +10,8 @@ In order to increase the speed a `shape` is first generated and then the peaks i
 spectrum are resulting from sampling the `shape`. A `shape` will therefore be generated with
 much more points (typically fwhm:1000).
 
+The shape is generated using [ml-peak-shape-generator](https://github.com/mljs/peak-shape-generator)
+
 ## Installation
 
 `$ npm i spectrum-generator`
@@ -17,7 +19,7 @@ much more points (typically fwhm:1000).
 ## Usage
 
 The spectrum generator takes an array of discrete peaks (value and intensity)
-and generates peaks with a gaussian distribution.
+and generates peaks with a gaussian distribution (by default).
 
 ### generateSpectrum
 
