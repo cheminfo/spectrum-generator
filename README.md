@@ -91,8 +91,7 @@ generator.addPeak({x: 10, y: 50}], { // customize peaks shape
   shape: {
     kind: 'lorentzian',
     options: {
-      fwhm: 1000,
-      length: 10001,
+      factor: 10, // 10 times fwhm. Lorentzian are rather flat
     },
   }
 });
