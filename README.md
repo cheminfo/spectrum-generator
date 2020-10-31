@@ -79,15 +79,15 @@ generator.addPeak([5, 20]);
 generator.addPeak({ x: 5, y: 20 }); // we may either add an array of 2 elements or an object with x,y values
 generator.addPeak([30, 56]);
 generator.addPeaks([
-  [40, 12], // it can also be an array of objects with x,y properties
-  [10, 1],
+  {x: 40, y: 12}, // it can also be an array of 2 elements
+  {x: 10, y:1},
 ]);
 const spectrum = generator.getSpectrum();
 
 generator.reset();
 
-generator.addPeak([10, 50], { // customize peaks shape
-  width: 0.1,
+generator.addPeak({x: 10, y: 50}], { // customize peaks shape
+  width: 0.1, // width of peak is FWHM
   shape: {
     kind: 'lorentzian',
     options: {
@@ -97,7 +97,9 @@ generator.addPeak([10, 50], { // customize peaks shape
   }
 });
 
-generator.addPeak([10, 50], { // customize peaks shape
+generator.addPeak({x: 10, y: 50, width: 2}) // specifiy the peak width. This is the peak width half height (FWHM)
+
+generator.addPeak({x: 10, y: 50}], { // customize peaks shape
   width: 0.1,
   shape: {
     kind: 'gaussian',
