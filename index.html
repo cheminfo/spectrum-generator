@@ -135,15 +135,15 @@ generator.addPeak([<span class="hljs-number">5</span>, <span class="hljs-number"
 generator.addPeak({ <span class="hljs-attr">x</span>: <span class="hljs-number">5</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">20</span> }); <span class="hljs-comment">// we may either add an array of 2 elements or an object with x,y values</span>
 generator.addPeak([<span class="hljs-number">30</span>, <span class="hljs-number">56</span>]);
 generator.addPeaks([
-  [<span class="hljs-number">40</span>, <span class="hljs-number">12</span>], <span class="hljs-comment">// it can also be an array of objects with x,y properties</span>
-  [<span class="hljs-number">10</span>, <span class="hljs-number">1</span>],
+  {<span class="hljs-attr">x</span>: <span class="hljs-number">40</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">12</span>}, <span class="hljs-comment">// it can also be an array of 2 elements</span>
+  {<span class="hljs-attr">x</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">y</span>:<span class="hljs-number">1</span>},
 ]);
 <span class="hljs-keyword">const</span> spectrum = generator.getSpectrum();
 
 generator.reset();
 
-generator.addPeak([<span class="hljs-number">10</span>, <span class="hljs-number">50</span>], { <span class="hljs-comment">// customize peaks shape</span>
-  <span class="hljs-attr">width</span>: <span class="hljs-number">0.1</span>,
+generator.addPeak({<span class="hljs-attr">x</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">50</span>}], { <span class="hljs-comment">// customize peaks shape</span>
+  <span class="hljs-attr">width</span>: <span class="hljs-number">0.1</span>, <span class="hljs-comment">// width of peak is FWHM</span>
   <span class="hljs-attr">shape</span>: {
     <span class="hljs-attr">kind</span>: <span class="hljs-string">&#x27;lorentzian&#x27;</span>,
     <span class="hljs-attr">options</span>: {
@@ -153,7 +153,9 @@ generator.addPeak([<span class="hljs-number">10</span>, <span class="hljs-number
   }
 });
 
-generator.addPeak([<span class="hljs-number">10</span>, <span class="hljs-number">50</span>], { <span class="hljs-comment">// customize peaks shape</span>
+generator.addPeak({<span class="hljs-attr">x</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">width</span>: <span class="hljs-number">2</span>}) <span class="hljs-comment">// specifiy the peak width. This is the peak width half height (FWHM)</span>
+
+generator.addPeak({<span class="hljs-attr">x</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">50</span>}], { <span class="hljs-comment">// customize peaks shape</span>
   <span class="hljs-attr">width</span>: <span class="hljs-number">0.1</span>,
   <span class="hljs-attr">shape</span>: {
     <span class="hljs-attr">kind</span>: <span class="hljs-string">&#x27;gaussian&#x27;</span>,
