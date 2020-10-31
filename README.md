@@ -10,7 +10,7 @@ In order to increase the speed a `shape` is first generated and then the peaks i
 spectrum are resulting from sampling the `shape`. A `shape` will therefore be generated with
 much more points (typically fwhm:1000).
 
-The shape is generated using [ml-peak-shape-generator](https://github.com/mljs/peak-shape-generator)
+The shape is generated using [ml-peak-shape-generator](https://github.com/mljs/peak-shape-generator) and you may use all the corresponding [options](https://mljs.github.io/peak-shape-generator/#getshape).
 
 ## Installation
 
