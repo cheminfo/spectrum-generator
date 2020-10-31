@@ -3,6 +3,10 @@ import { getShape } from 'ml-peak-shape-generator';
 
 import addBaseline from './util/addBaseline.js';
 import addNoise from './util/addNoise.js';
+import objectHash from 'object-hash';
+
+let shapesCache = {};
+const MAX_CACHE_LENGTH = 20;
 
 export class SpectrumGenerator {
   constructor(options = {}) {
@@ -221,6 +225,11 @@ export function generateSpectrum(peaks, options = {}) {
 }
 
 function createShape(kind, options) {
+  const hash = objectHash({ kind, options });
+  if (shapesCache[hash]) {
+    return shapesCache[hash];
+  }
+
   let shape = {};
 
   let newShape = getShape(kind, options);
@@ -232,5 +241,12 @@ function createShape(kind, options) {
   shape.factor = (newShape.data.length - 1) / newShape.fwhm;
   shape.length = newShape.data.length;
   shape.halfLength = Math.floor(newShape.data.length / 2);
+
+  if (Object.keys(shapesCache > MAX_CACHE_LENGTH)) {
+    shapesCache = {};
+  }
+
+  shapesCache[hash] = shape;
+
   return shape;
 }
