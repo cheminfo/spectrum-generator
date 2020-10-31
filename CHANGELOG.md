@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.4.0](https://www.github.com/cheminfo/spectrum-generator/compare/v4.3.0...v4.4.0) (2020-10-31)
+
+
+### Features
+
+* add cache for shape generation ([468e162](https://www.github.com/cheminfo/spectrum-generator/commit/468e16204f7befd5c7bef063d13d5d7761d63852))
+
+
+### Bug Fixes
+
+* bug with add peak and custom shapes ([6d712be](https://www.github.com/cheminfo/spectrum-generator/commit/6d712beca2f9985d3d60f62679fc6ee1d908bfc6))
+
 ## [4.3.0](https://www.github.com/cheminfo/spectrum-generator/compare/v4.2.0...v4.3.0) (2020-10-29)
 
 
