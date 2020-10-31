@@ -113,8 +113,8 @@ export class SpectrumGenerator {
     if (!widthLeft) widthLeft = width;
     if (!widthRight) widthRight = width;
 
-    const firstValue = xPosition - (widthLeft / 2) * this.shape.factor;
-    const lastValue = xPosition + (widthRight / 2) * this.shape.factor;
+    const firstValue = xPosition - (widthLeft / 2) * shape.factor;
+    const lastValue = xPosition + (widthRight / 2) * shape.factor;
 
     const firstPoint = Math.max(
       0,
@@ -222,7 +222,9 @@ export function generateSpectrum(peaks, options = {}) {
 
 function createShape(kind, options) {
   let shape = {};
+
   let newShape = getShape(kind, options);
+
   shape.data = normed(newShape.data, {
     algorithm: 'max',
   });
