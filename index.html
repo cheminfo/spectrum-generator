@@ -72,6 +72,7 @@
 				<p>In order to increase the speed a <code>shape</code> is first generated and then the peaks in the final
 					spectrum are resulting from sampling the <code>shape</code>. A <code>shape</code> will therefore be generated with
 				much more points (typically fwhm:1000).</p>
+				<p>The shape is generated using <a href="https://github.com/mljs/peak-shape-generator">ml-peak-shape-generator</a> and you may use all the corresponding <a href="https://mljs.github.io/peak-shape-generator/#getshape">options</a> of getShape.</p>
 				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
 					<h2>Installation</h2>
 				</a>
@@ -80,7 +81,7 @@
 					<h2>Usage</h2>
 				</a>
 				<p>The spectrum generator takes an array of discrete peaks (value and intensity)
-				and generates peaks with a gaussian distribution.</p>
+				and generates peaks with a gaussian distribution (by default).</p>
 				<a href="#generatespectrum" id="generatespectrum" style="color: inherit; text-decoration: none;">
 					<h3>generateSpectrum</h3>
 				</a>
@@ -147,8 +148,7 @@ generator.addPeak({<span class="hljs-attr">x</span>: <span class="hljs-number">1
   <span class="hljs-attr">shape</span>: {
     <span class="hljs-attr">kind</span>: <span class="hljs-string">&#x27;lorentzian&#x27;</span>,
     <span class="hljs-attr">options</span>: {
-      <span class="hljs-attr">fwhm</span>: <span class="hljs-number">1000</span>,
-      <span class="hljs-attr">length</span>: <span class="hljs-number">10001</span>,
+      <span class="hljs-attr">factor</span>: <span class="hljs-number">10</span>, <span class="hljs-comment">// 10 times fwhm. Lorentzian are rather flat</span>
     },
   }
 });
