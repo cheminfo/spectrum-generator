@@ -1,5 +1,12 @@
 # Changelog
 
+### [4.4.1](https://www.github.com/cheminfo/spectrum-generator/compare/v4.4.0...v4.4.1) (2020-11-18)
+
+
+### Bug Fixes
+
+* peak shape and package updates ([65dd5e7](https://www.github.com/cheminfo/spectrum-generator/commit/65dd5e77a4e98f60b402e65d8f8640c6fd6815dc))
+
 ## [4.4.0](https://www.github.com/cheminfo/spectrum-generator/compare/v4.3.0...v4.4.0) (2020-10-31)
 
 
