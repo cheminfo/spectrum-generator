@@ -1,9 +1,9 @@
 import normed from 'ml-array-normed';
 import { getShape } from 'ml-peak-shape-generator';
+import objectHash from 'object-hash';
 
 import addBaseline from './util/addBaseline.js';
 import addNoise from './util/addNoise.js';
-import objectHash from 'object-hash';
 
 let shapesCache = {};
 const MAX_CACHE_LENGTH = 20;
@@ -131,20 +131,42 @@ export class SpectrumGenerator {
     const middlePoint = Math.round((xPosition - this.from) / this.interval);
     // PEAK SHAPE MAY BE ASYMMETRC (widthLeft and widthRight) !
     // we calculate the left part of the shape
-    for (let index = firstPoint; index < middlePoint; index++) {
+
+    for (let index = firstPoint; index < Math.max(middlePoint, 0); index++) {
       let ratio = ((xPosition - this.data.x[index]) / widthLeft) * 2;
-      let shapeIndex = Math.round(shape.halfLength - (ratio * shape.fwhm) / 2);
+
+      let shapeIndex = shape.halfLength - (ratio * shape.fwhm) / 2;
+      let floorIndex = Math.floor(shapeIndex);
+      let ceilIndex = Math.ceil(shapeIndex);
+      let value =
+        floorIndex === shapeIndex
+          ? shape.data[shapeIndex]
+          : shape.data[floorIndex] * (ceilIndex - shapeIndex) +
+            shape.data[ceilIndex] * (shapeIndex - floorIndex);
+      shapeIndex = Math.round(shapeIndex);
       if (shapeIndex >= 0 && shapeIndex < shape.data.length) {
-        this.data.y[index] += shape.data[shapeIndex] * intensity;
+        this.data.y[index] += value * intensity;
       }
     }
     // we calculate the right part of the gaussian
-    for (let index = middlePoint; index <= lastPoint; index++) {
+    for (
+      let index = Math.min(middlePoint, lastPoint);
+      index <= lastPoint;
+      index++
+    ) {
       let ratio = ((this.data.x[index] - xPosition) / widthRight) * 2;
 
-      let shapeIndex = Math.round(shape.halfLength - (ratio * shape.fwhm) / 2);
+      let shapeIndex = shape.halfLength - (ratio * shape.fwhm) / 2;
+      let floorIndex = Math.floor(shapeIndex);
+      let ceilIndex = Math.ceil(shapeIndex);
+      let value =
+        floorIndex === shapeIndex
+          ? shape.data[shapeIndex]
+          : shape.data[floorIndex] * (ceilIndex - shapeIndex) +
+            shape.data[ceilIndex] * (shapeIndex - floorIndex);
+      shapeIndex = Math.round(shapeIndex);
       if (shapeIndex >= 0 && shapeIndex <= shape.data.length) {
-        this.data.y[index] += shape.data[shapeIndex] * intensity;
+        this.data.y[index] += value * intensity;
       }
     }
 

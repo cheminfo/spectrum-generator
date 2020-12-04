@@ -66,7 +66,7 @@ describe('generateSpectrum with one peak and small window', () => {
         },
       },
     });
-    expect(spectrum.y[8]).toBe(0.5);
+    expect(spectrum.y[8]).toBeCloseTo(0.5, 10);
 
     checkSymmetry(spectrum);
     let max = xyMaxYPoint(spectrum);
@@ -109,7 +109,7 @@ describe('generateSpectrum with one peak and small window', () => {
       },
     });
     let max = xyMaxYPoint(spectrum);
-    expect(spectrum.y[49]).toBe(0.5);
+    expect(spectrum.y[49]).toBeCloseTo(0.5, 10);
     expect(max.x).toBe(5);
     expect(max.y).toBe(1);
   });
@@ -190,6 +190,8 @@ function assertInterval(spectrum, from) {
 
 function checkSymmetry(spectrum) {
   for (let i = 0; i <= Math.floor(spectrum.y.length / 2); i++) {
-    expect(spectrum.y[i]).toStrictEqual(spectrum.y[spectrum.y.length - i - 1]);
+    expect(spectrum.y[i] - spectrum.y[spectrum.y.length - i - 1]).toBeCloseTo(
+      0,
+    );
   }
 }

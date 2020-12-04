@@ -31,7 +31,6 @@ describe('generateSpectrum', () => {
       }
     }
 
-
     expect(nbChanges).toBe(2);
   });
 });

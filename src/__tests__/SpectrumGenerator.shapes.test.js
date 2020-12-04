@@ -1,4 +1,5 @@
 import { xyMaxYPoint } from 'ml-spectra-processing';
+
 import { SpectrumGenerator } from '..';
 
 describe('SpectrumGenerator various shapes', () => {
@@ -83,7 +84,7 @@ describe('SpectrumGenerator various shapes', () => {
     );
     const spectrum = spectrumGenerator.getSpectrum();
     let max = xyMaxYPoint(spectrum);
-    expect(spectrum.y[49]).toBe(0.5);
+    expect(spectrum.y[49]).toBeCloseTo(0.5, 10);
     expect(max.x).toBe(2.5);
     expect(max.y).toBe(2);
   });
@@ -111,7 +112,7 @@ describe('SpectrumGenerator various shapes', () => {
     expect(ys[70]).toBe(10);
     expect(ys[75]).toBe(5);
 
-    expect(ys[31] === ys[71]).toBe(true);
+    expect(ys[31] - ys[71]).toBeCloseTo(0, 10);
   });
 
   it('test various width', () => {
@@ -156,7 +157,7 @@ describe('SpectrumGenerator various shapes', () => {
     );
     const spectrum = spectrumGenerator.getSpectrum();
     let max = xyMaxYPoint(spectrum);
-    expect(spectrum.y[49]).toBe(0.5);
+    expect(spectrum.y[49]).toBeCloseTo(0.5, 10);
     expect(max.x).toBe(2.5);
     expect(max.y).toBe(2);
   });
