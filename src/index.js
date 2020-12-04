@@ -144,7 +144,7 @@ export class SpectrumGenerator {
           : shape.data[floorIndex] * (ceilIndex - shapeIndex) +
             shape.data[ceilIndex] * (shapeIndex - floorIndex);
       shapeIndex = Math.round(shapeIndex);
-      if (shapeIndex >= 0 && shapeIndex < shape.data.length) {
+      if (floorIndex >= 0 && ceilIndex < shape.data.length) {
         this.data.y[index] += value * intensity;
       }
     }
@@ -165,7 +165,7 @@ export class SpectrumGenerator {
           : shape.data[floorIndex] * (ceilIndex - shapeIndex) +
             shape.data[ceilIndex] * (shapeIndex - floorIndex);
       shapeIndex = Math.round(shapeIndex);
-      if (shapeIndex >= 0 && shapeIndex <= shape.data.length) {
+      if (floorIndex >= 0 && ceilIndex <= shape.data.length) {
         this.data.y[index] += value * intensity;
       }
     }

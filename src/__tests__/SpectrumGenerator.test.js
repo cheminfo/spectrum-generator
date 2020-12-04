@@ -52,7 +52,7 @@ describe('SpectrumGenerator', () => {
     const sumX = spectrum.x.reduce((previous, value) => previous + value);
     const sumY = spectrum.y.reduce((previous, value) => previous + value);
     expect(sumX).toBe(10050);
-    expect(sumY).toBeCloseTo(4257.612704089137, 4);
+    expect(sumY).toBeCloseTo(4257.612789255516, 4);
   });
 
   it('1 middle peak check width', () => {
