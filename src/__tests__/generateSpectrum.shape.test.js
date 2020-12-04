@@ -8,7 +8,6 @@ describe('generateSpectrum', () => {
       nbPoints: 51,
     });
 
-    let x = Array.from(spectrum.x);
     let y = Array.from(spectrum.y);
     let yPrime = [0];
 
