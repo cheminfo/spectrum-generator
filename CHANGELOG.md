@@ -1,5 +1,13 @@
 # Changelog
 
+### [4.4.2](https://www.github.com/cheminfo/spectrum-generator/compare/v4.4.1...v4.4.2) (2020-12-04)
+
+
+### Bug Fixes
+
+* correct some shapes imperfections ([eacf462](https://www.github.com/cheminfo/spectrum-generator/commit/eacf4628077939f7fec6894eb5e8966443feb76f))
+* NaN bug ([17a5fc9](https://www.github.com/cheminfo/spectrum-generator/commit/17a5fc936be41339048898f6d13c2ef4c487f92b))
+
 ### [4.4.1](https://www.github.com/cheminfo/spectrum-generator/compare/v4.4.0...v4.4.1) (2020-11-18)
 
 
