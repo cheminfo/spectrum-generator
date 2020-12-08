@@ -1,12 +1,17 @@
-import normed from 'ml-array-normed';
-import { getShape } from 'ml-peak-shape-generator';
-import objectHash from 'object-hash';
+import {
+  gaussianFct,
+  lorentzianFct,
+  pseudovoigtFct,
+  getKind,
+  GAUSSIAN,
+  LORENTZIAN,
+  PSEUDO_VOIGT,
+} from 'ml-peak-shape-generator';
 
 import addBaseline from './util/addBaseline.js';
 import addNoise from './util/addNoise.js';
 
-let shapesCache = {};
-const MAX_CACHE_LENGTH = 20;
+const lorentzianWidthFactor = 2 * Math.tan(Math.PI * (0.9999 - 0.5));
 
 export class SpectrumGenerator {
   constructor(options = {}) {
@@ -19,21 +24,19 @@ export class SpectrumGenerator {
         peakWidthFct: () => 5,
         shape: {
           kind: 'gaussian',
-          options: {
-            fwhm: 1000,
-            length: 5001,
-          },
         },
       },
       options,
     );
+
     this.from = options.from;
     this.to = options.to;
     this.nbPoints = options.nbPoints;
     this.interval = (this.to - this.from) / (this.nbPoints - 1);
     this.peakWidthFct = options.peakWidthFct;
     this.maxPeakHeight = Number.MIN_SAFE_INTEGER;
-    this.shape = createShape(options.shape.kind, options.shape.options);
+
+    this.shape = createShape(options.shape.kind);
 
     assertNumber(this.from, 'from');
     assertNumber(this.to, 'to');
@@ -133,41 +136,26 @@ export class SpectrumGenerator {
     // we calculate the left part of the shape
 
     for (let index = firstPoint; index < Math.max(middlePoint, 0); index++) {
-      let ratio = ((xPosition - this.data.x[index]) / widthLeft) * 2;
-
-      let shapeIndex = shape.halfLength - (ratio * shape.fwhm) / 2;
-      let floorIndex = Math.floor(shapeIndex);
-      let ceilIndex = Math.ceil(shapeIndex);
-      let value =
-        floorIndex === shapeIndex
-          ? shape.data[shapeIndex]
-          : shape.data[floorIndex] * (ceilIndex - shapeIndex) +
-            shape.data[ceilIndex] * (shapeIndex - floorIndex);
-      shapeIndex = Math.round(shapeIndex);
-      if (floorIndex >= 0 && ceilIndex < shape.data.length) {
-        this.data.y[index] += value * intensity;
-      }
+      this.data.y[index] += shape.function(
+        xPosition,
+        intensity,
+        widthLeft,
+        this.data.x[index],
+      );
     }
+
     // we calculate the right part of the gaussian
     for (
       let index = Math.min(middlePoint, lastPoint);
       index <= lastPoint;
       index++
     ) {
-      let ratio = ((this.data.x[index] - xPosition) / widthRight) * 2;
-
-      let shapeIndex = shape.halfLength - (ratio * shape.fwhm) / 2;
-      let floorIndex = Math.floor(shapeIndex);
-      let ceilIndex = Math.ceil(shapeIndex);
-      let value =
-        floorIndex === shapeIndex
-          ? shape.data[shapeIndex]
-          : shape.data[floorIndex] * (ceilIndex - shapeIndex) +
-            shape.data[ceilIndex] * (shapeIndex - floorIndex);
-      shapeIndex = Math.round(shapeIndex);
-      if (floorIndex >= 0 && ceilIndex <= shape.data.length) {
-        this.data.y[index] += value * intensity;
-      }
+      this.data.y[index] += shape.function(
+        xPosition,
+        intensity,
+        widthRight,
+        this.data.x[index],
+      );
     }
 
     return this;
@@ -246,29 +234,16 @@ export function generateSpectrum(peaks, options = {}) {
   });
 }
 
-function createShape(kind, options) {
-  const hash = objectHash({ kind, options });
-  if (shapesCache[hash]) {
-    return shapesCache[hash];
+function createShape(kind) {
+  if (typeof kind === 'string') kind = getKind(kind);
+  switch (kind) {
+    case GAUSSIAN:
+      return { function: gaussianFct, factor: 6 };
+    case LORENTZIAN:
+      return { function: lorentzianFct, factor: lorentzianWidthFactor };
+    case PSEUDO_VOIGT:
+      return { function: pseudovoigtFct, factor: lorentzianWidthFactor };
+    default:
+      throw new Error(`Unknown kind`);
   }
-
-  let shape = {};
-
-  let newShape = getShape(kind, options);
-
-  shape.data = normed(newShape.data, {
-    algorithm: 'max',
-  });
-  shape.fwhm = newShape.fwhm;
-  shape.factor = (newShape.data.length - 1) / newShape.fwhm;
-  shape.length = newShape.data.length;
-  shape.halfLength = Math.floor(newShape.data.length / 2);
-
-  if (Object.keys(shapesCache > MAX_CACHE_LENGTH)) {
-    shapesCache = {};
-  }
-
-  shapesCache[hash] = shape;
-
-  return shape;
 }

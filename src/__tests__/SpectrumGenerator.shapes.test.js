@@ -1,3 +1,4 @@
+import { lorentzianFct } from 'ml-peak-shape-generator';
 import { xyMaxYPoint } from 'ml-spectra-processing';
 
 import { SpectrumGenerator } from '..';
@@ -36,8 +37,8 @@ describe('SpectrumGenerator various shapes', () => {
     const spectrum = generator.getSpectrum();
 
     const ys = spectrum.y;
-    expect(ys[30]).toBe(10);
-    expect(ys[70]).toBe(10);
+    expect(ys[30]).toBeCloseTo(10 + lorentzianFct(7, 10, 1, 3), 7);
+    expect(ys[70]).toBeCloseTo(10, 7);
 
     expect(ys[31] !== ys[71]).toBe(true);
   });
@@ -84,9 +85,9 @@ describe('SpectrumGenerator various shapes', () => {
     );
     const spectrum = spectrumGenerator.getSpectrum();
     let max = xyMaxYPoint(spectrum);
-    expect(spectrum.y[49]).toBeCloseTo(0.5, 10);
+    expect(spectrum.y[49]).toBeCloseTo(0.5, 2);
     expect(max.x).toBe(2.5);
-    expect(max.y).toBe(2);
+    expect(max.y).toBeCloseTo(2, 3);
   });
 
   it('generation with [{x,y,width}]', () => {
@@ -135,10 +136,6 @@ describe('SpectrumGenerator various shapes', () => {
         width: 0.1,
         shape: {
           kind: 'lorentzian',
-          options: {
-            length: 13,
-            fwhm: 4,
-          },
         },
       },
     );
@@ -148,17 +145,13 @@ describe('SpectrumGenerator various shapes', () => {
         width: 0.2,
         shape: {
           kind: 'gaussian',
-          options: {
-            length: 13,
-            fwhm: 4,
-          },
         },
       },
     );
     const spectrum = spectrumGenerator.getSpectrum();
     let max = xyMaxYPoint(spectrum);
-    expect(spectrum.y[49]).toBeCloseTo(0.5, 10);
+    expect(spectrum.y[49]).toBeCloseTo(0.5, 2);
     expect(max.x).toBe(2.5);
-    expect(max.y).toBe(2);
+    expect(max.y).toBeCloseTo(2, 2);
   });
 });
