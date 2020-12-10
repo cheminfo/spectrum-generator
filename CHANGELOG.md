@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.5.0](https://www.github.com/cheminfo/spectrum-generator/compare/v4.4.2...v4.5.0) (2020-12-10)
+
+
+### Features
+
+* Improve speed by calculating point to point the peak shape. ([#24](https://www.github.com/cheminfo/spectrum-generator/issues/24)) ([b987289](https://www.github.com/cheminfo/spectrum-generator/commit/b987289b4b8aa9b44a81366ad68d29c3650e692b))
+
 ### [4.4.2](https://www.github.com/cheminfo/spectrum-generator/compare/v4.4.1...v4.4.2) (2020-12-04)
 
 
