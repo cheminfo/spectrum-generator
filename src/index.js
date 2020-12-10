@@ -1,6 +1,7 @@
+import { getShapeGenerator } from 'ml-peak-shape-generator';
+
 import addBaseline from './util/addBaseline.js';
 import addNoise from './util/addNoise.js';
-import getShapeGenerator from './util/getShapeGenerator';
 
 export class SpectrumGenerator {
   constructor(options = {}) {
