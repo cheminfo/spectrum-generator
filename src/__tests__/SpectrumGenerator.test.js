@@ -1,3 +1,5 @@
+import { Gaussian } from 'ml-peak-shape-generator';
+
 import { SpectrumGenerator } from '..';
 
 describe('SpectrumGenerator', () => {
@@ -46,13 +48,17 @@ describe('SpectrumGenerator', () => {
       to: 100,
       nbPoints: 201,
     });
-    generator.addPeak([50, 100], { widthLeft: 10, widthRight: 30 });
+    generator.addPeak([50, 100], { widthLeft: 10, widthRight: 30, factor: 15 });
     const spectrum = generator.getSpectrum();
-
     const sumX = spectrum.x.reduce((previous, value) => previous + value);
     const sumY = spectrum.y.reduce((previous, value) => previous + value);
     expect(sumX).toBe(10050);
-    expect(sumY).toBeCloseTo(4257.612789255516, 4);
+    expect(sumY * generator.interval).toBeCloseTo(
+      (Gaussian.getArea(10, { height: 100 }) +
+        Gaussian.getArea(30, { height: 100 })) /
+        2,
+      0,
+    );
   });
 
   it('1 middle peak check width', () => {
@@ -86,7 +92,7 @@ describe('SpectrumGenerator', () => {
     const spectrum = generator.getSpectrum();
     const nPoints = spectrum.x.length;
     for (let i = 0; i < nPoints / 2; i++) {
-      expect(spectrum.y[i]).toBe(spectrum.y[nPoints - 1 - i]);
+      expect(spectrum.y[i]).toBeCloseTo(spectrum.y[nPoints - 1 - i], 7);
       expect(spectrum.y[i]).toBeLessThan(2);
     }
   });
@@ -103,10 +109,10 @@ describe('SpectrumGenerator', () => {
 
     const spectrum = generator.getSpectrum();
 
-    expect(spectrum.y[0]).toBe(1);
-    expect(spectrum.y[50 * 10]).toBe(12);
-    expect(spectrum.y[100 * 10]).toBe(10);
-    expect(spectrum.y[14 * 10]).toBe(2);
+    expect(spectrum.y[0]).toBeCloseTo(1, 3);
+    expect(spectrum.y[50 * 10]).toBeCloseTo(12, 3);
+    expect(spectrum.y[100 * 10]).toBeCloseTo(10, 3);
+    expect(spectrum.y[14 * 10]).toBeCloseTo(2, 3);
   });
 
   it('full generation with {x,y}', () => {
@@ -121,10 +127,10 @@ describe('SpectrumGenerator', () => {
 
     const spectrum = generator.getSpectrum();
 
-    expect(spectrum.y[0]).toBe(1);
-    expect(spectrum.y[50 * 10]).toBe(12);
-    expect(spectrum.y[100 * 10]).toBe(10);
-    expect(spectrum.y[14 * 10]).toBe(2);
+    expect(spectrum.y[0]).toBeCloseTo(1, 3);
+    expect(spectrum.y[50 * 10]).toBeCloseTo(12, 3);
+    expect(spectrum.y[100 * 10]).toBeCloseTo(10, 3);
+    expect(spectrum.y[14 * 10]).toBeCloseTo(2, 3);
   });
 
   it('full generation with {x:[],y:[]}', () => {
@@ -135,11 +141,11 @@ describe('SpectrumGenerator', () => {
     generator.addPeaks({ x: [100, 14], y: [10, 2] });
 
     const spectrum = generator.getSpectrum();
-
-    expect(spectrum.y[0]).toBe(1);
-    expect(spectrum.y[50 * 10]).toBe(12);
-    expect(spectrum.y[100 * 10]).toBe(10);
-    expect(spectrum.y[14 * 10]).toBe(2);
+    // console.log(spectrum)
+    expect(spectrum.y[0]).toBeCloseTo(1, 3);
+    expect(spectrum.y[50 * 10]).toBeCloseTo(12, 3);
+    expect(spectrum.y[100 * 10]).toBeCloseTo(10, 3);
+    expect(spectrum.y[14 * 10]).toBeCloseTo(2, 3);
   });
 
   it('full generation with threshold', () => {

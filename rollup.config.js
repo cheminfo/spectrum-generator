@@ -6,7 +6,6 @@ export default {
   },
   external: [
     'd3-random',
-    'ml-array-normed',
     'ml-peak-shape-generator',
     'ml-xsadd',
   ],

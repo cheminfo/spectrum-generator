@@ -89,7 +89,7 @@ describe('generateSpectrum with one peak and small window', () => {
       },
     });
     let max = xyMaxYPoint(spectrum);
-    expect(spectrum.y[9]).toBeCloseTo(0.15749, 4);
+    expect(spectrum.y[9]).toBeCloseTo(0.0625, 4);
     expect(max.x).toBe(10);
     expect(max.y).toBe(1);
   });
