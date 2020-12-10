@@ -1,17 +1,6 @@
-import {
-  gaussianFct,
-  lorentzianFct,
-  pseudovoigtFct,
-  getKind,
-  GAUSSIAN,
-  LORENTZIAN,
-  PSEUDO_VOIGT,
-} from 'ml-peak-shape-generator';
-
 import addBaseline from './util/addBaseline.js';
 import addNoise from './util/addNoise.js';
-
-const lorentzianWidthFactor = 2 * Math.tan(Math.PI * (0.9999 - 0.5));
+import getShapeGenerator from './util/getShapeGenerator';
 
 export class SpectrumGenerator {
   constructor(options = {}) {
@@ -36,7 +25,8 @@ export class SpectrumGenerator {
     this.peakWidthFct = options.peakWidthFct;
     this.maxPeakHeight = Number.MIN_SAFE_INTEGER;
 
-    this.shape = createShape(options.shape.kind);
+    let shapeGenerator = getShapeGenerator(options.shape);
+    this.shape = shapeGenerator;
 
     assertNumber(this.from, 'from');
     assertNumber(this.to, 'to');
@@ -113,15 +103,20 @@ export class SpectrumGenerator {
       shape: shapeOptions,
     } = options;
 
-    const shape = shapeOptions
-      ? createShape(shapeOptions.kind, shapeOptions.options)
+    let shapeGenerator = shapeOptions
+      ? getShapeGenerator(shapeOptions)
       : this.shape;
 
     if (!widthLeft) widthLeft = width;
     if (!widthRight) widthRight = width;
 
-    const firstValue = xPosition - (widthLeft / 2) * shape.factor;
-    const lastValue = xPosition + (widthRight / 2) * shape.factor;
+    let factor =
+      options.factor === undefined
+        ? shapeGenerator.getFactor()
+        : options.factor;
+
+    const firstValue = xPosition - (widthLeft / 2) * factor;
+    const lastValue = xPosition + (widthRight / 2) * factor;
 
     const firstPoint = Math.max(
       0,
@@ -135,27 +130,21 @@ export class SpectrumGenerator {
     // PEAK SHAPE MAY BE ASYMMETRC (widthLeft and widthRight) !
     // we calculate the left part of the shape
 
+    shapeGenerator.setFWHM(widthLeft);
     for (let index = firstPoint; index < Math.max(middlePoint, 0); index++) {
-      this.data.y[index] += shape.function(
-        xPosition,
-        intensity,
-        widthLeft,
-        this.data.x[index],
-      );
+      this.data.y[index] +=
+        intensity * shapeGenerator.fct(this.data.x[index] - xPosition);
     }
 
     // we calculate the right part of the gaussian
+    shapeGenerator.setFWHM(widthRight);
     for (
       let index = Math.min(middlePoint, lastPoint);
       index <= lastPoint;
       index++
     ) {
-      this.data.y[index] += shape.function(
-        xPosition,
-        intensity,
-        widthRight,
-        this.data.x[index],
-      );
+      this.data.y[index] +=
+        intensity * shapeGenerator.fct(this.data.x[index] - xPosition);
     }
 
     return this;
@@ -232,18 +221,4 @@ export function generateSpectrum(peaks, options = {}) {
   return generator.getSpectrum({
     threshold: options.threshold,
   });
-}
-
-function createShape(kind) {
-  if (typeof kind === 'string') kind = getKind(kind);
-  switch (kind) {
-    case GAUSSIAN:
-      return { function: gaussianFct, factor: 6 };
-    case LORENTZIAN:
-      return { function: lorentzianFct, factor: lorentzianWidthFactor };
-    case PSEUDO_VOIGT:
-      return { function: pseudovoigtFct, factor: lorentzianWidthFactor };
-    default:
-      throw new Error(`Unknown kind`);
-  }
 }

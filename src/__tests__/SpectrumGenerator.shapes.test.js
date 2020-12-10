@@ -1,4 +1,4 @@
-import { lorentzianFct } from 'ml-peak-shape-generator';
+import { Lorentzian } from 'ml-peak-shape-generator';
 import { xyMaxYPoint } from 'ml-spectra-processing';
 
 import { SpectrumGenerator } from '..';
@@ -37,7 +37,7 @@ describe('SpectrumGenerator various shapes', () => {
     const spectrum = generator.getSpectrum();
 
     const ys = spectrum.y;
-    expect(ys[30]).toBeCloseTo(10 + lorentzianFct(7, 10, 1, 3), 7);
+    expect(ys[30]).toBeCloseTo(10 + 10 * Lorentzian.fct(3 - 7, 1), 7);
     expect(ys[70]).toBeCloseTo(10, 7);
 
     expect(ys[31] !== ys[71]).toBe(true);

@@ -1,3 +1,5 @@
+import { Gaussian } from 'ml-peak-shape-generator';
+
 import { SpectrumGenerator } from '..';
 
 describe('SpectrumGenerator', () => {
@@ -46,13 +48,17 @@ describe('SpectrumGenerator', () => {
       to: 100,
       nbPoints: 201,
     });
-    generator.addPeak([50, 100], { widthLeft: 10, widthRight: 30 });
+    generator.addPeak([50, 100], { widthLeft: 10, widthRight: 30, factor: 15 });
     const spectrum = generator.getSpectrum();
-
     const sumX = spectrum.x.reduce((previous, value) => previous + value);
     const sumY = spectrum.y.reduce((previous, value) => previous + value);
     expect(sumX).toBe(10050);
-    expect(sumY).toBeCloseTo(4257.612789255516, 4);
+    expect(sumY * generator.interval).toBeCloseTo(
+      (Gaussian.getArea(10, { height: 100 }) +
+        Gaussian.getArea(30, { height: 100 })) /
+        2,
+      0,
+    );
   });
 
   it('1 middle peak check width', () => {
