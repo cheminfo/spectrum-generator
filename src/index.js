@@ -82,6 +82,7 @@ export class SpectrumGenerator {
         'peak must be an array with two (or three) values or an object with {x,y,width?}',
       );
     }
+
     let xPosition;
     let intensity;
     let peakWidth;
@@ -216,7 +217,8 @@ function assertNumber(value, name) {
 
 export function generateSpectrum(peaks, options = {}) {
   const generator = new SpectrumGenerator(options);
-  generator.addPeaks(peaks);
+
+  generator.addPeaks(peaks, options);
   if (options.baseline) generator.addBaseline(options.baseline);
   if (options.noise) generator.addNoise(options.noise.percent, options.noise);
   return generator.getSpectrum({

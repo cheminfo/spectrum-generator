@@ -57,7 +57,7 @@
   },
   "dependencies": {
     "d3-random": "^2.2.2",
-    "ml-peak-shape-generator": "0.12.0",
+    "ml-peak-shape-generator": "^0.12.0",
     "ml-xsadd": "2.0.0"
   }
 }
