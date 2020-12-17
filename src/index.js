@@ -4,6 +4,17 @@ import addBaseline from './util/addBaseline.js';
 import addNoise from './util/addNoise.js';
 
 export class SpectrumGenerator {
+  /**
+   *
+   * @param {object} [options={}]
+   * @param {number} [options.from=0]
+   * @param {number} [options.to=0]
+   * @param {function} [options.nbPoints=10001]
+   * @param {number} [options.factor] default value depends of the shape in order to cover 99.99% of the surface
+   * @param {object} [options.shape={kind:'gaussian'}]
+   * @param {string} [options.shape.kind] kind of shape, gaussian, lorentzian or pseudovoigt
+   * @param {object} [options.shape.options] options for the shape (like `mu` for pseudovoigt)
+   */
   constructor(options = {}) {
     options = Object.assign(
       {},
@@ -71,6 +82,11 @@ export class SpectrumGenerator {
     return this;
   }
 
+  /**
+   *
+   * @param {[x,y]|[x,y,w]|{x,y,width}} [peak]
+   * @param {*} options
+   */
   addPeak(peak, options = {}) {
     if (
       typeof peak !== 'object' ||

@@ -38,7 +38,7 @@ const spectrum = generateSpectrum(peaks, {
   nbPoints: 10001, // default value: 10001
   factor: 3, // default value would covers 99.99% of the surface and depends on the shape
   shape: {
-    kind: 'gaussian',
+    kind: 'gaussian', // default value is gaussian
   },
 });
 ```
@@ -90,11 +90,9 @@ generator.reset();
 
 generator.addPeak({x: 10, y: 50}], { // customize peaks shape
   width: 0.1, // width of peak is FWHM
+  factor: 10, // 10 times fwhm. Lorentzian are rather flat
   shape: {
     kind: 'lorentzian',
-    options: {
-      factor: 10, // 10 times fwhm. Lorentzian are rather flat
-    },
   }
 });
 
