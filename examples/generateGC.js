@@ -37,7 +37,7 @@ for (let i = 0; i < spectrum.x.length; i++) {
   );
 }
 
-fs.writeFileSync(`${__dirname}/data.txt`, text.join('\n'), 'utf8');
+// fs.writeFileSync(`${__dirname}/data.txt`, text.join('\n'), 'utf8');
 
 fs.writeFileSync(
   `${__dirname}/data.json`,

@@ -15,12 +15,9 @@ const options = {
   from: 0,
   to: 100,
   nbPoints: 101,
+  factor: 1,
   shape: {
     kind: 'lorentzian',
-    options: {
-      fwhm: 1000,
-      length: 10001,
-    },
   },
 };
 const peaks = [{ x: 50, y: 100, width: 10 }];

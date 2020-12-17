@@ -12,10 +12,6 @@ describe('SpectrumGenerator various shapes', () => {
       peakWidthFct: () => 1,
       shape: {
         kind: 'gaussian',
-        options: {
-          fwhm: 1000,
-          length: 5001,
-        },
       },
     });
 
@@ -26,10 +22,6 @@ describe('SpectrumGenerator various shapes', () => {
       {
         shape: {
           kind: 'lorentzian',
-          options: {
-            fwhm: 1000,
-            length: 5001,
-          },
         },
       },
     );
@@ -51,10 +43,6 @@ describe('SpectrumGenerator various shapes', () => {
       peakWidthFct: () => 0.1,
       shape: {
         kind: 'lorentzian',
-        options: {
-          length: 13,
-          fwhm: 4,
-        },
       },
     });
     spectrumGenerator.addPeak(
@@ -76,10 +64,6 @@ describe('SpectrumGenerator various shapes', () => {
         width: 0.2,
         shape: {
           kind: 'gaussian',
-          options: {
-            length: 13,
-            fwhm: 4,
-          },
         },
       },
     );
@@ -124,10 +108,6 @@ describe('SpectrumGenerator various shapes', () => {
       peakWidthFct: () => 0.1,
       shape: {
         kind: 'lorentzian',
-        options: {
-          length: 13,
-          fwhm: 4,
-        },
       },
     });
     spectrumGenerator.addPeak(

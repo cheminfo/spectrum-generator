@@ -61,7 +61,6 @@ describe('generateSpectrum with one peak and small window', () => {
       shape: {
         kind: 'gaussian',
         options: {
-          length: 17,
           fwhm: 4,
         },
       },
@@ -83,7 +82,6 @@ describe('generateSpectrum with one peak and small window', () => {
       shape: {
         kind: 'gaussian',
         options: {
-          length: 10,
           fwhm: 3,
         },
       },
@@ -102,10 +100,6 @@ describe('generateSpectrum with one peak and small window', () => {
       peakWidthFct: () => 0.2,
       shape: {
         kind: 'gaussian',
-        options: {
-          fwhm: 4,
-          length: 13,
-        },
       },
     });
     let max = xyMaxYPoint(spectrum);
@@ -122,10 +116,6 @@ describe('generateSpectrum with one peak and small window', () => {
       peakWidthFct: () => 2,
       shape: {
         kind: 'gaussian',
-        options: {
-          fwhm: 500,
-          length: 1501,
-        },
       },
     });
     checkSymmetry(spectrum);

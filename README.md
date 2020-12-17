@@ -36,6 +36,10 @@ const spectrum = generateSpectrum(peaks, {
   from: 0, // default value: 0
   to: 1000, // default value: 1000
   nbPoints: 10001, // default value: 10001
+  factor: 3, // default value would covers 99.99% of the surface and depends on the shape
+  shape: {
+    kind: 'gaussian',
+  },
 });
 ```
 
@@ -63,10 +67,6 @@ const spectrum = generateSpectrum(peaks, {
   to: 10,
   shape: {
     kind: 'lorentzian',
-    options: {
-      fwhm: 1000,
-      length: 10001,
-    },
   },
 });
 ```
@@ -104,10 +104,6 @@ generator.addPeak({x: 10, y: 50}], { // customize peaks shape
   width: 0.1,
   shape: {
     kind: 'gaussian',
-    options: {
-      fwhm: 1000,
-      length: 10001,
-    },
   }
 });
 const otherSpectrum = generator.getSpectrum();
