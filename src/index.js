@@ -149,20 +149,28 @@ export class SpectrumGenerator {
     // we calculate the left part of the shape
 
     shapeGenerator.setFWHM(widthLeft);
-    for (let index = firstPoint; index < Math.max(middlePoint, 0); index++) {
+
+    let rescaleShift = shapeGenerator.fct(this.data.x[firstPoint] - xPosition);
+    let rescaleFactor = 1 / (1 - rescaleShift);
+
+    for (let index = firstPoint; index < middlePoint; index++) {
       this.data.y[index] +=
-        intensity * shapeGenerator.fct(this.data.x[index] - xPosition);
+        intensity *
+        (shapeGenerator.fct(this.data.x[index] - xPosition) - rescaleShift) *
+        rescaleFactor;
     }
 
     // we calculate the right part of the gaussian
     shapeGenerator.setFWHM(widthRight);
-    for (
-      let index = Math.min(middlePoint, lastPoint);
-      index <= lastPoint;
-      index++
-    ) {
+
+    rescaleShift = shapeGenerator.fct(this.data.x[firstPoint] - xPosition);
+    rescaleFactor = 1 / (1 - rescaleShift);
+
+    for (let index = middlePoint; index <= lastPoint; index++) {
       this.data.y[index] +=
-        intensity * shapeGenerator.fct(this.data.x[index] - xPosition);
+        intensity *
+        (shapeGenerator.fct(this.data.x[index] - xPosition) - rescaleShift) *
+        rescaleFactor;
     }
 
     return this;
