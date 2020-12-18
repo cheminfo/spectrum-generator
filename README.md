@@ -4,11 +4,7 @@
 [![build status][ci-image]][ci-url]
 [![npm download][download-image]][download-url]
 
-Generates a spectrum from discrete peaks. The shape of the peaks can be customised.
-
-In order to increase the speed a `shape` is first generated and then the peaks in the final
-spectrum are resulting from sampling the `shape`. A `shape` will therefore be generated with
-much more points (typically fwhm:1000).
+Generates a spectrum from discrete peaks. The shape of the peaks can be customized.
 
 The shape is generated using [ml-peak-shape-generator](https://github.com/mljs/peak-shape-generator) and you may use all the corresponding [options](https://mljs.github.io/peak-shape-generator/#getshape) of getShape.
 
@@ -17,9 +13,6 @@ The shape is generated using [ml-peak-shape-generator](https://github.com/mljs/p
 `$ npm i spectrum-generator`
 
 ## Usage
-
-The spectrum generator takes an array of discrete peaks (value and intensity)
-and generates peaks with a gaussian distribution (by default).
 
 ### generateSpectrum
 
@@ -59,6 +52,7 @@ const peaks = [
 Peaks can also be introduced as:
 - const peaks = [{x:1,y:10},{x:2,y:30},{x:3,y:1},{x:4,y:76}]
 - const peaks = {x:[1,2,3,4], y:[10,30,1,76]}
+- const peaks = [ [1,10,5], [2,30,10] ] // third argument is the peak width
 */
 
 const spectrum = generateSpectrum(peaks, {
