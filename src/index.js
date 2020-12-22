@@ -102,12 +102,14 @@ export class SpectrumGenerator {
     let xPosition;
     let intensity;
     let peakWidth;
+    let gaussianRatio;
     if (Array.isArray(peak)) {
-      [xPosition, intensity, peakWidth] = peak;
+      [xPosition, intensity, peakWidth, gaussianRatio] = peak;
     } else {
       xPosition = peak.x;
       intensity = peak.y;
       peakWidth = peak.width;
+      gaussianRatio = peak.mu;
     }
 
     if (intensity > this.maxPeakHeight) this.maxPeakHeight = intensity;
@@ -124,6 +126,8 @@ export class SpectrumGenerator {
     let shapeGenerator = shapeOptions
       ? getShapeGenerator(shapeOptions)
       : this.shape;
+
+    if (gaussianRatio !== undefined) shapeGenerator.setMu(gaussianRatio);
 
     if (!widthLeft) widthLeft = width;
     if (!widthRight) widthRight = width;
