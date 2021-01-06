@@ -68,10 +68,7 @@
 				<p><a href="https://www.npmjs.com/package/spectrum-generator"><img src="https://img.shields.io/npm/v/spectrum-generator.svg" alt="NPM version"></a>
 					<a href="https://github.com/cheminfo/spectrum-generator/actions?query=workflow%3A%22Node.js+CI%22"><img src="https://github.com/cheminfo/spectrum-generator/workflows/Node.js%20CI/badge.svg?branch=master" alt="build status"></a>
 				<a href="https://www.npmjs.com/package/spectrum-generator"><img src="https://img.shields.io/npm/dm/spectrum-generator.svg" alt="npm download"></a></p>
-				<p>Generates a spectrum from discrete peaks. The shape of the peaks can be customised.</p>
-				<p>In order to increase the speed a <code>shape</code> is first generated and then the peaks in the final
-					spectrum are resulting from sampling the <code>shape</code>. A <code>shape</code> will therefore be generated with
-				much more points (typically fwhm:1000).</p>
+				<p>Generates a spectrum from discrete peaks. The shape of the peaks can be customized.</p>
 				<p>The shape is generated using <a href="https://github.com/mljs/peak-shape-generator">ml-peak-shape-generator</a> and you may use all the corresponding <a href="https://mljs.github.io/peak-shape-generator/#getshape">options</a> of getShape.</p>
 				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
 					<h2>Installation</h2>
@@ -80,8 +77,6 @@
 				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
 					<h2>Usage</h2>
 				</a>
-				<p>The spectrum generator takes an array of discrete peaks (value and intensity)
-				and generates peaks with a gaussian distribution (by default).</p>
 				<a href="#generatespectrum" id="generatespectrum" style="color: inherit; text-decoration: none;">
 					<h3>generateSpectrum</h3>
 				</a>
@@ -97,6 +92,10 @@
   <span class="hljs-attr">from</span>: <span class="hljs-number">0</span>, <span class="hljs-comment">// default value: 0</span>
   <span class="hljs-attr">to</span>: <span class="hljs-number">1000</span>, <span class="hljs-comment">// default value: 1000</span>
   <span class="hljs-attr">nbPoints</span>: <span class="hljs-number">10001</span>, <span class="hljs-comment">// default value: 10001</span>
+  <span class="hljs-attr">factor</span>: <span class="hljs-number">3</span>, <span class="hljs-comment">// default value would covers 99.99% of the surface and depends on the shape</span>
+  <span class="hljs-attr">shape</span>: {
+    <span class="hljs-attr">kind</span>: <span class="hljs-string">&#x27;gaussian&#x27;</span>, <span class="hljs-comment">// default value is gaussian</span>
+  },
 });</code></pre>
 				<p>Example to generate a high resolution spectrum using lorentzian peaks shape</p>
 				<pre><code class="language-js"><span class="hljs-keyword">import</span> { generateSpectrum } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;spectrum-generator&#x27;</span>;
@@ -112,6 +111,7 @@
 Peaks can also be introduced as:
 - const peaks = [{x:1,y:10},{x:2,y:30},{x:3,y:1},{x:4,y:76}]
 - const peaks = {x:[1,2,3,4], y:[10,30,1,76]}
+- const peaks = [ [1,10,5], [2,30,10] ] // third argument is the peak width
 */</span>
 
 <span class="hljs-keyword">const</span> spectrum = generateSpectrum(peaks, {
@@ -120,10 +120,6 @@ Peaks can also be introduced as:
   <span class="hljs-attr">to</span>: <span class="hljs-number">10</span>,
   <span class="hljs-attr">shape</span>: {
     <span class="hljs-attr">kind</span>: <span class="hljs-string">&#x27;lorentzian&#x27;</span>,
-    <span class="hljs-attr">options</span>: {
-      <span class="hljs-attr">fwhm</span>: <span class="hljs-number">1000</span>,
-      <span class="hljs-attr">length</span>: <span class="hljs-number">10001</span>,
-    },
   },
 });</code></pre>
 				<a href="#class-spectrumgenerator" id="class-spectrumgenerator" style="color: inherit; text-decoration: none;">
@@ -145,11 +141,9 @@ generator.reset();
 
 generator.addPeak({<span class="hljs-attr">x</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">50</span>}], { <span class="hljs-comment">// customize peaks shape</span>
   <span class="hljs-attr">width</span>: <span class="hljs-number">0.1</span>, <span class="hljs-comment">// width of peak is FWHM</span>
+  <span class="hljs-attr">factor</span>: <span class="hljs-number">10</span>, <span class="hljs-comment">// 10 times fwhm. Lorentzian are rather flat</span>
   <span class="hljs-attr">shape</span>: {
     <span class="hljs-attr">kind</span>: <span class="hljs-string">&#x27;lorentzian&#x27;</span>,
-    <span class="hljs-attr">options</span>: {
-      <span class="hljs-attr">factor</span>: <span class="hljs-number">10</span>, <span class="hljs-comment">// 10 times fwhm. Lorentzian are rather flat</span>
-    },
   }
 });
 
@@ -159,10 +153,6 @@ generator.addPeak({<span class="hljs-attr">x</span>: <span class="hljs-number">1
   <span class="hljs-attr">width</span>: <span class="hljs-number">0.1</span>,
   <span class="hljs-attr">shape</span>: {
     <span class="hljs-attr">kind</span>: <span class="hljs-string">&#x27;gaussian&#x27;</span>,
-    <span class="hljs-attr">options</span>: {
-      <span class="hljs-attr">fwhm</span>: <span class="hljs-number">1000</span>,
-      <span class="hljs-attr">length</span>: <span class="hljs-number">10001</span>,
-    },
   }
 });
 <span class="hljs-keyword">const</span> otherSpectrum = generator.getSpectrum();</code></pre>
