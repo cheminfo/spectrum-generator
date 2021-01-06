@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.7.0](https://www.github.com/cheminfo/spectrum-generator/compare/v4.6.0...v4.7.0) (2021-01-06)
+
+
+### Features
+
+* Use gaussian ration directly from peaks ([#28](https://www.github.com/cheminfo/spectrum-generator/issues/28)) ([36e1051](https://www.github.com/cheminfo/spectrum-generator/commit/36e1051171aa1bd59821f8d116dec81137231fc4))
+
 ## [4.6.0](https://www.github.com/cheminfo/spectrum-generator/compare/v4.5.0...v4.6.0) (2020-12-11)
 
 
