@@ -1,5 +1,12 @@
 # Changelog
 
+### [4.7.1](https://www.github.com/cheminfo/spectrum-generator/compare/v4.7.0...v4.7.1) (2021-03-24)
+
+
+### Bug Fixes
+
+* update dependencies ([9c15b39](https://www.github.com/cheminfo/spectrum-generator/commit/9c15b39766f33bbbe497529e45da04f932268fbd))
+
 ## [4.7.0](https://www.github.com/cheminfo/spectrum-generator/compare/v4.6.0...v4.7.0) (2021-01-06)
 
 
