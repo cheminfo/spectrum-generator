@@ -111,7 +111,6 @@ export class SpectrumGenerator {
       peakWidth = peak.width;
       peakOptions = peak.options;
     }
-
     if (intensity > this.maxPeakHeight) this.maxPeakHeight = intensity;
 
     let {
@@ -120,11 +119,11 @@ export class SpectrumGenerator {
         : peakWidth,
       widthLeft,
       widthRight,
-      shape: shapeOptions,
+      shape: shapeOptions = {},
     } = options;
 
     if (peakOptions) {
-      Object.assign(shapeOptions || {}, peakOptions || {});
+      shapeOptions = Object.assign({}, shapeOptions, peakOptions);
     }
 
     let shapeGenerator = shapeOptions
