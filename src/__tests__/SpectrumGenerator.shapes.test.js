@@ -1,4 +1,4 @@
-import { Lorentzian } from 'ml-peak-shape-generator';
+import { Lorentzian, Gaussian } from 'ml-peak-shape-generator';
 import { xyMaxYPoint } from 'ml-spectra-processing';
 
 import { SpectrumGenerator } from '..';
@@ -49,7 +49,7 @@ describe('SpectrumGenerator various shapes', () => {
     generator.addPeak({
       x: 3,
       y: 10,
-      options: { kind: 'pseudovoigt', options: { mu: 1 } },
+      shape: { kind: 'pseudovoigt', options: { mu: 1 } },
     });
 
     generator.addPeak(
@@ -62,7 +62,7 @@ describe('SpectrumGenerator various shapes', () => {
     );
 
     generator.addPeak(
-      { x: 7, y: 5, options: { options: { mu: 0 } } },
+      { x: 7, y: 5, shape: { options: { mu: 0 } } },
       {
         shape: {
           kind: 'pseudovoigt',
@@ -177,5 +177,25 @@ describe('SpectrumGenerator various shapes', () => {
     expect(spectrum.y[49]).toBeCloseTo(0.5, 2);
     expect(max.x).toBe(2.5);
     expect(max.y).toBeCloseTo(2, 2);
+  });
+
+  it('The peak shape should be gaussian', () => {
+    const spectrumGenerator = new SpectrumGenerator({
+      from: -0.1,
+      to: 0.1,
+      nbPoints: 51,
+      shape: { kind: 'lorentzian' },
+    });
+
+    spectrumGenerator.addPeak({
+      x: 0,
+      y: 1,
+      width: 0.5,
+      shape: { kind: 'gaussian' },
+    });
+
+    let spectrum = spectrumGenerator.getSpectrum();
+    let index = spectrum.x.indexOf(0.06);
+    expect(spectrum.y[index]).toBe(Gaussian.fct(0.06, 0.5));
   });
 });
