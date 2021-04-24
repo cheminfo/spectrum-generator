@@ -123,7 +123,7 @@ export class SpectrumGenerator {
     } = options;
 
     if (peakOptions) {
-      shapeOptions = Object.assign({}, shapeOptions, peakOptions);
+      shapeOptions = { ...shapeOptions, ...peakOptions };
     }
 
     let shapeGenerator = shapeOptions
