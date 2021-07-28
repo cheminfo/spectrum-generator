@@ -1,3 +1,5 @@
+import { Gaussian } from 'ml-peak-shape-generator';
+
 import { generateSpectrum } from '..';
 
 describe('generateSpectrum', () => {
@@ -31,5 +33,26 @@ describe('generateSpectrum', () => {
     }
 
     expect(nbChanges).toBe(2);
+  });
+
+  it('The peak shape should be a gaussian', () => {
+    let peaks = [
+      {
+        x: 0,
+        y: 1,
+        width: 0.5,
+        shape: { kind: 'gaussian' },
+      },
+    ];
+
+    const spectrum = generateSpectrum(peaks, {
+      from: -0.1,
+      to: 0.1,
+      nbPoints: 51,
+      shape: { kind: 'lorentzian' },
+    });
+
+    let index = spectrum.x.indexOf(0.06);
+    expect(spectrum.y[index]).toBe(Gaussian.fct(0.06, 0.5));
   });
 });
