@@ -1,7 +1,14 @@
 import { randomUniform, randomNormal } from 'd3-random';
 import XSAdd from 'ml-xsadd';
 
-export default function addNoise(data, percent = 0, options = {}) {
+import type { AddNoiseOpt } from '../types/addNoiseOpt';
+import type { Data } from '../types/data';
+
+export default function addNoise(
+  data: Data,
+  percent = 0,
+  options: AddNoiseOpt = {},
+) {
   const { distribution = 'uniform', seed } = options;
 
   let generateRandomNumber;
@@ -15,7 +22,7 @@ export default function addNoise(data, percent = 0, options = {}) {
       break;
     }
     default:
-      throw new Error(`Unknown distribution ${options.distribution}`);
+      throw new Error(`Unknown distribution ${distribution}`);
   }
 
   if (!percent) return data;
@@ -27,13 +34,17 @@ export default function addNoise(data, percent = 0, options = {}) {
   return data;
 }
 
-function getRandom(func, seed, ...args) {
+function getRandom(
+  func: typeof randomNormal | typeof randomUniform,
+  seed?: number,
+  ...args: [number, number | undefined] | []
+) {
   return typeof seed === 'number'
     ? func.source(new XSAdd(seed).random)(...args)
     : func(...args);
 }
 
-function findMax(array) {
+function findMax(array: Float64Array | number[]) {
   let max = Number.MIN_VALUE;
   for (let item of array) {
     if (item > max) max = item;

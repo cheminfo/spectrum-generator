@@ -1,9 +1,49 @@
 import { getShapeGenerator } from 'ml-peak-shape-generator';
 
-import addBaseline from './util/addBaseline.js';
-import addNoise from './util/addNoise.js';
+import type { AddNoiseOpt } from './types/addNoiseOpt';
+import type { Data } from './types/data';
+import type { PeakSeries, peak, PeakObject } from './types/peaks';
+import type { Shape } from './types/shape';
+import addBaseline from './util/addBaseline';
+import addNoise from './util/addNoise';
+
+type numToNumFn = (x?: number) => number;
+
+interface OptionsSG1D {
+  from?: number;
+  to?: number;
+  nbPoints?: number;
+  interval?: number;
+  peakWidthFct?: numToNumFn;
+  maxPeakHeight?: number;
+  shape?: Shape;
+}
+
+interface AddPeakOptions {
+  width?: number;
+  widthLeft?: number;
+  widthRight?: number;
+  shape?: Shape;
+  factor?: number;
+}
+
+interface GenerateSpectrumOpt {
+  generator?: OptionsSG1D;
+  baseline?: numToNumFn;
+  noise?: { percent: number; options: AddNoiseOpt };
+  peaks?: AddPeakOptions;
+  threshold?: number;
+}
 
 export class SpectrumGenerator {
+  private from: number;
+  private to: number;
+  private nbPoints: number;
+  private interval: number;
+  private peakWidthFct: numToNumFn;
+  private maxPeakHeight: number;
+  private shape: (options: Shape) => any;
+  private data: Data;
   /**
    *
    * @param {object} [options={}]
@@ -15,29 +55,30 @@ export class SpectrumGenerator {
    * @param {string} [options.shape.kind] kind of shape, gaussian, lorentzian or pseudovoigt
    * @param {object} [options.shape.options] options for the shape (like `mu` for pseudovoigt)
    */
-  constructor(options = {}) {
-    options = Object.assign(
-      {},
-      {
-        from: 0,
-        to: 1000,
-        nbPoints: 10001,
-        peakWidthFct: () => 5,
-        shape: {
-          kind: 'gaussian',
-        },
+  public constructor(options: OptionsSG1D = {}) {
+    const {
+      from = 0,
+      to = 1000,
+      nbPoints = 10001,
+      peakWidthFct = () => 5,
+      shape = {
+        kind: 'gaussian',
       },
-      options,
-    );
+    } = options;
 
-    this.from = options.from;
-    this.to = options.to;
-    this.nbPoints = options.nbPoints;
+    this.from = from;
+    this.to = to;
+    this.nbPoints = nbPoints;
     this.interval = (this.to - this.from) / (this.nbPoints - 1);
-    this.peakWidthFct = options.peakWidthFct;
+    this.peakWidthFct = peakWidthFct;
     this.maxPeakHeight = Number.MIN_SAFE_INTEGER;
 
-    let shapeGenerator = getShapeGenerator(options.shape);
+    this.data = {
+      x: new Float64Array(this.nbPoints),
+      y: new Float64Array(this.nbPoints),
+    };
+
+    let shapeGenerator = getShapeGenerator(shape);
     this.shape = shapeGenerator;
 
     assertNumber(this.from, 'from');
@@ -55,7 +96,7 @@ export class SpectrumGenerator {
     this.reset();
   }
 
-  addPeaks(peaks, options) {
+  public addPeaks(peaks: peak[] | PeakSeries, options?: AddPeakOptions) {
     if (
       !Array.isArray(peaks) &&
       (typeof peaks !== 'object' ||
@@ -87,13 +128,15 @@ export class SpectrumGenerator {
    * @param {[x,y]|[x,y,w]|{x,y,width}} [peak]
    * @param {*} options
    */
-  addPeak(peak, options = {}) {
-    if (
-      typeof peak !== 'object' ||
-      (peak.length !== 2 &&
-        peak.length !== 3 &&
-        (peak.x === undefined || peak.y === undefined))
-    ) {
+
+  public addPeak(peak: peak, options: AddPeakOptions = {}) {
+    if (Array.isArray(peak) && peak.length !== 2 && peak.length !== 3) {
+      throw new Error(
+        'peak must be an array with two (or three) values or an object with {x,y,width?}',
+      );
+    }
+
+    if (!Array.isArray(peak) && (peak.x === undefined || peak.y === undefined)) {
       throw new Error(
         'peak must be an array with two (or three) values or an object with {x,y,width?}',
       );
@@ -173,17 +216,17 @@ export class SpectrumGenerator {
     return this;
   }
 
-  addBaseline(baselineFct) {
+  public addBaseline(baselineFct: numToNumFn) {
     addBaseline(this.data, baselineFct);
     return this;
   }
 
-  addNoise(percent, options) {
+  public addNoise(percent: number, options: AddNoiseOpt) {
     addNoise(this.data, percent, options);
     return this;
   }
 
-  getSpectrum(options = {}) {
+  public getSpectrum(options: { copy?: boolean; threshold?: number } = {}) {
     if (typeof options === 'boolean') {
       options = { copy: options };
     }
@@ -210,11 +253,8 @@ export class SpectrumGenerator {
     }
   }
 
-  reset() {
-    const spectrum = (this.data = {
-      x: new Float64Array(this.nbPoints),
-      y: new Float64Array(this.nbPoints),
-    });
+  public reset() {
+    const spectrum = this.data;
 
     for (let i = 0; i < this.nbPoints; i++) {
       spectrum.x[i] = this.from + i * this.interval;
@@ -224,25 +264,33 @@ export class SpectrumGenerator {
   }
 }
 
-function assertInteger(value, name) {
+function assertInteger(value: number, name: string) {
   if (!Number.isInteger(value)) {
     throw new TypeError(`${name} option must be an integer`);
   }
 }
 
-function assertNumber(value, name) {
+function assertNumber(value: number, name: string) {
   if (!Number.isFinite(value)) {
     throw new TypeError(`${name} option must be a number`);
   }
 }
 
-export function generateSpectrum(peaks, options = {}) {
-  const generator = new SpectrumGenerator(options);
+export function generateSpectrum(
+  peaks: peak[] | PeakSeries,
+  options: GenerateSpectrumOpt = {},
+): Data {
+  const { generator: generatorOptions, noise, baseline, threshold, peaks: addPeaksOptions } = options;
 
-  generator.addPeaks(peaks, options);
-  if (options.baseline) generator.addBaseline(options.baseline);
-  if (options.noise) generator.addNoise(options.noise.percent, options.noise);
+  const generator = new SpectrumGenerator(generatorOptions);
+
+  generator.addPeaks(peaks, addPeaksOptions);
+  if (baseline) generator.addBaseline(baseline);
+  if (noise) {
+    const { percent, options: addNoiseOptions } = noise;
+    generator.addNoise(percent, addNoiseOptions);
+  }
   return generator.getSpectrum({
-    threshold: options.threshold,
+    threshold,
   });
 }

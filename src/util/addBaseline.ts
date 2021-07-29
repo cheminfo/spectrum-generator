@@ -1,4 +1,8 @@
-export default function addBaseline(data, baselineFct) {
+import type { Data } from '../types/data';
+
+type baseLineFn = (x?: number) => number
+
+export default function addBaseline(data: Data, baselineFct: baseLineFn) {
   if (!baselineFct) return data;
   let xs = data.x;
   let ys = data.y;

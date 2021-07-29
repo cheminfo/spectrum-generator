@@ -1,59 +1,60 @@
 {
-  "name": "spectrum-generator",
   "version": "4.7.1",
   "description": "generate a spectrum from discrete peaks",
-  "main": "lib/index.js",
-  "module": "src/index.js",
-  "types": "spectrum-generator.d.ts",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "keywords": [],
+  "author": "Luc Patiny",
+  "contributors": [
+    "Michaël Zasso",
+    "Océane Patiny",
+    "J. Alejandro Bolaños A."
+  ],
+  "license": "MIT",
   "files": [
-    "spectrum-generator.d.ts",
-    "lib",
-    "src"
+    "src",
+    "lib"
   ],
   "scripts": {
-    "build": "cheminfo-build --entry src/index.js --root SpectrumGenerator",
+    "check-types": "tsc --noEmit",
+    "clean": "rimraf lib",
     "eslint": "eslint src --cache",
     "eslint-fix": "npm run eslint -- --fix",
-    "example": "node -r esm examples/generateSpectrum.js",
-    "prepublishOnly": "rollup -c",
-    "test": "npm run test-coverage && npm run eslint",
-    "test-coverage": "jest --coverage",
-    "test-only": "jest"
+    "prepack": "npm run tsc",
+    "prettier": "prettier --check src",
+    "prettier-write": "prettier --write src",
+    "test": "npm run test-coverage && npm run eslint && npm run prettier && npm run check-types",
+    "test-coverage": "npm run test-only -- --coverage",
+    "test-only": "jest",
+    "tsc": "npm run clean && npm run tsc-cjs",
+    "tsc-cjs": "tsc --project tsconfig.cjs.json"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cheminfo/spectrum-generator.git"
   },
-  "keywords": [],
-  "author": "Luc Patiny",
-  "contributors": [
-    "Michaël Zasso",
-    "Océane Patiny"
-  ],
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/cheminfo/spectrum-generator/issues"
   },
   "homepage": "https://github.com/cheminfo/spectrum-generator#readme",
   "jest": {
+    "preset": "ts-jest",
     "testEnvironment": "node"
   },
   "devDependencies": {
-    "@babel/plugin-transform-modules-commonjs": "^7.13.8",
-    "@types/jest": "^26.0.21",
-    "cheminfo-build": "^1.1.10",
-    "convert-to-jcamp": "^4.2.0",
-    "eslint": "^7.22.0",
-    "eslint-config-cheminfo": "^5.2.3",
-    "esm": "^3.2.25",
-    "jest": "^26.6.3",
+    "@types/jest": "^26.0.24",
+    "eslint": "^7.31.0",
+    "eslint-config-cheminfo-typescript": "^8.0.9",
+    "jest": "^27.0.6",
+    "prettier": "^2.3.2",
     "ml-savitzky-golay-generalized": "^2.0.3",
     "ml-spectra-processing": "^5.8.0",
-    "prettier": "^2.2.1",
-    "rollup": "^2.42.3",
-    "typescript": "^4.2.3"
+    "rimraf": "^3.0.2",
+    "ts-jest": "^27.0.4",
+    "typescript": "^4.3.5"
   },
   "dependencies": {
+    "@types/d3-random": "^3.0.1",
     "d3-random": "^2.2.2",
     "ml-peak-shape-generator": "^1.0.0",
     "ml-xsadd": "^2.0.0"
