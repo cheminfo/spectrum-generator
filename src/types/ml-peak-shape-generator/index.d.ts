@@ -5,5 +5,6 @@ declare module 'ml-peak-shape-generator' {
 
   class Gaussian {
     public fct: gaussianFct
+    public getArea: any;
   }
 }

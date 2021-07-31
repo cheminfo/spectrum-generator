@@ -1,6 +1,6 @@
 import { Gaussian } from 'ml-peak-shape-generator';
 
-import { generateSpectrum } from '..';
+import { generateSpectrum } from '../SpectrumGenerator';
 
 describe('generateSpectrum', () => {
   it('derivative should be continuous', () => {

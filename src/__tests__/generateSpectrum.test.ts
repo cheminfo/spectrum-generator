@@ -1,6 +1,6 @@
 import { xyMaxYPoint } from 'ml-spectra-processing';
 
-import { generateSpectrum } from '..';
+import { generateSpectrum } from '../SpectrumGenerator';
 import type { Data } from '../types/data';
 
 const simplepeakWidthFct = () => 1;

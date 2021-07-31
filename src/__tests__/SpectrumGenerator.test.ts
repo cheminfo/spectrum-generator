@@ -1,6 +1,6 @@
 import { Gaussian } from 'ml-peak-shape-generator';
 
-import { SpectrumGenerator } from '..';
+import { SpectrumGenerator } from '../SpectrumGenerator';
 
 describe('SpectrumGenerator', () => {
   it('0 half peak', () => {

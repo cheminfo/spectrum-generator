@@ -1,4 +1,4 @@
-import { SpectrumGenerator } from '..';
+import { SpectrumGenerator } from '../SpectrumGenerator';
 
 const endStartReg = /^to option must be larger than from$/;
 const addPeakError =
