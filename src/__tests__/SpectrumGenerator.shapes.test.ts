@@ -35,167 +35,167 @@ describe('SpectrumGenerator various shapes', () => {
     expect(ys[31] !== ys[71]).toBe(true);
   });
 
-  // it('full generation with {x,y}', () => {
-  //   const generator = new SpectrumGenerator({
-  //     from: 0,
-  //     to: 10,
-  //     nbPoints: 101,
-  //     peakWidthFct: () => 1,
-  //     shape: {
-  //       kind: 'gaussian',
-  //     },
-  //   });
+  it('full generation with {x,y}', () => {
+    const generator = new SpectrumGenerator({
+      from: 0,
+      to: 10,
+      nbPoints: 101,
+      peakWidthFct: () => 1,
+      shape: {
+        kind: 'gaussian',
+      },
+    });
 
-  //   generator.addPeak({
-  //     x: 3,
-  //     y: 10,
-  //     shape: { kind: 'pseudovoigt', options: { mu: 1 } },
-  //   });
+    generator.addPeak({
+      x: 3,
+      y: 10,
+      shape: { kind: 'pseudovoigt', options: { mu: 1 } },
+    });
 
-  //   generator.addPeak(
-  //     { x: 7, y: 5 },
-  //     {
-  //       shape: {
-  //         kind: 'lorentzian',
-  //       },
-  //     },
-  //   );
+    generator.addPeak(
+      { x: 7, y: 5 },
+      {
+        shape: {
+          kind: 'lorentzian',
+        },
+      },
+    );
 
-  //   generator.addPeak(
-  //     { x: 7, y: 5, shape: { options: { mu: 0 } } },
-  //     {
-  //       shape: {
-  //         kind: 'pseudovoigt',
-  //       },
-  //     },
-  //   );
+    generator.addPeak(
+      { x: 7, y: 5, shape: { options: { mu: 0 } } },
+      {
+        shape: {
+          kind: 'pseudovoigt',
+        },
+      },
+    );
 
-  //   const spectrum = generator.getSpectrum();
+    const spectrum = generator.getSpectrum();
 
-  //   const ys = spectrum.y;
-  //   expect(ys[30]).toBeCloseTo(10 + 10 * lorentzian.fct(1, 3 - 7), 7);
-  //   expect(ys[70]).toBeCloseTo(10, 7);
+    const ys = spectrum.y;
+    expect(ys[30]).toBeCloseTo(10 + 10 * lorentzian.fct(1, 3 - 7), 7);
+    expect(ys[70]).toBeCloseTo(10, 7);
 
-  //   expect(ys[31] !== ys[71]).toBe(true);
-  // });
+    expect(ys[31] !== ys[71]).toBe(true);
+  });
 
-  // it('second test', () => {
-  //   let spectrumGenerator = new SpectrumGenerator({
-  //     from: 0,
-  //     to: 10,
-  //     nbPoints: 101,
-  //     peakWidthFct: () => 0.1,
-  //     shape: {
-  //       kind: 'lorentzian',
-  //     },
-  //   });
-  //   spectrumGenerator.addPeak(
-  //     { x: 2.5, y: 2 },
-  //     {
-  //       width: 0.1,
-  //       shape: {
-  //         kind: 'lorentzian',
-  //         options: {
-  //           length: 13,
-  //           fwhm: 4,
-  //         },
-  //       },
-  //     },
-  //   );
-  //   spectrumGenerator.addPeak(
-  //     { x: 5, y: 1 },
-  //     {
-  //       width: 0.2,
-  //       shape: {
-  //         kind: 'gaussian',
-  //       },
-  //     },
-  //   );
-  //   const spectrum = spectrumGenerator.getSpectrum();
-  //   let max = xyMaxYPoint(spectrum);
-  //   expect(spectrum.y[49]).toBeCloseTo(0.5, 2);
-  //   expect(max.x).toBe(2.5);
-  //   expect(max.y).toBeCloseTo(2, 3);
-  // });
+  it('second test', () => {
+    let spectrumGenerator = new SpectrumGenerator({
+      from: 0,
+      to: 10,
+      nbPoints: 101,
+      peakWidthFct: () => 0.1,
+      shape: {
+        kind: 'lorentzian',
+      },
+    });
+    spectrumGenerator.addPeak(
+      { x: 2.5, y: 2 },
+      {
+        width: 0.1,
+        shape: {
+          kind: 'lorentzian',
+          options: {
+            length: 13,
+            fwhm: 4,
+          },
+        },
+      },
+    );
+    spectrumGenerator.addPeak(
+      { x: 5, y: 1 },
+      {
+        width: 0.2,
+        shape: {
+          kind: 'gaussian',
+        },
+      },
+    );
+    const spectrum = spectrumGenerator.getSpectrum();
+    let max = xyMaxYPoint(spectrum);
+    expect(spectrum.y[49]).toBeCloseTo(0.5, 2);
+    expect(max.x).toBe(2.5);
+    expect(max.y).toBeCloseTo(2, 3);
+  });
 
-  // it('generation with [{x,y,width}]', () => {
-  //   const generator = new SpectrumGenerator({
-  //     from: 0,
-  //     to: 10,
-  //     nbPoints: 101,
-  //     peakWidthFct: () => 5,
-  //   });
+  it('generation with [{x,y,width}]', () => {
+    const generator = new SpectrumGenerator({
+      from: 0,
+      to: 10,
+      nbPoints: 101,
+      peakWidthFct: () => 5,
+    });
 
-  //   generator.addPeak({ x: 3, y: 10, width: 1 });
+    generator.addPeak({ x: 3, y: 10, width: 1 });
 
-  //   generator.addPeak([7, 10, 1]);
+    generator.addPeak([7, 10, 1]);
 
-  //   const spectrum = generator.getSpectrum();
+    const spectrum = generator.getSpectrum();
 
-  //   const ys = spectrum.y;
+    const ys = spectrum.y;
 
-  //   expect(ys[25]).toBe(5);
-  //   expect(ys[30]).toBe(10);
-  //   expect(ys[35]).toBe(5);
-  //   expect(ys[65]).toBe(5);
-  //   expect(ys[70]).toBe(10);
-  //   expect(ys[75]).toBe(5);
+    expect(ys[25]).toBe(5);
+    expect(ys[30]).toBe(10);
+    expect(ys[35]).toBe(5);
+    expect(ys[65]).toBe(5);
+    expect(ys[70]).toBe(10);
+    expect(ys[75]).toBe(5);
 
-  //   expect(ys[31] - ys[71]).toBeCloseTo(0, 10);
-  // });
+    expect(ys[31] - ys[71]).toBeCloseTo(0, 10);
+  });
 
-  // it('test various width', () => {
-  //   let spectrumGenerator = new SpectrumGenerator({
-  //     from: 0,
-  //     to: 10,
-  //     nbPoints: 101,
-  //     peakWidthFct: () => 0.1,
-  //     shape: {
-  //       kind: 'lorentzian',
-  //     },
-  //   });
-  //   spectrumGenerator.addPeak(
-  //     { x: 2.5, y: 2 },
-  //     {
-  //       width: 0.1,
-  //       shape: {
-  //         kind: 'lorentzian',
-  //       },
-  //     },
-  //   );
-  //   spectrumGenerator.addPeak(
-  //     { x: 5, y: 1 },
-  //     {
-  //       width: 0.2,
-  //       shape: {
-  //         kind: 'gaussian',
-  //       },
-  //     },
-  //   );
-  //   const spectrum = spectrumGenerator.getSpectrum();
-  //   let max = xyMaxYPoint(spectrum);
-  //   expect(spectrum.y[49]).toBeCloseTo(0.5, 2);
-  //   expect(max.x).toBe(2.5);
-  //   expect(max.y).toBeCloseTo(2, 2);
-  // });
+  it('test various width', () => {
+    let spectrumGenerator = new SpectrumGenerator({
+      from: 0,
+      to: 10,
+      nbPoints: 101,
+      peakWidthFct: () => 0.1,
+      shape: {
+        kind: 'lorentzian',
+      },
+    });
+    spectrumGenerator.addPeak(
+      { x: 2.5, y: 2 },
+      {
+        width: 0.1,
+        shape: {
+          kind: 'lorentzian',
+        },
+      },
+    );
+    spectrumGenerator.addPeak(
+      { x: 5, y: 1 },
+      {
+        width: 0.2,
+        shape: {
+          kind: 'gaussian',
+        },
+      },
+    );
+    const spectrum = spectrumGenerator.getSpectrum();
+    let max = xyMaxYPoint(spectrum);
+    expect(spectrum.y[49]).toBeCloseTo(0.5, 2);
+    expect(max.x).toBe(2.5);
+    expect(max.y).toBeCloseTo(2, 2);
+  });
 
-  // it('The peak shape should be gaussian', () => {
-  //   const spectrumGenerator = new SpectrumGenerator({
-  //     from: -0.1,
-  //     to: 0.1,
-  //     nbPoints: 51,
-  //     shape: { kind: 'lorentzian' },
-  //   });
+  it('The peak shape should be gaussian', () => {
+    const spectrumGenerator = new SpectrumGenerator({
+      from: -0.1,
+      to: 0.1,
+      nbPoints: 51,
+      shape: { kind: 'lorentzian' },
+    });
 
-  //   spectrumGenerator.addPeak({
-  //     x: 0,
-  //     y: 1,
-  //     width: 0.5,
-  //     shape: { kind: 'gaussian' },
-  //   });
+    spectrumGenerator.addPeak({
+      x: 0,
+      y: 1,
+      width: 0.5,
+      shape: { kind: 'gaussian' },
+    });
 
-  //   let spectrum = spectrumGenerator.getSpectrum();
-  //   let index = spectrum.x.indexOf(0.06);
-  //   expect(spectrum.y[index]).toBe(gaussian.fct(0.5, 0.06));
-  // });
+    let spectrum = spectrumGenerator.getSpectrum();
+    let index = spectrum.x.indexOf(0.06);
+    expect(spectrum.y[index]).toBe(gaussian.fct(0.5, 0.06));
+  });
 });

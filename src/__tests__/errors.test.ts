@@ -2,7 +2,7 @@ import { SpectrumGenerator } from '../SpectrumGenerator';
 
 const endStartReg = /^to option must be larger than from$/;
 const addPeakError =
-  'four element of a peak should be an object of options';
+  'The fourth element of a peak array should be an object of options';
 
 describe('errors', () => {
   it('wrong options', () => {

@@ -1,6 +1,6 @@
 import { getShapeGenerator } from 'ml-peak-shape-generator';
 
-import type { AddNoiseOptions } from './types/AddNoiseOptions';
+import type { AddNoiseOptions } from './types/addNoiseOptions';
 import type { Data } from './types/data';
 import type { PeakSeries, peak } from './types/peaks';
 import type { Shape } from './types/shape';
@@ -56,14 +56,13 @@ export interface GetSpectrumOptions {
    * generate a copy of the current data
    * @default true
    */
-  copy?: boolean; 
+  copy?: boolean;
   /**
    * minimum intensity value
    * @default 0
    */
   threshold?: number
 }
-
 
 export class SpectrumGenerator {
   private from: number;
@@ -161,8 +160,8 @@ export class SpectrumGenerator {
         'peak must be an array with two (or three) values or an object with {x,y,width?}',
       );
     } else if (Array.isArray(peak) && peak.length > 3) {
-      if (typeof peak[3] === 'object') {
-        throw new Error('four element of a peak should be an object of options');
+      if (typeof peak[3] !== 'object') {
+        throw new Error('The fourth element of a peak array should be an object of options');
       }
     }
 
