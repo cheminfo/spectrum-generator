@@ -1,13 +1,13 @@
 import { getShapeGenerator } from 'ml-peak-shape-generator';
 
-import type { AddNoiseOpt } from './types/addNoiseOpt';
+import type { AddNoiseOptions } from './types/AddNoiseOptions';
 import type { Data } from './types/data';
 import type { PeakSeries, peak } from './types/peaks';
 import type { Shape } from './types/shape';
 import addBaseline from './util/addBaseline';
 import addNoise from './util/addNoise';
 
-type numToNumFn = (x?: number) => number;
+type numToNumFn = (x: number) => number;
 
 interface OptionsSG1D {
   from?: number;
@@ -27,22 +27,52 @@ interface AddPeakOptions {
   factor?: number;
 }
 
-interface GenerateSpectrumOpt {
+interface GenerateSpectrumOptions {
+  /**
+   * Options for spectrum generator
+   */
   generator?: OptionsSG1D;
+  /**
+   * Function to generate or add a baseline
+   */
   baseline?: numToNumFn;
-  noise?: { percent: number; options: AddNoiseOpt };
+  /**
+   * Options to add noise to the spectrum
+   */
+  noise?: { percent: number; options: AddNoiseOptions };
+  /**
+   * Options for addPeaks method
+   */
   peaks?: AddPeakOptions;
+  /**
+   * minimum intensity value
+   * @default 0
+   */
   threshold?: number;
 }
+
+export interface GetSpectrumOptions {
+  /**
+   * generate a copy of the current data
+   * @default true
+   */
+  copy?: boolean; 
+  /**
+   * minimum intensity value
+   * @default 0
+   */
+  threshold?: number
+}
+
 
 export class SpectrumGenerator {
   private from: number;
   private to: number;
   private nbPoints: number;
-  private interval: number;
+  public interval: number;
   private peakWidthFct: numToNumFn;
   private maxPeakHeight: number;
-  private shape: (options: Shape) => any;
+  private shape: any;
   private data: Data;
   /**
    *
@@ -78,7 +108,7 @@ export class SpectrumGenerator {
       y: new Float64Array(this.nbPoints),
     };
 
-    let shapeGenerator = getShapeGenerator(shape);
+    let shapeGenerator = getShapeGenerator(shape.kind);
     this.shape = shapeGenerator;
 
     assertNumber(this.from, 'from');
@@ -123,20 +153,21 @@ export class SpectrumGenerator {
     return this;
   }
 
-  /**
-   *
-   * @param {[x,y]|[x,y,w]|{x,y,width}} [peak]
-   * @param {*} options
-   */
-
   public addPeak(peak: peak, options: AddPeakOptions = {}) {
     if (Array.isArray(peak) && peak.length < 2) {
       throw new Error(
         'peak must be an array with two (or three) values or an object with {x,y,width?}',
       );
+    } else if (Array.isArray(peak) && peak.length > 3) {
+      if (typeof peak[3] === 'object') {
+        throw new Error('four element of a peak should be an object of options');
+      }
     }
 
-    if (!Array.isArray(peak) && (peak.x === undefined || peak.y === undefined)) {
+    if (
+      !Array.isArray(peak) &&
+      (peak.x === undefined || peak.y === undefined)
+    ) {
       throw new Error(
         'peak must be an array with two (or three) values or an object with {x,y,width?}',
       );
@@ -169,9 +200,9 @@ export class SpectrumGenerator {
       shapeOptions = { ...shapeOptions, ...peakShapeOptions };
     }
 
-    let shapeGenerator = shapeOptions
-      ? getShapeGenerator(shapeOptions)
-      : this.shape;
+    const { kind, options: shapeParams = {} } = shapeOptions;
+
+    let shapeGenerator = shapeOptions ? getShapeGenerator(kind) : this.shape;
 
     if (!widthLeft) widthLeft = width;
     if (!widthRight) widthRight = width;
@@ -196,21 +227,23 @@ export class SpectrumGenerator {
     // PEAK SHAPE MAY BE ASYMMETRC (widthLeft and widthRight) !
     // we calculate the left part of the shape
 
-    shapeGenerator.setFWHM(widthLeft);
+    shapeParams.fwhm = widthLeft;
+    let shapeFct = shapeGenerator.curry(shapeParams);
     for (let index = firstPoint; index < Math.max(middlePoint, 0); index++) {
       this.data.y[index] +=
-        intensity * shapeGenerator.fct(this.data.x[index] - xPosition);
+        intensity * shapeFct(this.data.x[index] - xPosition);
     }
 
     // we calculate the right part of the gaussian
-    shapeGenerator.setFWHM(widthRight);
+    shapeParams.fwhm = widthRight;
+    shapeFct = shapeGenerator.curry(shapeParams);
     for (
       let index = Math.min(middlePoint, lastPoint);
       index <= lastPoint;
       index++
     ) {
       this.data.y[index] +=
-        intensity * shapeGenerator.fct(this.data.x[index] - xPosition);
+        intensity * shapeFct(this.data.x[index] - xPosition);
     }
 
     return this;
@@ -221,12 +254,12 @@ export class SpectrumGenerator {
     return this;
   }
 
-  public addNoise(percent: number, options: AddNoiseOpt) {
+  public addNoise(percent: number, options: AddNoiseOptions) {
     addNoise(this.data, percent, options);
     return this;
   }
 
-  public getSpectrum(options: { copy?: boolean; threshold?: number } = {}) {
+  public getSpectrum(options: GetSpectrumOptions | boolean = {}) {
     if (typeof options === 'boolean') {
       options = { copy: options };
     }
@@ -264,6 +297,7 @@ export class SpectrumGenerator {
   }
 }
 
+
 function assertInteger(value: number, name: string) {
   if (!Number.isInteger(value)) {
     throw new TypeError(`${name} option must be an integer`);
@@ -278,9 +312,15 @@ function assertNumber(value: number, name: string) {
 
 export function generateSpectrum(
   peaks: peak[] | PeakSeries,
-  options: GenerateSpectrumOpt = {},
+  options: GenerateSpectrumOptions = {},
 ): Data {
-  const { generator: generatorOptions, noise, baseline, threshold, peaks: addPeaksOptions } = options;
+  const {
+    generator: generatorOptions,
+    noise,
+    baseline,
+    threshold,
+    peaks: addPeaksOptions,
+  } = options;
 
   const generator = new SpectrumGenerator(generatorOptions);
 

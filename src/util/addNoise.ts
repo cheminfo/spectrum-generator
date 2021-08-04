@@ -1,13 +1,13 @@
 import { randomUniform, randomNormal } from 'd3-random';
 import XSAdd from 'ml-xsadd';
 
-import type { AddNoiseOpt } from '../types/addNoiseOpt';
+import type { AddNoiseOptions } from '../types/addNoiseOptions';
 import type { Data } from '../types/data';
 
 export default function addNoise(
   data: Data,
   percent = 0,
-  options: AddNoiseOpt = {},
+  options: AddNoiseOptions = {},
 ) {
   const { distribution = 'uniform', seed } = options;
 

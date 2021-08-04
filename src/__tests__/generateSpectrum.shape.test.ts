@@ -1,4 +1,4 @@
-import { Gaussian } from 'ml-peak-shape-generator';
+import { gaussian } from 'ml-peak-shape-generator';
 
 import { generateSpectrum } from '../SpectrumGenerator';
 
@@ -57,6 +57,6 @@ describe('generateSpectrum', () => {
     });
 
     let index = spectrum.x.indexOf(0.06);
-    expect(spectrum.y[index]).toBe(Gaussian.fct(0.06, 0.5));
+    expect(spectrum.y[index]).toBe(gaussian.fct(0.5, 0.06));
   });
 });
