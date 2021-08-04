@@ -73,6 +73,7 @@ export class SpectrumGenerator {
   private peakWidthFct: numToNumFn;
   private maxPeakHeight: number;
   private shape: any;
+  private shapeParameters: any;
   private data: Data;
   /**
    *
@@ -110,6 +111,7 @@ export class SpectrumGenerator {
 
     let shapeGenerator = getShapeGenerator(shape.kind);
     this.shape = shapeGenerator;
+    this.shapeParameters = shape.options || {};
 
     assertNumber(this.from, 'from');
     assertNumber(this.to, 'to');
@@ -200,9 +202,10 @@ export class SpectrumGenerator {
       shapeOptions = { ...shapeOptions, ...peakShapeOptions };
     }
 
-    const { kind, options: shapeParams = {} } = shapeOptions;
+    const { kind } = shapeOptions;
 
-    let shapeGenerator = shapeOptions ? getShapeGenerator(kind) : this.shape;
+    const shapeGenerator = shapeOptions ? getShapeGenerator(kind) : this.shape;
+    const shapeParameters = shapeOptions?.options || this.shapeParameters;
 
     if (!widthLeft) widthLeft = width;
     if (!widthRight) widthRight = width;
@@ -227,16 +230,16 @@ export class SpectrumGenerator {
     // PEAK SHAPE MAY BE ASYMMETRC (widthLeft and widthRight) !
     // we calculate the left part of the shape
 
-    shapeParams.fwhm = widthLeft;
-    let shapeFct = shapeGenerator.curry(shapeParams);
+    shapeParameters.fwhm = widthLeft;
+    let shapeFct = shapeGenerator.curry(shapeParameters);
     for (let index = firstPoint; index < Math.max(middlePoint, 0); index++) {
       this.data.y[index] +=
         intensity * shapeFct(this.data.x[index] - xPosition);
     }
 
     // we calculate the right part of the gaussian
-    shapeParams.fwhm = widthRight;
-    shapeFct = shapeGenerator.curry(shapeParams);
+    shapeParameters.fwhm = widthRight;
+    shapeFct = shapeGenerator.curry(shapeParameters);
     for (
       let index = Math.min(middlePoint, lastPoint);
       index <= lastPoint;
