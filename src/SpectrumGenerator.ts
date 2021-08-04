@@ -61,7 +61,7 @@ export interface GetSpectrumOptions {
    * minimum intensity value
    * @default 0
    */
-  threshold?: number
+  threshold?: number;
 }
 
 export class SpectrumGenerator {
@@ -161,7 +161,9 @@ export class SpectrumGenerator {
       );
     } else if (Array.isArray(peak) && peak.length > 3) {
       if (typeof peak[3] !== 'object') {
-        throw new Error('The fourth element of a peak array should be an object of options');
+        throw new Error(
+          'The fourth element of a peak array should be an object of options',
+        );
       }
     }
 
@@ -298,7 +300,6 @@ export class SpectrumGenerator {
     return this;
   }
 }
-
 
 function assertInteger(value: number, name: string) {
   if (!Number.isInteger(value)) {

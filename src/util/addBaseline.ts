@@ -1,6 +1,6 @@
 import type { Data } from '../types/data';
 
-type baseLineFn = (x: number) => number
+type baseLineFn = (x: number) => number;
 
 export default function addBaseline(data: Data, baselineFct: baseLineFn) {
   if (!baselineFct) return data;

@@ -117,7 +117,7 @@ describe('generateSpectrum with one peak and small window', () => {
     expect(max.y).toBe(1);
   });
 
-  it.only('should work from 10 to 20 low res', () => {
+  it('should work from 10 to 20 low res', () => {
     const spectrum = generateSpectrum([[15, 1]], {
       generator: {
         from: 10,
@@ -169,7 +169,7 @@ describe('generateSpectrum with one peak and small window', () => {
   });
 });
 
-function assertSimple(options: { from: number, to: number, peak: number}) {
+function assertSimple(options: { from: number; to: number; peak: number }) {
   const { from, to, peak } = options;
   const spectrum = generateSpectrum([[peak, 1]], {
     generator: {
