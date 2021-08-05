@@ -2,6 +2,7 @@
   "version": "4.7.1",
   "description": "generate a spectrum from discrete peaks",
   "main": "./lib/index.js",
+  "module": "./lib-esm/index.js",
   "types": "./lib/index.d.ts",
   "keywords": [],
   "author": "Luc Patiny",
@@ -13,11 +14,12 @@
   "license": "MIT",
   "files": [
     "src",
-    "lib"
+    "lib",
+    "lib-esm"
   ],
   "scripts": {
     "check-types": "tsc --noEmit",
-    "clean": "rimraf lib",
+    "clean": "rimraf lib lib-esm",
     "eslint": "eslint src --cache",
     "eslint-fix": "npm run eslint -- --fix",
     "prepack": "npm run tsc",
@@ -26,8 +28,9 @@
     "test": "npm run test-coverage && npm run eslint && npm run prettier && npm run check-types",
     "test-coverage": "npm run test-only -- --coverage",
     "test-only": "jest",
-    "tsc": "npm run clean && npm run tsc-cjs",
-    "tsc-cjs": "tsc --project tsconfig.cjs.json"
+    "tsc": "npm run clean && npm run tsc-cjs && npm run tsc-esm",
+    "tsc-cjs": "tsc --project tsconfig.cjs.json",
+    "tsc-esm": "tsc --project tsconfig.esm.json"
   },
   "repository": {
     "type": "git",
@@ -43,7 +46,7 @@
   },
   "devDependencies": {
     "@types/jest": "^26.0.24",
-    "eslint": "^7.31.0",
+    "eslint": "^7.32.0",
     "eslint-config-cheminfo-typescript": "^8.0.9",
     "jest": "^27.0.6",
     "prettier": "^2.3.2",
