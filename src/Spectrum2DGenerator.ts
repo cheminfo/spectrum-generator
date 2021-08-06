@@ -1,26 +1,32 @@
 import { getShape2D } from 'ml-peak-shape-generator';
 import type { Shape2DKind, Shape2D } from 'ml-peak-shape-generator';
 
-import type { Data2D } from './types/data2D';
-import type { peak, PeakSeries } from './types/peaks2D';
-import type { Shape } from './types/shape';
-import type { xyNumber } from './types/xyNumber';
+import type { Data2D } from './types/Data2D';
+import type { peak, PeakSeries } from './types/Peaks2D';
+import type { Shape2DOption } from './types/Shape2DOption';
+import type { XYNumber } from './types/XYNumber';
 
-type numToNumFn = (x: number, y?: number) => number | xyNumber;
+type numToNumFn = (x: number, y?: number) => number | XYNumber;
+
+type Axis2D = 'x' | 'y';
+const axis2D: Axis2D[] = ['x', 'y'];
+
+type PeakCoordinates = 'x' | 'y' | 'z';
+const peakCoordinates: PeakCoordinates[] = ['x', 'y', 'z'];
 
 interface OptionsSG1D {
-  from?: number | xyNumber;
-  to?: number | xyNumber;
-  nbPoints?: number | xyNumber;
+  from?: number | XYNumber;
+  to?: number | XYNumber;
+  nbPoints?: number | XYNumber;
   peakWidthFct?: numToNumFn;
   maxPeakHeight?: number;
-  shape?: Shape;
+  shape?: Shape2DOption;
 }
 
 interface AddPeakOptions {
-  width?: xyNumber;
-  shape?: Shape;
-  factor?: number | xyNumber;
+  width?: XYNumber;
+  shape?: Shape2DOption;
+  factor?: number | XYNumber;
 }
 
 interface GetSpectrum2DOptions {
@@ -32,10 +38,10 @@ interface GetSpectrum2DOptions {
 }
 
 export class Spectrum2DGenerator {
-  private from: xyNumber;
-  private to: xyNumber;
-  private nbPoints: xyNumber;
-  public interval: xyNumber;
+  private from: XYNumber;
+  private to: XYNumber;
+  private nbPoints: XYNumber;
+  public interval: XYNumber;
   private data: Data2D;
   private maxPeakHeight: number;
   private shape: Shape2D;
@@ -63,11 +69,11 @@ export class Spectrum2DGenerator {
       },
     } = options;
 
-    from = checkObject(from);
-    to = checkObject(to);
-    nbPoints = checkObject(nbPoints);
+    from = ensureXYNumber(from);
+    to = ensureXYNumber(to);
+    nbPoints = ensureXYNumber(nbPoints);
 
-    for (const axis of ['x', 'y']) {
+    for (const axis of axis2D) {
       assertNumber(from[axis], `from-${axis}`);
       assertNumber(to[axis], `to-${axis}`);
       assertInteger(nbPoints[axis], `nbPoints-${axis}`);
@@ -92,7 +98,7 @@ export class Spectrum2DGenerator {
       z: createMatrix(this.nbPoints),
     };
 
-    for (const axis of ['x', 'y']) {
+    for (const axis of axis2D) {
       if (this.to[axis] <= this.from[axis]) {
         throw new RangeError('to option must be larger than from');
       }
@@ -150,7 +156,7 @@ export class Spectrum2DGenerator {
 
     if (
       !Array.isArray(peak) &&
-      ['x', 'y', 'z'].some((e) => peak[e] === undefined)
+      peakCoordinates.some((e) => peak[e] === undefined)
     ) {
       throw new Error(
         'peak must be an array with three (or four) values or an object with {x,y,z,width?}',
@@ -172,7 +178,7 @@ export class Spectrum2DGenerator {
       peakShapeOptions = peak.shape;
     }
 
-    const position: xyNumber = { x: xPosition, y: yPosition };
+    const position: XYNumber = { x: xPosition, y: yPosition };
 
     if (intensity > this.maxPeakHeight) this.maxPeakHeight = intensity;
 
@@ -202,11 +208,11 @@ export class Spectrum2DGenerator {
     let factor =
       options.factor === undefined ? this.shape.getFactor() : options.factor;
 
-    factor = checkObject(factor);
+    factor = ensureXYNumber(factor);
 
-    const firstPoint: any = {};
-    const lastPoint: any = {};
-    for (const axis of ['x', 'y']) {
+    const firstPoint: XYNumber = { x: 0, y: 0 };
+    const lastPoint: XYNumber = { x: 0, y: 0 };
+    for (const axis of axis2D) {
       const first = position[axis] - (width[axis] / 2) * factor[axis];
       const last = position[axis] + (width[axis] / 2) * factor[axis];
 
@@ -265,7 +271,7 @@ export class Spectrum2DGenerator {
   public reset() {
     const spectrum: Data2D = this.data;
 
-    for (const axis of ['x', 'y']) {
+    for (const axis of axis2D) {
       for (let i = 0; i < this.nbPoints[axis]; i++) {
         spectrum[axis][i] = this.from[axis] + i * this.interval[axis];
       }
@@ -274,17 +280,16 @@ export class Spectrum2DGenerator {
   }
 }
 
-function checkObject(input: number | xyNumber) {
+function ensureXYNumber(input: number | XYNumber) {
   let result = typeof input !== 'object' ? { x: input, y: input } : input;
   return result;
 }
 
-function calculeIntervals(from: xyNumber, to: xyNumber, nbPoints: xyNumber) {
-  const intervals: any = {};
-  for (const axis in from) {
-    intervals[axis] = (to[axis] - from[axis]) / (nbPoints[axis] - 1);
-  }
-  return intervals;
+function calculeIntervals(from: XYNumber, to: XYNumber, nbPoints: XYNumber) {
+  return {
+    x: (to.x - from.x) / (nbPoints.x - 1),
+    y: (to.y - from.y) / (nbPoints.y - 1),
+  };
 }
 
 function assertInteger(value: number, name: string) {
@@ -299,7 +304,7 @@ function assertNumber(value: number, name: string) {
   }
 }
 
-function createMatrix(nbPoints: xyNumber) {
+function createMatrix(nbPoints: XYNumber) {
   const zMatrix = new Array(nbPoints.x);
   for (let i = 0; i < nbPoints.x; i++) {
     zMatrix[i] = new Float64Array(nbPoints.y);

@@ -1,4 +1,4 @@
-import type { Data } from '../types/data';
+import type { Data } from '../types/Data';
 
 type baseLineFn = (x: number) => number;
 

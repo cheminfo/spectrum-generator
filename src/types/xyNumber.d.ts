@@ -1,5 +1,4 @@
-export interface xyNumber {
-  [index: string]: number;
+export interface XYNumber {
   x: number;
   y: number;
 }

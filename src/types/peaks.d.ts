@@ -1,10 +1,10 @@
-import type { Shape } from './shape';
+import type { Shape1DOption } from './Shape1DOption';
 
 export interface PeakObject {
   x: number;
   y: number;
   width?: number;
-  shape?: Shape;
+  shape?: Shape1DOption;
 }
 
 export interface PeakSeries {
@@ -13,5 +13,5 @@ export interface PeakSeries {
   width?: [number];
 }
 
-export type peakArray = [number, number, number?, any?];
+export type peakArray = [number, number, number?, Shape1DOption?];
 export type peak = peakArray | PeakObject;

@@ -1,10 +1,10 @@
 import { getShape1D } from 'ml-peak-shape-generator';
 import type { ShapeKind, Shape1D } from 'ml-peak-shape-generator';
 
-import type { AddNoiseOptions } from './types/addNoiseOptions';
-import type { Data } from './types/data';
-import type { PeakSeries, peak } from './types/peaks';
-import type { Shape } from './types/shape';
+import type { AddNoiseOptions } from './types/AddNoiseOptions';
+import type { Data } from './types/Data';
+import type { PeakSeries, peak } from './types/Peaks';
+import type { Shape1DOption } from './types/Shape1DOption';
 import addBaseline from './util/addBaseline';
 import addNoise from './util/addNoise';
 
@@ -17,14 +17,14 @@ interface OptionsSG1D {
   interval?: number;
   peakWidthFct?: numToNumFn;
   maxPeakHeight?: number;
-  shape?: Shape;
+  shape?: Shape1DOption;
 }
 
 interface AddPeakOptions {
   width?: number;
   widthLeft?: number;
   widthRight?: number;
-  shape?: Shape;
+  shape?: Shape1DOption;
   factor?: number;
 }
 
@@ -158,12 +158,6 @@ export class SpectrumGenerator {
       throw new Error(
         'peak must be an array with two (or three) values or an object with {x,y,width?}',
       );
-    } else if (Array.isArray(peak) && peak.length > 3) {
-      if (typeof peak[3] !== 'object') {
-        throw new Error(
-          'The fourth element of a peak array should be an object of options',
-        );
-      }
     }
 
     if (

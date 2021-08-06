@@ -1,8 +1,8 @@
 import { randomUniform, randomNormal } from 'd3-random';
 import XSAdd from 'ml-xsadd';
 
-import type { AddNoiseOptions } from '../types/addNoiseOptions';
-import type { Data } from '../types/data';
+import type { AddNoiseOptions } from '../types/AddNoiseOptions';
+import type { Data } from '../types/Data';
 
 export default function addNoise(
   data: Data,
