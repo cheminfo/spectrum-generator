@@ -1,4 +1,5 @@
-import { getShapeGenerator } from 'ml-peak-shape-generator';
+import { getShape1D } from 'ml-peak-shape-generator';
+import type { ShapeKind, Shape1D } from 'ml-peak-shape-generator';
 
 import type { AddNoiseOptions } from './types/addNoiseOptions';
 import type { Data } from './types/data';
@@ -71,8 +72,7 @@ export class SpectrumGenerator {
   public interval: number;
   private peakWidthFct: numToNumFn;
   private maxPeakHeight: number;
-  private shape: any;
-  private shapeParameters: any;
+  private shape: Shape1D;
   private data: Data;
   /**
    *
@@ -91,9 +91,7 @@ export class SpectrumGenerator {
       to = 1000,
       nbPoints = 10001,
       peakWidthFct = () => 5,
-      shape = {
-        kind: 'gaussian',
-      },
+      shape = { kind: 'gaussian' },
     } = options;
 
     this.from = from;
@@ -108,9 +106,10 @@ export class SpectrumGenerator {
       y: new Float64Array(this.nbPoints),
     };
 
-    let shapeGenerator = getShapeGenerator(shape.kind);
+    const kind = shape.kind as ShapeKind;
+    const { options: shapeOptions = {} } = shape;
+    let shapeGenerator = getShape1D(kind, shapeOptions);
     this.shape = shapeGenerator;
-    this.shapeParameters = shape.options || {};
 
     assertNumber(this.from, 'from');
     assertNumber(this.to, 'to');
@@ -196,25 +195,26 @@ export class SpectrumGenerator {
         : peakWidth,
       widthLeft,
       widthRight,
-      shape: shapeOptions = {},
+      shape: shapeOptions,
     } = options;
 
     if (peakShapeOptions) {
-      shapeOptions = { ...shapeOptions, ...peakShapeOptions };
+      shapeOptions = shapeOptions
+        ? { ...shapeOptions, ...peakShapeOptions }
+        : peakShapeOptions;
     }
 
-    const { kind } = shapeOptions;
-
-    const shapeGenerator = shapeOptions ? getShapeGenerator(kind) : this.shape;
-    const shapeParameters = shapeOptions?.options || this.shapeParameters;
+    if (shapeOptions) {
+      const kind = shapeOptions.kind as ShapeKind;
+      const { options: shapeParameters = {} } = shapeOptions;
+      this.shape = getShape1D(kind, shapeParameters);
+    }
 
     if (!widthLeft) widthLeft = width;
     if (!widthRight) widthRight = width;
 
     let factor =
-      options.factor === undefined
-        ? shapeGenerator.getFactor()
-        : options.factor;
+      options.factor === undefined ? this.shape.getFactor() : options.factor;
 
     const firstValue = xPosition - (widthLeft / 2) * factor;
     const lastValue = xPosition + (widthRight / 2) * factor;
@@ -231,23 +231,21 @@ export class SpectrumGenerator {
     // PEAK SHAPE MAY BE ASYMMETRC (widthLeft and widthRight) !
     // we calculate the left part of the shape
 
-    shapeParameters.fwhm = widthLeft;
-    let shapeFct = shapeGenerator.curry(shapeParameters);
+    this.shape.fwhm = widthLeft;
     for (let index = firstPoint; index < Math.max(middlePoint, 0); index++) {
       this.data.y[index] +=
-        intensity * shapeFct(this.data.x[index] - xPosition);
+        intensity * this.shape.fct(this.data.x[index] - xPosition);
     }
 
     // we calculate the right part of the gaussian
-    shapeParameters.fwhm = widthRight;
-    shapeFct = shapeGenerator.curry(shapeParameters);
+    this.shape.fwhm = widthRight;
     for (
       let index = Math.min(middlePoint, lastPoint);
       index <= lastPoint;
       index++
     ) {
       this.data.y[index] +=
-        intensity * shapeFct(this.data.x[index] - xPosition);
+        intensity * this.shape.fct(this.data.x[index] - xPosition);
     }
 
     return this;

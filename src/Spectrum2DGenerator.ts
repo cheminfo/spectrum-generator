@@ -1,4 +1,5 @@
-import { getShapeGenerator } from 'ml-peak-shape-generator';
+import { getShape2D } from 'ml-peak-shape-generator';
+import type { Shape2DKind, Shape2D } from 'ml-peak-shape-generator';
 
 import type { Data2D } from './types/data2D';
 import type { peak, PeakSeries } from './types/peaks2D';
@@ -37,8 +38,7 @@ export class Spectrum2DGenerator {
   public interval: xyNumber;
   private data: Data2D;
   private maxPeakHeight: number;
-  private shape: any;
-  private shapeParameters: any;
+  private shape: Shape2D;
   private peakWidthFct: numToNumFn;
 
   /**
@@ -59,7 +59,7 @@ export class Spectrum2DGenerator {
       nbPoints = 1001,
       peakWidthFct = () => 5,
       shape = {
-        kind: 'gaussian2D',
+        kind: 'gaussian',
       },
     } = options;
 
@@ -81,9 +81,10 @@ export class Spectrum2DGenerator {
     this.peakWidthFct = peakWidthFct;
     this.maxPeakHeight = Number.MIN_SAFE_INTEGER;
 
-    let shapeGenerator = getShapeGenerator(shape.kind);
+    const kind = shape.kind as Shape2DKind;
+    const { options: shapeOptions = {} } = shape;
+    let shapeGenerator = getShape2D(kind, shapeOptions);
     this.shape = shapeGenerator;
-    this.shapeParameters = shape.options || {};
 
     this.data = {
       x: new Float64Array(nbPoints.x),
@@ -179,26 +180,27 @@ export class Spectrum2DGenerator {
       width = peakWidth === undefined
         ? this.peakWidthFct(xPosition, yPosition)
         : peakWidth,
-      shape: shapeOptions = {},
+      shape: shapeOptions,
     } = options;
 
     if (peakShapeOptions) {
-      Object.assign(shapeOptions, peakShapeOptions || {});
+      shapeOptions = shapeOptions
+        ? { ...shapeOptions, ...peakShapeOptions }
+        : peakShapeOptions;
     }
 
-    const { kind } = shapeOptions;
-
-    const shapeGenerator = kind ? getShapeGenerator(kind) : this.shape;
-    const shapeParameters = shapeOptions?.options || this.shapeParameters;
+    if (shapeOptions) {
+      const kind = shapeOptions.kind as Shape2DKind;
+      const { options: shapeParameters = {} } = shapeOptions;
+      this.shape = getShape2D(kind, shapeParameters);
+    }
 
     if (typeof width !== 'object') {
       width = { x: width, y: width };
     }
 
     let factor =
-      options.factor === undefined
-        ? shapeGenerator.getFactor()
-        : options.factor;
+      options.factor === undefined ? this.shape.getFactor() : options.factor;
 
     factor = checkObject(factor);
 
@@ -218,16 +220,13 @@ export class Spectrum2DGenerator {
       );
     }
 
-    if (!shapeParameters.fwhm) shapeParameters.fwhm = {};
-    for (const axis in width) {
-      shapeParameters.fwhm[axis] = width[axis];
-    }
-    let shapeFct = shapeGenerator.curry(shapeParameters);
+    this.shape.fwhmX = width.x;
+    this.shape.fwhmY = width.y;
     for (let xIndex = firstPoint.x; xIndex < lastPoint.x; xIndex++) {
       for (let yIndex = firstPoint.y; yIndex < lastPoint.y; yIndex++) {
         this.data.z[xIndex][yIndex] +=
           intensity *
-          shapeFct(
+          this.shape.fct(
             this.data.x[xIndex] - position.x,
             this.data.y[yIndex] - position.y,
           );

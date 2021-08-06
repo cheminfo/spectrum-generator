@@ -29,7 +29,7 @@ describe('SpectrumGenerator various shapes', () => {
     const spectrum = generator.getSpectrum();
 
     const ys = spectrum.y;
-    expect(ys[30]).toBeCloseTo(10 + 10 * lorentzian.fct(1, 3 - 7), 7);
+    expect(ys[30]).toBeCloseTo(10 + 10 * lorentzian.fct(3 - 7, 1), 7);
     expect(ys[70]).toBeCloseTo(10, 7);
 
     expect(ys[31] !== ys[71]).toBe(true);
@@ -49,7 +49,7 @@ describe('SpectrumGenerator various shapes', () => {
     generator.addPeak({
       x: 3,
       y: 10,
-      shape: { kind: 'pseudovoigt', options: { mu: 1 } },
+      shape: { kind: 'pseudoVoigt', options: { mu: 1 } },
     });
 
     generator.addPeak(
@@ -65,7 +65,7 @@ describe('SpectrumGenerator various shapes', () => {
       { x: 7, y: 5, shape: { options: { mu: 0 } } },
       {
         shape: {
-          kind: 'pseudovoigt',
+          kind: 'pseudoVoigt',
         },
       },
     );
@@ -73,7 +73,7 @@ describe('SpectrumGenerator various shapes', () => {
     const spectrum = generator.getSpectrum();
 
     const ys = spectrum.y;
-    expect(ys[30]).toBeCloseTo(10 + 10 * lorentzian.fct(1, 3 - 7), 7);
+    expect(ys[30]).toBeCloseTo(10 + 10 * lorentzian.fct(3 - 7, 1), 7);
     expect(ys[70]).toBeCloseTo(10, 7);
 
     expect(ys[31] !== ys[71]).toBe(true);
@@ -196,6 +196,6 @@ describe('SpectrumGenerator various shapes', () => {
 
     let spectrum = spectrumGenerator.getSpectrum();
     let index = spectrum.x.indexOf(0.06);
-    expect(spectrum.y[index]).toBe(gaussian.fct(0.5, 0.06));
+    expect(spectrum.y[index]).toBe(gaussian.fct(0.06, 0.5));
   });
 });
