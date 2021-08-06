@@ -11,20 +11,59 @@ import addNoise from './util/addNoise';
 type numToNumFn = (x: number) => number;
 
 interface OptionsSG1D {
+  /**
+   * First x value (inclusive).
+   * @default `0`
+   */
   from?: number;
+  /**
+   * Last x value (inclusive).
+   * @default `1000`
+   */
   to?: number;
+  /**
+   * Number of points in the final spectrum.
+   * @default `10001`
+   */
   nbPoints?: number;
-  interval?: number;
+  /**
+   * Function that returns the width of a peak depending the x value.
+   * @default `() => 5`
+   */
   peakWidthFct?: numToNumFn;
-  maxPeakHeight?: number;
+  /**
+   * Define the shape of the peak.
+   * @default `shape: {
+          kind: 'gaussian',
+        },`
+   */
   shape?: Shape1DOption;
 }
 
 interface AddPeakOptions {
+  /**
+   * Half-height width.
+   * @default `peakWidthFct(value)`
+   */
   width?: number;
+  /**
+   * Half-height width left (asymmetric peak).
+   * @default `width`
+   */
   widthLeft?: number;
+  /**
+   * Half-height width right (asymmetric peak).
+   * @default `width`
+   */
   widthRight?: number;
+  /**
+   * Shape options
+   */
   shape?: Shape1DOption;
+  /**
+   * Number of times of fwhm to calculate length..
+   * @default 'covers 99.99 % of volume'
+   */
   factor?: number;
 }
 
@@ -74,17 +113,6 @@ export class SpectrumGenerator {
   private maxPeakHeight: number;
   private shape: Shape1D;
   private data: Data;
-  /**
-   *
-   * @param {object} [options={}]
-   * @param {number} [options.from=0]
-   * @param {number} [options.to=0]
-   * @param {function} [options.nbPoints=10001]
-   * @param {number} [options.factor] default value depends of the shape in order to cover 99.99% of the surface
-   * @param {object} [options.shape={kind:'gaussian'}]
-   * @param {string} [options.shape.kind] kind of shape, gaussian, lorentzian or pseudovoigt
-   * @param {object} [options.shape.options] options for the shape (like `mu` for pseudovoigt)
-   */
   public constructor(options: OptionsSG1D = {}) {
     const {
       from = 0,
@@ -125,7 +153,10 @@ export class SpectrumGenerator {
 
     this.reset();
   }
-
+  /**
+   * Add a series of peaks to the spectrum.
+   * @param peaks - Peaks to add.
+   */
   public addPeaks(peaks: peak[] | PeakSeries, options?: AddPeakOptions) {
     if (
       !Array.isArray(peaks) &&
@@ -152,7 +183,11 @@ export class SpectrumGenerator {
 
     return this;
   }
-
+  /**
+   * Add a single peak to the spectrum.
+   * @param peak
+   * @param options
+   */
   public addPeak(peak: peak, options: AddPeakOptions = {}) {
     if (Array.isArray(peak) && peak.length < 2) {
       throw new Error(
@@ -245,16 +280,27 @@ export class SpectrumGenerator {
     return this;
   }
 
+  /**
+   * Add a baseline to the spectrum.
+   * @param baselineFct - Mathematical function producing the baseline you want.
+   */
   public addBaseline(baselineFct: numToNumFn) {
     addBaseline(this.data, baselineFct);
     return this;
   }
 
+  /**
+   * Add noise to the spectrum.
+   * @param percent - Noise's amplitude in percents of the spectrum max value. Default: 0.
+   */
   public addNoise(percent: number, options: AddNoiseOptions) {
     addNoise(this.data, percent, options);
     return this;
   }
 
+  /**
+   * Get the generated spectrum.
+   */
   public getSpectrum(options: GetSpectrumOptions | boolean = {}) {
     if (typeof options === 'boolean') {
       options = { copy: options };
@@ -282,6 +328,9 @@ export class SpectrumGenerator {
     }
   }
 
+  /**
+   * Resets the generator with an empty spectrum.
+   */
   public reset() {
     const spectrum = this.data;
 
@@ -304,6 +353,12 @@ function assertNumber(value: number, name: string) {
     throw new TypeError(`${name} option must be a number`);
   }
 }
+
+/**
+ * Generates a spectrum and returns it.
+ * @param peaks - List of peaks to put in the spectrum.
+ * @param options
+ */
 
 export function generateSpectrum(
   peaks: peak[] | PeakSeries,

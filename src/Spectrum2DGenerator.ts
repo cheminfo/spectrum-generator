@@ -15,17 +15,49 @@ type PeakCoordinates = 'x' | 'y' | 'z';
 const peakCoordinates: PeakCoordinates[] = ['x', 'y', 'z'];
 
 interface OptionsSG1D {
+  /**
+   * First x value (inclusive).
+   * @default `0`
+   */
   from?: number | XYNumber;
+  /**
+   * Last x value (inclusive).
+   * @default `100`
+   */
   to?: number | XYNumber;
+  /**
+   * Number of points in the final spectrum.
+   * @default `1001`
+   */
   nbPoints?: number | XYNumber;
+  /**
+   * Function that returns the width of a peak depending the x value.
+   * @default `() => 5`
+   */
   peakWidthFct?: numToNumFn;
-  maxPeakHeight?: number;
+  /**
+   * Define the shape of the peak.
+   * @default `shape: {
+          kind: 'gaussian',
+        },`
+   */
   shape?: Shape2DOption;
 }
 
 interface AddPeakOptions {
+  /**
+   * Half-height width.
+   * @default `peakWidthFct(value)`
+   */
   width?: XYNumber;
+  /**
+   * Define the shape of the peak.
+   */
   shape?: Shape2DOption;
+  /**
+   * Number of times of fwhm to calculate length..
+   * @default 'covers 99.99 % of volume'
+   */
   factor?: number | XYNumber;
 }
 
@@ -47,17 +79,6 @@ export class Spectrum2DGenerator {
   private shape: Shape2D;
   private peakWidthFct: numToNumFn;
 
-  /**
-   *
-   * @param {object} [options={}]
-   * @param {number} [options.from=0]
-   * @param {number} [options.to=0]
-   * @param {function} [options.nbPoints=10001]
-   * @param {number} [options.factor] default value depends of the shape in order to cover 99.99% of the surface
-   * @param {object} [options.shape={kind:'gaussian'}]
-   * @param {string} [options.shape.kind] kind of shape, gaussian, lorentzian or pseudovoigt
-   * @param {object} [options.shape.options] options for the shape (like `mu` for pseudovoigt)
-   */
   public constructor(options: OptionsSG1D = {}) {
     let {
       from = 0,

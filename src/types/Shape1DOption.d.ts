@@ -7,6 +7,12 @@ interface Shape1DOptions {
 }
 
 export interface Shape1DOption {
+  /**
+   * kind of shape
+   */
   kind?: string;
+  /**
+   * Options for the specific kind of shape
+   */
   options?: Shape1DOptions;
 }

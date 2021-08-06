@@ -1,6 +1,6 @@
 import { XYNumber } from './XYNumber';
 
-interface Shape1DOptions {
+interface Shape2DOptions {
   fwhm: number | XYNumber;
   sd?: number | XYNumber;
   length?: number | XYNumber;
@@ -8,6 +8,12 @@ interface Shape1DOptions {
 }
 
 export interface Shape2DOption {
+  /**
+   * kind of shape
+   */
   kind?: string;
-  options?: Shape1DOptions;
+  /**
+   * Options for the specific kind of shape
+   */
+  options?: Shape2DOptions;
 }
