@@ -45,6 +45,7 @@
     "testEnvironment": "node"
   },
   "devDependencies": {
+    "@types/d3-random": "^3.0.1",
     "@types/jest": "^26.0.24",
     "eslint": "^7.32.0",
     "eslint-config-cheminfo-typescript": "^8.0.9",
@@ -57,9 +58,8 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "@types/d3-random": "^3.0.1",
     "d3-random": "^2.2.2",
-    "ml-peak-shape-generator": "^1.0.0",
+    "ml-peak-shape-generator": "^2.0.0",
     "ml-xsadd": "^2.0.0"
   }
 }
