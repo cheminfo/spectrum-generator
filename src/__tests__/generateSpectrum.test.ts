@@ -1,7 +1,7 @@
 import { xyMaxYPoint } from 'ml-spectra-processing';
 
 import { generateSpectrum } from '../SpectrumGenerator';
-import type { Data } from '../types/Data';
+import type { Data1D } from '../types/Data1D';
 
 const simplepeakWidthFct = () => 1;
 
@@ -183,12 +183,12 @@ function assertSimple(options: { from: number; to: number; peak: number }) {
   assertInterval(spectrum, from);
 }
 
-function assertSize(spectrum: Data, size: number) {
+function assertSize(spectrum: Data1D, size: number) {
   expect(spectrum.x).toHaveLength(size);
   expect(spectrum.y).toHaveLength(size);
 }
 
-function assertInterval(spectrum: Data, from: number) {
+function assertInterval(spectrum: Data1D, from: number) {
   let expected = from;
   for (const value of spectrum.x) {
     expect(value).toBe(expected);
@@ -196,7 +196,7 @@ function assertInterval(spectrum: Data, from: number) {
   }
 }
 
-function checkSymmetry(spectrum: Data) {
+function checkSymmetry(spectrum: Data1D) {
   for (let i = 0; i <= Math.floor(spectrum.y.length / 2); i++) {
     expect(spectrum.y[i] - spectrum.y[spectrum.y.length - i - 1]).toBeCloseTo(
       0,

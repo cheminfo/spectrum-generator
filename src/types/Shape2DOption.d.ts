@@ -1,4 +1,4 @@
-import { XYNumber } from './XYNumber';
+import type { XYNumber } from './XYNumber';
 
 interface Shape2DOptions {
   fwhm: number | XYNumber;

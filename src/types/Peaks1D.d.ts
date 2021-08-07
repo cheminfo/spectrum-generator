@@ -10,8 +10,8 @@ export interface PeakObject {
 export interface PeakSeries {
   x: number[];
   y: number[];
-  width?: [number];
+  width?: number[];
 }
 
-export type peakArray = [number, number, number?, Shape1DOption?];
-export type peak = peakArray | PeakObject;
+export type PeakArray = [number, number, number?, Shape1DOption?];
+export type Peak1D = PeakArray | PeakObject;

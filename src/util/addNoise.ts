@@ -1,17 +1,31 @@
 import { randomUniform, randomNormal } from 'd3-random';
 import XSAdd from 'ml-xsadd';
 
-import type { AddNoiseOptions } from '../types/AddNoiseOptions';
-import type { Data } from '../types/Data';
+import type { Data1D } from '../types/Data1D';
+
+type Distributions = 'uniform' | 'normal';
+
+export interface AddNoiseOptions {
+  /**
+   * Type of random distribution.
+   * 'uniform' (true random) or 'normal' (gaussian distribution)
+   */
+  distribution?: Distributions;
+  /**
+   * Seed for a deterministic sequence of random numbers.
+   */
+  seed?: number;
+}
 
 export default function addNoise(
-  data: Data,
+  data: Data1D,
   percent = 0,
   options: AddNoiseOptions = {},
 ) {
-  const { distribution = 'uniform', seed } = options;
-
+  const { seed } = options;
+  const distribution = options.distribution || ('uniform' as Distributions);
   let generateRandomNumber;
+
   switch (distribution) {
     case 'uniform': {
       generateRandomNumber = getRandom(randomUniform, seed, -0.5, 0.5);
@@ -21,8 +35,7 @@ export default function addNoise(
       generateRandomNumber = getRandom(randomNormal, seed);
       break;
     }
-    default:
-      throw new Error(`Unknown distribution ${distribution}`);
+    // no default
   }
 
   if (!percent) return data;

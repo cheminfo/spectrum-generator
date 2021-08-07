@@ -1,11 +1,11 @@
 import { getShape1D } from 'ml-peak-shape-generator';
 import type { ShapeKind, Shape1D } from 'ml-peak-shape-generator';
 
-import type { AddNoiseOptions } from './types/AddNoiseOptions';
-import type { Data } from './types/Data';
-import type { PeakSeries, peak } from './types/Peaks';
+import type { Data1D } from './types/Data1D';
+import type { PeakSeries, Peak1D } from './types/Peaks1D';
 import type { Shape1DOption } from './types/Shape1DOption';
 import addBaseline from './util/addBaseline';
+import type { AddNoiseOptions } from './util/addNoise';
 import addNoise from './util/addNoise';
 
 type numToNumFn = (x: number) => number;
@@ -112,7 +112,7 @@ export class SpectrumGenerator {
   private peakWidthFct: numToNumFn;
   private maxPeakHeight: number;
   private shape: Shape1D;
-  private data: Data;
+  private data: Data1D;
   public constructor(options: OptionsSG1D = {}) {
     const {
       from = 0,
@@ -157,7 +157,7 @@ export class SpectrumGenerator {
    * Add a series of peaks to the spectrum.
    * @param peaks - Peaks to add.
    */
-  public addPeaks(peaks: peak[] | PeakSeries, options?: AddPeakOptions) {
+  public addPeaks(peaks: Peak1D[] | PeakSeries, options?: AddPeakOptions) {
     if (
       !Array.isArray(peaks) &&
       (typeof peaks !== 'object' ||
@@ -188,7 +188,7 @@ export class SpectrumGenerator {
    * @param peak
    * @param options
    */
-  public addPeak(peak: peak, options: AddPeakOptions = {}) {
+  public addPeak(peak: Peak1D, options: AddPeakOptions = {}) {
     if (Array.isArray(peak) && peak.length < 2) {
       throw new Error(
         'peak must be an array with two (or three) values or an object with {x,y,width?}',
@@ -361,9 +361,9 @@ function assertNumber(value: number, name: string) {
  */
 
 export function generateSpectrum(
-  peaks: peak[] | PeakSeries,
+  peaks: Peak1D[] | PeakSeries,
   options: GenerateSpectrumOptions = {},
-): Data {
+): Data1D {
   const {
     generator: generatorOptions,
     noise,

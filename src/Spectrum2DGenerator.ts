@@ -151,11 +151,10 @@ export class Spectrum2DGenerator {
         this.addPeak(peak, options);
       }
     } else {
-      let numberOfPeaks = peaks.x.length;
-      for (const e of ['y', 'z']) {
-        let data = peaks[e];
-        if (data && Array.isArray(data)) {
-          if (numberOfPeaks !== data.length) {
+      let nbPeaks = peaks.x.length;
+      for (const c of peakCoordinates) {
+        if (peaks[c] && Array.isArray(peaks[c])) {
+          if (nbPeaks !== peaks[c].length) {
             throw new Error('x, y, z should have the same length');
           }
         }

@@ -2,8 +2,8 @@ interface Shape1DOptions {
   fwhm?: number;
   sd?: number;
   mu?: number;
-  height?: number;
   length?: number;
+  height?: number;
 }
 
 export interface Shape1DOption {
