@@ -35,7 +35,11 @@ export default function addNoise(
       generateRandomNumber = getRandom(randomNormal, seed);
       break;
     }
-    // no default
+    default: {
+      const unHandled: never = distribution;
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      throw Error(`Unknown distribution ${unHandled}`);
+    }
   }
 
   if (!percent) return data;
