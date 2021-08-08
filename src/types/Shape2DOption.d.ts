@@ -1,13 +1,6 @@
-import type { XYNumber } from './XYNumber';
+import type { Gaussian2DClassOptions } from 'ml-peak-shape-generator';
 
-interface Shape2DOptions {
-  fwhm: number | XYNumber;
-  sd?: number | XYNumber;
-  length?: number | XYNumber;
-  height?: number;
-}
-
-export interface Shape2DOption {
+interface Shape2DOption {
   /**
    * kind of shape
    */
@@ -15,5 +8,5 @@ export interface Shape2DOption {
   /**
    * Options for the specific kind of shape
    */
-  options?: Shape2DOptions;
+  options?: Gaussian2DClassOptions;
 }

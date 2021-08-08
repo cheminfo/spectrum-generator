@@ -42,7 +42,6 @@ describe('generateSpectrum with one peak and small window', () => {
         shape: {
           kind: 'gaussian',
           options: {
-            length: 9,
             fwhm: 3,
           },
         },

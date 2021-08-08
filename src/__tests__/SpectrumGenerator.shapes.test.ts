@@ -96,7 +96,6 @@ describe('SpectrumGenerator various shapes', () => {
         shape: {
           kind: 'lorentzian',
           options: {
-            length: 13,
             fwhm: 4,
           },
         },

@@ -1,10 +1,8 @@
-interface Shape1DOptions {
-  fwhm?: number;
-  sd?: number;
-  mu?: number;
-  length?: number;
-  height?: number;
-}
+import {
+  GaussianClassOptions,
+  LorentzianClassOptions,
+  PseudoVoigtClassOptions,
+} from 'ml-peak-shape-generator';
 
 export interface Shape1DOption {
   /**
@@ -14,5 +12,8 @@ export interface Shape1DOption {
   /**
    * Options for the specific kind of shape
    */
-  options?: Shape1DOptions;
+  options?:
+    | GaussianClassOptions
+    | LorentzianClassOptions
+    | PseudoVoigtClassOptions;
 }

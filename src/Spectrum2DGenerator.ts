@@ -1,10 +1,9 @@
 import { getShape2D } from 'ml-peak-shape-generator';
-import type { Shape2DKind, Shape2D } from 'ml-peak-shape-generator';
+import type { Shape2DKind, Shape2D, XYNumber } from 'ml-peak-shape-generator';
 
 import type { Data2D } from './types/Data2D';
-import type { peak, PeakSeries } from './types/Peaks2D';
+import type { Peak2D, Peak2DSeries } from './types/Peaks2D';
 import type { Shape2DOption } from './types/Shape2DOption';
-import type { XYNumber } from './types/XYNumber';
 
 type numToNumFn = (x: number, y?: number) => number | XYNumber;
 
@@ -132,7 +131,7 @@ export class Spectrum2DGenerator {
     this.reset();
   }
 
-  public addPeaks(peaks: peak[] | PeakSeries, options?: AddPeakOptions) {
+  public addPeaks(peaks: Peak2D[] | Peak2DSeries, options?: AddPeakOptions) {
     if (
       !Array.isArray(peaks) &&
       (typeof peaks !== 'object' ||
@@ -167,7 +166,7 @@ export class Spectrum2DGenerator {
     return this;
   }
 
-  public addPeak(peak: peak, options: AddPeakOptions = {}) {
+  public addPeak(peak: Peak2D, options: AddPeakOptions = {}) {
     if (Array.isArray(peak) && peak.length < 3) {
       throw new Error(
         'peak must be an array with three (or four) values or an object with {x,y,z,width?}',
