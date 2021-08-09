@@ -13,7 +13,7 @@ const axis2D: Axis2D[] = ['x', 'y'];
 type PeakCoordinates = 'x' | 'y' | 'z';
 const peakCoordinates: PeakCoordinates[] = ['x', 'y', 'z'];
 
-interface OptionsSG1D {
+interface OptionsSG2D {
   /**
    * First x value (inclusive).
    * @default `0`
@@ -43,7 +43,7 @@ interface OptionsSG1D {
   shape?: Shape2DOption;
 }
 
-interface AddPeakOptions {
+interface AddPeak2DOptions {
   /**
    * Half-height width.
    * @default `peakWidthFct(value)`
@@ -68,6 +68,25 @@ interface GetSpectrum2DOptions {
   copy?: boolean;
 }
 
+interface GenerateSpectrum2DOptions {
+  /**
+   * Options for spectrum generator
+   */
+  generator?: OptionsSG2D;
+  /**
+   * Options for addPeaks method
+   */
+  peaks?: AddPeak2DOptions;
+}
+
+export interface Spectrum2D {
+  minX: number;
+  maxX: number;
+  minY: number;
+  maxY: number;
+  z: Float64Array[] | number[][];
+}
+
 export class Spectrum2DGenerator {
   private from: XYNumber;
   private to: XYNumber;
@@ -78,7 +97,7 @@ export class Spectrum2DGenerator {
   private shape: Shape2D;
   private peakWidthFct: numToNumFn;
 
-  public constructor(options: OptionsSG1D = {}) {
+  public constructor(options: OptionsSG2D = {}) {
     let {
       from = 0,
       to = 100,
@@ -131,7 +150,7 @@ export class Spectrum2DGenerator {
     this.reset();
   }
 
-  public addPeaks(peaks: Peak2D[] | Peak2DSeries, options?: AddPeakOptions) {
+  public addPeaks(peaks: Peak2D[] | Peak2DSeries, options?: AddPeak2DOptions) {
     if (
       !Array.isArray(peaks) &&
       (typeof peaks !== 'object' ||
@@ -166,7 +185,7 @@ export class Spectrum2DGenerator {
     return this;
   }
 
-  public addPeak(peak: Peak2D, options: AddPeakOptions = {}) {
+  public addPeak(peak: Peak2D, options: AddPeak2DOptions = {}) {
     if (Array.isArray(peak) && peak.length < 3) {
       throw new Error(
         'peak must be an array with three (or four) values or an object with {x,y,z,width?}',
@@ -220,9 +239,7 @@ export class Spectrum2DGenerator {
       this.shape = getShape2D(kind, shapeParameters);
     }
 
-    if (typeof width !== 'object') {
-      width = { x: width, y: width };
-    }
+    width = ensureXYNumber(width);
 
     let factor =
       options.factor === undefined ? this.shape.getFactor() : options.factor;
@@ -234,7 +251,6 @@ export class Spectrum2DGenerator {
     for (const axis of axis2D) {
       const first = position[axis] - (width[axis] / 2) * factor[axis];
       const last = position[axis] + (width[axis] / 2) * factor[axis];
-
       firstPoint[axis] = Math.max(
         0,
         Math.floor((first - this.from[axis]) / this.interval[axis]),
@@ -297,6 +313,18 @@ export class Spectrum2DGenerator {
     }
     return this;
   }
+}
+
+export function generateSpectrum2D(
+  peaks: Peak2D[] | Peak2DSeries,
+  options: GenerateSpectrum2DOptions = {},
+): Spectrum2D {
+  const { generator: generatorOptions, peaks: addPeaksOptions } = options;
+
+  const generator = new Spectrum2DGenerator(generatorOptions);
+
+  generator.addPeaks(peaks, addPeaksOptions);
+  return generator.getSpectrum();
 }
 
 function ensureXYNumber(input: number | XYNumber) {
