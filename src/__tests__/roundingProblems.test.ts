@@ -1,4 +1,4 @@
-import { SpectrumGenerator } from '..';
+import { SpectrumGenerator } from '../SpectrumGenerator';
 
 describe('rounding', () => {
   it('should be continuous', () => {
