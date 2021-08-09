@@ -1,7 +1,7 @@
 import { randomUniform, randomNormal } from 'd3-random';
 import XSAdd from 'ml-xsadd';
 
-import type { Data1D } from '../types/Data1D';
+import type { Data1D } from '../../types/Data1D';
 
 type Distributions = 'uniform' | 'normal';
 
