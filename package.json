@@ -1,6 +1,6 @@
 {
   "name": "spectrum-generator",
-  "version": "4.7.1",
+  "version": "4.8.0",
   "description": "generate a spectrum from discrete peaks",
   "main": "./lib/index.js",
   "module": "./lib-esm/index.js",
