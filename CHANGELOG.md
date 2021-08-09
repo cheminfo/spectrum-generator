@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.8.0](https://www.github.com/cheminfo/spectrum-generator/compare/v4.7.1...v4.8.0) (2021-08-09)
+
+
+### Features
+
+* fixing usage of peak options close [#31](https://www.github.com/cheminfo/spectrum-generator/issues/31) ([#32](https://www.github.com/cheminfo/spectrum-generator/issues/32)) ([98bd1da](https://www.github.com/cheminfo/spectrum-generator/commit/98bd1daade4e21259d5aef0b31c722bd25e19564))
+* typescript migration, add Spectrum2DGenerator ([#34](https://www.github.com/cheminfo/spectrum-generator/issues/34)) ([72907f8](https://www.github.com/cheminfo/spectrum-generator/commit/72907f83948f2c55ab649d4334eba7007f28a7bd))
+
 ### [4.7.1](https://www.github.com/cheminfo/spectrum-generator/compare/v4.7.0...v4.7.1) (2021-03-24)
 
 
