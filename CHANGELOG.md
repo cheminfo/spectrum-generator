@@ -1,5 +1,12 @@
 # Changelog
 
+### [5.0.1](https://www.github.com/cheminfo/spectrum-generator/compare/v5.0.0...v5.0.1) (2021-08-10)
+
+
+### Bug Fixes
+
+* reset z, add min max z ([dd8f34b](https://www.github.com/cheminfo/spectrum-generator/commit/dd8f34bb4f421cdb766c7bca74bc1a173dcc7cf6))
+
 ## [5.0.0](https://www.github.com/cheminfo/spectrum-generator/compare/v4.8.1...v5.0.0) (2021-08-10)
 
 
