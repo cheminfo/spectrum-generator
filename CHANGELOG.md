@@ -1,5 +1,12 @@
 # Changelog
 
+### [4.8.1](https://www.github.com/cheminfo/spectrum-generator/compare/v4.8.0...v4.8.1) (2021-08-10)
+
+
+### Bug Fixes
+
+* reverse a breaking change ([41293c7](https://www.github.com/cheminfo/spectrum-generator/commit/41293c790395c8979f27f6cf9b2dc94c33aa60f1))
+
 ## [4.8.0](https://www.github.com/cheminfo/spectrum-generator/compare/v4.7.1...v4.8.0) (2021-08-09)
 
 
