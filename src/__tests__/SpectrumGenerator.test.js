@@ -1,6 +1,6 @@
-import { gaussian } from 'ml-peak-shape-generator';
+import { Gaussian } from 'ml-peak-shape-generator';
 
-import { SpectrumGenerator } from '../SpectrumGenerator';
+import { SpectrumGenerator } from '..';
 
 describe('SpectrumGenerator', () => {
   it('0 half peak', () => {
@@ -48,16 +48,14 @@ describe('SpectrumGenerator', () => {
       to: 100,
       nbPoints: 201,
     });
-    generator.addPeak([50, 100], { widthLeft: 30, widthRight: 10, factor: 15 });
+    generator.addPeak([50, 100], { widthLeft: 10, widthRight: 30, factor: 15 });
     const spectrum = generator.getSpectrum();
-    const xArray = spectrum.x as Float64Array;
-    const yArray = spectrum.y as Float64Array;
-    const sumX = xArray.reduce((previous, value) => previous + value, 0);
-    const sumY = yArray.reduce((previous, value) => previous + value, 0);
+    const sumX = spectrum.x.reduce((previous, value) => previous + value);
+    const sumY = spectrum.y.reduce((previous, value) => previous + value);
     expect(sumX).toBe(10050);
     expect(sumY * generator.interval).toBeCloseTo(
-      (gaussian.getArea({ fwhm: 10, height: 100 }) +
-        gaussian.getArea({ fwhm: 30, height: 100 })) /
+      (Gaussian.getArea(10, { height: 100 }) +
+        Gaussian.getArea(30, { height: 100 })) /
         2,
       0,
     );
@@ -68,7 +66,7 @@ describe('SpectrumGenerator', () => {
       from: 0,
       to: 2,
       nbPoints: 21,
-      peakWidthFct: (x: number) => 1 + (3 * x) / 1000,
+      peakWidthFct: (x) => 1 + (3 * x) / 1000,
     });
 
     generator.addPeak([1, 1]);
@@ -143,6 +141,7 @@ describe('SpectrumGenerator', () => {
     generator.addPeaks({ x: [100, 14], y: [10, 2] });
 
     const spectrum = generator.getSpectrum();
+    // console.log(spectrum)
     expect(spectrum.y[0]).toBeCloseTo(1, 3);
     expect(spectrum.y[50 * 10]).toBeCloseTo(12, 3);
     expect(spectrum.y[100 * 10]).toBeCloseTo(10, 3);
@@ -166,10 +165,8 @@ describe('SpectrumGenerator', () => {
 
     const spectrum = generator.getSpectrum({ threshold: 0.001 });
 
-    const xArray = spectrum.x as Float64Array;
-    const yArray = spectrum.y as Float64Array;
-    const sumX = xArray.reduce((previous, value) => previous + value, 0);
-    const sumY = yArray.reduce((previous, value) => previous + value, 0);
+    const sumX = spectrum.x.reduce((previous, value) => previous + value);
+    const sumY = spectrum.y.reduce((previous, value) => previous + value);
     expect(sumX).toBeCloseTo(5028, 4);
     expect(sumY).toBeCloseTo(265.9928557821358, 4);
   });

@@ -1,7 +1,6 @@
 import { xyMaxYPoint } from 'ml-spectra-processing';
 
-import type { Data1D } from '../../types/Data1D';
-import { generateSpectrum } from '../SpectrumGenerator';
+import { generateSpectrum } from '..';
 
 const simplepeakWidthFct = () => 1;
 
@@ -34,16 +33,15 @@ describe('generateSpectrum', () => {
 describe('generateSpectrum with one peak and small window', () => {
   it('should work with shape 9/3, peak width 0.2', () => {
     const spectrum = generateSpectrum([[10, 1]], {
-      generator: {
-        from: 9,
-        to: 11,
-        nbPoints: 21,
-        peakWidthFct: () => 0.1,
-        shape: {
-          kind: 'gaussian',
-          options: {
-            fwhm: 3,
-          },
+      from: 9,
+      to: 11,
+      nbPoints: 21,
+      peakWidthFct: () => 0.1,
+      shape: {
+        kind: 'gaussian',
+        options: {
+          length: 9,
+          fwhm: 3,
         },
       },
     });
@@ -56,16 +54,14 @@ describe('generateSpectrum with one peak and small window', () => {
 
   it('should work with shape 17/4, peak width 0.2', () => {
     const spectrum = generateSpectrum([[10, 1]], {
-      generator: {
-        from: 9,
-        to: 11,
-        nbPoints: 21,
-        peakWidthFct: () => 0.4,
-        shape: {
-          kind: 'gaussian',
-          options: {
-            fwhm: 4,
-          },
+      from: 9,
+      to: 11,
+      nbPoints: 21,
+      peakWidthFct: () => 0.4,
+      shape: {
+        kind: 'gaussian',
+        options: {
+          fwhm: 4,
         },
       },
     });
@@ -79,16 +75,14 @@ describe('generateSpectrum with one peak and small window', () => {
 
   it('should work from 11', () => {
     const spectrum = generateSpectrum([[10, 1]], {
-      generator: {
-        from: 9,
-        to: 11,
-        nbPoints: 21,
-        peakWidthFct: () => 0.1,
-        shape: {
-          kind: 'gaussian',
-          options: {
-            fwhm: 3,
-          },
+      from: 9,
+      to: 11,
+      nbPoints: 21,
+      peakWidthFct: () => 0.1,
+      shape: {
+        kind: 'gaussian',
+        options: {
+          fwhm: 3,
         },
       },
     });
@@ -100,14 +94,12 @@ describe('generateSpectrum with one peak and small window', () => {
 
   it('should work from 0 to 10 low res', () => {
     const spectrum = generateSpectrum([[5, 1]], {
-      generator: {
-        from: 0,
-        to: 10,
-        nbPoints: 101,
-        peakWidthFct: () => 0.2,
-        shape: {
-          kind: 'gaussian',
-        },
+      from: 0,
+      to: 10,
+      nbPoints: 101,
+      peakWidthFct: () => 0.2,
+      shape: {
+        kind: 'gaussian',
       },
     });
     let max = xyMaxYPoint(spectrum);
@@ -118,14 +110,12 @@ describe('generateSpectrum with one peak and small window', () => {
 
   it('should work from 10 to 20 low res', () => {
     const spectrum = generateSpectrum([[15, 1]], {
-      generator: {
-        from: 10,
-        to: 20,
-        nbPoints: 101,
-        peakWidthFct: () => 2,
-        shape: {
-          kind: 'gaussian',
-        },
+      from: 10,
+      to: 20,
+      nbPoints: 101,
+      peakWidthFct: () => 2,
+      shape: {
+        kind: 'gaussian',
       },
     });
     checkSymmetry(spectrum);
@@ -137,12 +127,10 @@ describe('generateSpectrum with one peak and small window', () => {
 
   it('not integer from / to', () => {
     const spectrum = generateSpectrum([[2, 1]], {
-      generator: {
-        from: 1.5,
-        to: 2.5,
-        nbPoints: 11,
-        peakWidthFct: () => 0.1,
-      },
+      from: 1.5,
+      to: 2.5,
+      nbPoints: 11,
+      peakWidthFct: () => 0.1,
     });
     checkSymmetry(spectrum);
     expect(spectrum.y[5]).toBe(1);
@@ -153,12 +141,10 @@ describe('generateSpectrum with one peak and small window', () => {
 
   it('not integer from / to not integer', () => {
     const spectrum = generateSpectrum([[2.5, 1]], {
-      generator: {
-        from: 1.7,
-        to: 3.7,
-        nbPoints: 11,
-        peakWidthFct: () => 0.1,
-      },
+      from: 1.7,
+      to: 3.7,
+      nbPoints: 11,
+      peakWidthFct: () => 0.1,
     });
     expect(spectrum.y[3]).toBe(spectrum.y[5]);
 
@@ -168,26 +154,23 @@ describe('generateSpectrum with one peak and small window', () => {
   });
 });
 
-function assertSimple(options: { from: number; to: number; peak: number }) {
-  const { from, to, peak } = options;
+function assertSimple({ from, to, peak }) {
   const spectrum = generateSpectrum([[peak, 1]], {
-    generator: {
-      from,
-      to,
-      nbPoints: 11,
-      peakWidthFct: simplepeakWidthFct,
-    },
+    from,
+    to,
+    nbPoints: 11,
+    peakWidthFct: simplepeakWidthFct,
   });
   assertSize(spectrum, to - from + 1);
   assertInterval(spectrum, from);
 }
 
-function assertSize(spectrum: Data1D, size: number) {
+function assertSize(spectrum, size) {
   expect(spectrum.x).toHaveLength(size);
   expect(spectrum.y).toHaveLength(size);
 }
 
-function assertInterval(spectrum: Data1D, from: number) {
+function assertInterval(spectrum, from) {
   let expected = from;
   for (const value of spectrum.x) {
     expect(value).toBe(expected);
@@ -195,7 +178,7 @@ function assertInterval(spectrum: Data1D, from: number) {
   }
 }
 
-function checkSymmetry(spectrum: Data1D) {
+function checkSymmetry(spectrum) {
   for (let i = 0; i <= Math.floor(spectrum.y.length / 2); i++) {
     expect(spectrum.y[i] - spectrum.y[spectrum.y.length - i - 1]).toBeCloseTo(
       0,

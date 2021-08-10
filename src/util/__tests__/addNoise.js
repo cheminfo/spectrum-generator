@@ -1,10 +1,7 @@
 import addNoise from '../addNoise';
 
 test('addNoise', () => {
-  let corrected = addNoise({ x: [1, 2, 3], y: [2, 3, 4] }, 10, {
-    distribution: 'uniform',
-    seed: 0,
-  });
+  let corrected = addNoise({ x: [1, 2, 3], y: [2, 3, 4] }, 10, { seed: 0 });
   expect(corrected.x).toHaveLength(3);
   expect(corrected).toMatchSnapshot();
 });

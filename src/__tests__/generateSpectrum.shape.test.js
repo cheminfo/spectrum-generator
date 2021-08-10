@@ -1,15 +1,13 @@
-import { gaussian } from 'ml-peak-shape-generator';
+import { Gaussian } from 'ml-peak-shape-generator';
 
-import { generateSpectrum } from '../SpectrumGenerator';
+import { generateSpectrum } from '..';
 
 describe('generateSpectrum', () => {
   it('derivative should be continuous', () => {
     const spectrum = generateSpectrum([[0, 1, 0.12]], {
-      generator: {
-        from: -0.1,
-        to: 0.1,
-        nbPoints: 51,
-      },
+      from: -0.1,
+      to: 0.1,
+      nbPoints: 51,
     });
 
     let y = Array.from(spectrum.y);
@@ -48,15 +46,13 @@ describe('generateSpectrum', () => {
     ];
 
     const spectrum = generateSpectrum(peaks, {
-      generator: {
-        from: -0.1,
-        to: 0.1,
-        nbPoints: 51,
-        shape: { kind: 'lorentzian' },
-      },
+      from: -0.1,
+      to: 0.1,
+      nbPoints: 51,
+      shape: { kind: 'lorentzian' },
     });
 
     let index = spectrum.x.indexOf(0.06);
-    expect(spectrum.y[index]).toBe(gaussian.fct(0.06, 0.5));
+    expect(spectrum.y[index]).toBe(Gaussian.fct(0.06, 0.5));
   });
 });
