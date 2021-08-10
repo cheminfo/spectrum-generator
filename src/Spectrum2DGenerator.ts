@@ -5,6 +5,8 @@ import type { Data2D } from '../types/Data2D';
 import type { Peak2D, Peak2DSeries } from '../types/Peaks2D';
 import type { Shape2DOption } from '../types/Shape2DOption';
 
+import { getMinMax } from './util/getMinMax';
+
 type numToNumFn = (x: number, y?: number) => number | XYNumber;
 
 type Axis2D = 'x' | 'y';
@@ -84,6 +86,8 @@ export interface Spectrum2D {
   maxX: number;
   minY: number;
   maxY: number;
+  minZ: number;
+  maxZ: number;
   z: Float64Array[] | number[][];
 }
 
@@ -282,25 +286,17 @@ export class Spectrum2DGenerator {
       options = { copy: options };
     }
     const { copy = true } = options;
-    let [minX, maxX] = [this.data.x[0], this.data.x[this.nbPoints.x - 1]];
-    let [minY, maxY] = [this.data.y[0], this.data.y[this.nbPoints.y - 1]];
-    if (copy) {
-      return {
-        minX,
-        maxX,
-        maxY,
-        minY,
-        z: this.data.z.slice(),
-      };
-    } else {
-      return {
-        minX,
-        maxX,
-        maxY,
-        minY,
-        z: this.data.z,
-      };
-    }
+    let minMaxZ = getMinMax(this.data.z);
+
+    return {
+      minX: this.data.x[0],
+      maxX: this.data.x[this.nbPoints.x - 1],
+      maxY: this.data.y[this.nbPoints.y - 1],
+      minY: this.data.y[0],
+      minZ: minMaxZ.min,
+      maxZ: minMaxZ.max,
+      z: copy ? this.data.z.slice() : this.data.z,
+    };
   }
 
   public reset() {
@@ -309,6 +305,11 @@ export class Spectrum2DGenerator {
     for (const axis of axis2D) {
       for (let i = 0; i < this.nbPoints[axis]; i++) {
         spectrum[axis][i] = this.from[axis] + i * this.interval[axis];
+      }
+    }
+    for (let row of spectrum.z) {
+      for (let j = 0; j < row.length; j++) {
+        row[j] = 0;
       }
     }
     return this;

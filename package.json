@@ -61,6 +61,7 @@
   },
   "dependencies": {
     "d3-random": "^2.2.2",
+    "ml-array-min": "^1.2.2",
     "ml-peak-shape-generator": "^2.0.1",
     "ml-xsadd": "^2.0.0"
   }
