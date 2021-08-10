@@ -1,5 +1,16 @@
 # Changelog
 
+## [5.0.0](https://www.github.com/cheminfo/spectrum-generator/compare/v4.8.1...v5.0.0) (2021-08-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* major version with typescript migration
+
+### Features
+
+* major version with typescript migration ([38581da](https://www.github.com/cheminfo/spectrum-generator/commit/38581da312b11c2dcff2790751a721fa49c4b2a4))
+
 ### [4.8.1](https://www.github.com/cheminfo/spectrum-generator/compare/v4.8.0...v4.8.1) (2021-08-10)
 
 
