@@ -1,5 +1,12 @@
 # Changelog
 
+### [5.0.2](https://www.github.com/cheminfo/spectrum-generator/compare/v5.0.1...v5.0.2) (2021-08-13)
+
+
+### Bug Fixes
+
+* rows in the first index ([48cd472](https://www.github.com/cheminfo/spectrum-generator/commit/48cd472eabc8ef54c6503a266951fe7e53046834))
+
 ### [5.0.1](https://www.github.com/cheminfo/spectrum-generator/compare/v5.0.0...v5.0.1) (2021-08-10)
 
 
