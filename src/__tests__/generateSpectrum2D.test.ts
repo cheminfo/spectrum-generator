@@ -32,6 +32,25 @@ describe('generateSpectrum', () => {
 });
 
 describe('generateSpectrum with one peak and small window', () => {
+  it('should work with shape 9/3, and different sizes', () => {
+    const spectrum = generateSpectrum2D([[10, 10, 1]], {
+      generator: {
+        from: 9,
+        to: 11,
+        nbPoints: { x: 21, y: 41},
+        peakWidthFct: () => 0.1,
+        shape: {
+          kind: 'gaussian',
+          options: {
+            fwhm: 3,
+          },
+        },
+      },
+    });
+    expect(spectrum.z[20][10]).toBeCloseTo(1, 3);
+    expect(spectrum.z[20][9]).toBeCloseTo(0.0625, 3);
+    expect(spectrum.z[18][10]).toBeCloseTo(0.0625, 3);
+  });
   it('should work with shape 9/3, peak width 0.2', () => {
     const spectrum = generateSpectrum2D([[10, 10, 1]], {
       generator: {
@@ -47,6 +66,7 @@ describe('generateSpectrum with one peak and small window', () => {
         },
       },
     });
+    expect(spectrum.z[10][9]).toBeCloseTo(spectrum.z[9][10], 3);
     expect(spectrum.z[9][10]).toBeCloseTo(0.0625, 3);
     checkSymmetry(spectrum);
     checkMax(spectrum, 10);

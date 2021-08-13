@@ -221,7 +221,6 @@ export class Spectrum2DGenerator {
     }
 
     const position: XYNumber = { x: xPosition, y: yPosition };
-
     if (intensity > this.maxPeakHeight) this.maxPeakHeight = intensity;
 
     let {
@@ -269,7 +268,7 @@ export class Spectrum2DGenerator {
     this.shape.fwhmY = width.y;
     for (let xIndex = firstPoint.x; xIndex < lastPoint.x; xIndex++) {
       for (let yIndex = firstPoint.y; yIndex < lastPoint.y; yIndex++) {
-        this.data.z[xIndex][yIndex] +=
+        this.data.z[yIndex][xIndex] +=
           intensity *
           this.shape.fct(
             this.data.x[xIndex] - position.x,
@@ -289,10 +288,10 @@ export class Spectrum2DGenerator {
     let minMaxZ = getMinMax(this.data.z);
 
     return {
-      minX: this.data.x[0],
-      maxX: this.data.x[this.nbPoints.x - 1],
-      maxY: this.data.y[this.nbPoints.y - 1],
-      minY: this.data.y[0],
+      minX: this.from.x,
+      maxX: this.to.x,
+      maxY: this.to.y,
+      minY: this.from.y,
       minZ: minMaxZ.min,
       maxZ: minMaxZ.max,
       z: copy ? this.data.z.slice() : this.data.z,
@@ -353,9 +352,9 @@ function assertNumber(value: number, name: string) {
 }
 
 function createMatrix(nbPoints: XYNumber) {
-  const zMatrix = new Array(nbPoints.x);
-  for (let i = 0; i < nbPoints.x; i++) {
-    zMatrix[i] = new Float64Array(nbPoints.y);
+  const zMatrix = new Array(nbPoints.y);
+  for (let i = 0; i < nbPoints.y; i++) {
+    zMatrix[i] = new Float64Array(nbPoints.x);
   }
   return zMatrix;
 }

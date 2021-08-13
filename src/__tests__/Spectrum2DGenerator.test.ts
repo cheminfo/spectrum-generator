@@ -26,7 +26,7 @@ describe('Spectrum2DGenerator', () => {
     generator.addPeak([0, 2, 1]);
 
     const spectrum = generator.getSpectrum();
-    expect(spectrum.z[0][2 * 5]).toBe(1);
+    expect(spectrum.z[2 * 5][0]).toBe(1);
   });
 
   it('1 middle peak', () => {
@@ -39,7 +39,7 @@ describe('Spectrum2DGenerator', () => {
     generator.addPeak([1, 0, 1]);
 
     const spectrum = generator.getSpectrum();
-    expect(spectrum.z[1 * 5][0]).toBe(1);
+    expect(spectrum.z[0][1 * 5]).toBe(1);
   });
 
   it('check asymmetric peak', () => {
@@ -125,10 +125,10 @@ describe('Spectrum2DGenerator', () => {
 
     const spectrum = generator.getSpectrum();
 
-    expect(spectrum.z[500][0]).toBeCloseTo(1, 3);
+    expect(spectrum.z[0][500]).toBeCloseTo(1, 3);
     expect(spectrum.z[500][50 * 10]).toBeCloseTo(12, 3);
-    expect(spectrum.z[500][10 * 10]).toBeCloseTo(10, 3);
-    expect(spectrum.z[500][74 * 10]).toBeCloseTo(2, 3);
+    expect(spectrum.z[10 * 10][500]).toBeCloseTo(10, 3);
+    expect(spectrum.z[74 * 10][500]).toBeCloseTo(2, 3);
   });
 
   it('full generation with {x,y}', () => {
@@ -143,10 +143,10 @@ describe('Spectrum2DGenerator', () => {
 
     const spectrum = generator.getSpectrum();
 
-    expect(spectrum.z[0][500]).toBeCloseTo(1, 3);
-    expect(spectrum.z[50 * 10][500]).toBeCloseTo(12, 3);
-    expect(spectrum.z[100 * 10][500]).toBeCloseTo(10, 3);
-    expect(spectrum.z[14 * 10][500]).toBeCloseTo(2, 3);
+    expect(spectrum.z[500][0]).toBeCloseTo(1, 3);
+    expect(spectrum.z[500][50 * 10]).toBeCloseTo(12, 3);
+    expect(spectrum.z[500][100*10]).toBeCloseTo(10, 3);
+    expect(spectrum.z[500][14 * 10]).toBeCloseTo(2, 3);
   });
 
   it('full generation with {x:[],y:[]}', () => {
@@ -157,10 +157,10 @@ describe('Spectrum2DGenerator', () => {
     generator.addPeaks({ x: [100, 14], y: [10, 50], z: [10, 30] });
 
     const spectrum = generator.getSpectrum();
-    expect(spectrum.z[0][50 * 10]).toBeCloseTo(1, 3);
+    expect(spectrum.z[50 * 10][0]).toBeCloseTo(1, 3);
     expect(spectrum.z[50 * 10][50 * 10]).toBeCloseTo(12, 3);
-    expect(spectrum.z[100 * 10][10 * 10]).toBeCloseTo(10, 3);
-    expect(spectrum.z[14 * 10][50 * 10]).toBeCloseTo(30, 3);
+    expect(spectrum.z[10 * 10][100 * 10]).toBeCloseTo(10, 3);
+    expect(spectrum.z[50 * 10][14 * 10]).toBeCloseTo(30, 3);
   });
 
   it('getSpectrum', () => {
