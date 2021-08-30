@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.1.0](https://www.github.com/cheminfo/spectrum-generator/compare/v5.0.2...v5.1.0) (2021-08-30)
+
+
+### Features
+
+* export XYNumber type from peak-shape-generator ([4b13588](https://www.github.com/cheminfo/spectrum-generator/commit/4b135885249c6d25d5923079553186502f6b3b06))
+* update @types/jest ([37b23a4](https://www.github.com/cheminfo/spectrum-generator/commit/37b23a4d32a4c007435e62eeb1e2f1162d5c0121))
+
 ### [5.0.2](https://www.github.com/cheminfo/spectrum-generator/compare/v5.0.1...v5.0.2) (2021-08-13)
 
 
