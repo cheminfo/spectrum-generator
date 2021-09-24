@@ -1,6 +1,6 @@
 import type { XYNumber } from 'ml-peak-shape-generator';
 
-import type { Shape2DOption } from './Shape2DOption';
+import type { Shape2DOption } from './shape2DOption';
 
 export interface Peak2DObject {
   x: number;

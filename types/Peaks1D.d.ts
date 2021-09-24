@@ -1,4 +1,4 @@
-import type { Shape1DOption } from './Shape1DOption';
+import type { Shape1DOption } from './shape1DOption';
 
 export interface PeakObject {
   x: number;
