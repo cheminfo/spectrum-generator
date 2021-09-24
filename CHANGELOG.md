@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.3.0](https://www.github.com/cheminfo/spectrum-generator/compare/v5.2.0...v5.3.0) (2021-09-24)
+
+
+### Features
+
+* start using cheminfo-types ([#42](https://www.github.com/cheminfo/spectrum-generator/issues/42)) ([3e4d3a7](https://www.github.com/cheminfo/spectrum-generator/commit/3e4d3a74a9cf10b22270e8b7179f15aca616e836))
+
 ## [5.2.0](https://www.github.com/cheminfo/spectrum-generator/compare/v5.1.0...v5.2.0) (2021-09-24)
 
 
