@@ -1,9 +1,9 @@
 import { getShape1D } from 'ml-peak-shape-generator';
 import type { ShapeKind, Shape1D } from 'ml-peak-shape-generator';
 
-import type { Data1D } from '../types/data1D';
-import type { PeakSeries, Peak1D } from '../types/peaks1D';
-import type { Shape1DOption } from '../types/shape1DOption';
+import type { Data1D } from '../types/Data1D';
+import type { PeakSeries, Peak1D } from '../types/Peaks1D';
+import type { Shape1DOption } from '../types/Shape1DOption';
 
 import addBaseline from './util/addBaseline';
 import type { AddNoiseOptions } from './util/addNoise';
