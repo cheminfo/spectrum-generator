@@ -1,5 +1,5 @@
-import type { Data1D } from './data1D';
+import type { DataXY } from 'cheminfo-types';
 
-export interface Data2D extends Data1D {
+export interface Data2D extends DataXY {
   z: Float64Array[] | number[][];
 }

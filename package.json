@@ -21,6 +21,7 @@
   "scripts": {
     "check-types": "tsc --noEmit",
     "clean": "rimraf lib lib-esm",
+    "build": "npm run tsc && cheminfo-build",
     "eslint": "eslint src --cache",
     "eslint-fix": "npm run eslint -- --fix",
     "prepack": "npm run tsc",
@@ -48,6 +49,8 @@
   "devDependencies": {
     "@types/d3-random": "^3.0.1",
     "@types/jest": "^27.0.1",
+    "cheminfo-build": "^1.1.11",
+    "cheminfo-types": "^0.3.1",
     "eslint": "^7.32.0",
     "eslint-config-cheminfo-typescript": "^8.0.9",
     "jest": "^27.0.6",

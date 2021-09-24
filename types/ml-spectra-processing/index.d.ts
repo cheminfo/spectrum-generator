@@ -1,7 +1,8 @@
 declare module 'ml-spectra-processing' {
+  import { DoubleArray } from 'cheminfo-types';
   function xyMaxYPoint(data: {
-    x: Float64Array | number[];
-    y: Float64Array | number[];
+    x: DoubleArray;
+    y: DoubleArray;
   }): {
     x: number;
     y: number;

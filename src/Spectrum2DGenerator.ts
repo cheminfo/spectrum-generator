@@ -1,9 +1,9 @@
 import { getShape2D } from 'ml-peak-shape-generator';
 import type { Shape2DKind, Shape2D, XYNumber } from 'ml-peak-shape-generator';
 
-import type { Data2D } from '../types/data2D';
-import type { Peak2D, Peak2DSeries } from '../types/peaks2D';
-import type { Shape2DOption } from '../types/shape2DOption';
+import type { Data2D } from '../types/Data2D';
+import type { Peak2D, Peak2DSeries } from '../types/Peaks2D';
+import type { Shape2DOption } from '../types/Shape2DOption';
 
 import { getMinMax } from './util/getMinMax';
 
