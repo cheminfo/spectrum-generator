@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.2.0](https://www.github.com/cheminfo/spectrum-generator/compare/v5.1.0...v5.2.0) (2021-09-24)
+
+
+### Features
+
+* remove extra types folder n export types ([#40](https://www.github.com/cheminfo/spectrum-generator/issues/40)) ([b85b220](https://www.github.com/cheminfo/spectrum-generator/commit/b85b220f5c760d897d791a1aa8cc72a041a6a8d5))
+
 ## [5.1.0](https://www.github.com/cheminfo/spectrum-generator/compare/v5.0.2...v5.1.0) (2021-08-30)
 
 
