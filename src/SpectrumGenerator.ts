@@ -1,7 +1,7 @@
+import type { DataXY } from 'cheminfo-types';
 import { getShape1D } from 'ml-peak-shape-generator';
 import type { ShapeKind, Shape1D } from 'ml-peak-shape-generator';
 
-import type { Data1D } from '../types/Data1D';
 import type { PeakSeries, Peak1D } from '../types/Peaks1D';
 import type { Shape1DOption } from '../types/Shape1DOption';
 
@@ -113,7 +113,7 @@ export class SpectrumGenerator {
   private peakWidthFct: numToNumFn;
   private maxPeakHeight: number;
   private shape: Shape1D;
-  private data: Data1D;
+  private data: DataXY;
   public constructor(options: OptionsSG1D = {}) {
     const {
       from = 0,
@@ -364,7 +364,7 @@ function assertNumber(value: number, name: string) {
 export function generateSpectrum(
   peaks: Peak1D[] | PeakSeries,
   options: GenerateSpectrumOptions = {},
-): Data1D {
+): DataXY {
   const {
     generator: generatorOptions,
     noise,
