@@ -1,4 +1,5 @@
 import type { Shape1DOption } from './Shape1DOption';
+import type { DoubleArray } from 'cheminfo-types';
 
 export interface PeakObject {
   x: number;
@@ -8,9 +9,9 @@ export interface PeakObject {
 }
 
 export interface PeakSeries {
-  x: number[];
-  y: number[];
-  width?: number[];
+  x: DoubleArray;
+  y: DoubleArray;
+  width?: DoubleArray;
 }
 
 export type PeakArray = [number, number, number?, Shape1DOption?];
