@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.4.0](https://www.github.com/cheminfo/spectrum-generator/compare/v5.3.0...v5.4.0) (2021-09-25)
+
+
+### Features
+
+* remove duplicated types ([#44](https://www.github.com/cheminfo/spectrum-generator/issues/44)) ([eeb58b3](https://www.github.com/cheminfo/spectrum-generator/commit/eeb58b3c90b85490f3b0122e5553e6e12f70af13))
+
 ## [5.3.0](https://www.github.com/cheminfo/spectrum-generator/compare/v5.2.0...v5.3.0) (2021-09-24)
 
 
