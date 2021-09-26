@@ -243,6 +243,8 @@ export class SpectrumGenerator {
     if (!widthLeft) widthLeft = width;
     if (!widthRight) widthRight = width;
 
+    if (!widthLeft || !widthRight) throw new Error('Width left or right is undefined or zero');
+
     let factor =
       options.factor === undefined ? this.shape.getFactor() : options.factor;
 
