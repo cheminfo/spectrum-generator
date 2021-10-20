@@ -4,7 +4,7 @@ import {
   PseudoVoigtClassOptions,
 } from 'ml-peak-shape-generator';
 
-export interface Shape1DOption {
+export interface Shape1DOptions {
   /**
    * kind of shape
    */

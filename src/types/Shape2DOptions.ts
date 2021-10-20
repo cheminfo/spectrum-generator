@@ -1,6 +1,6 @@
 import type { Gaussian2DClassOptions } from 'ml-peak-shape-generator';
 
-interface Shape2DOption {
+export interface Shape2DOptions {
   /**
    * kind of shape
    */

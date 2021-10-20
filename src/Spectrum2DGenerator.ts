@@ -1,10 +1,9 @@
 import { getShape2D } from 'ml-peak-shape-generator';
 import type { Shape2DKind, Shape2D, XYNumber } from 'ml-peak-shape-generator';
 
-import type { Data2D } from '../types/Data2D';
-import type { Peak2D, Peak2DSeries } from '../types/Peaks2D';
-import type { Shape2DOption } from '../types/Shape2DOption';
-
+import type { Data2D } from './types/Data2D';
+import type { Peak2D, Peak2DSeries } from './types/Peaks2D';
+import type { Shape2DOptions } from './types/Shape2DOptions';
 import { getMinMax } from './util/getMinMax';
 
 type numToNumFn = (x: number, y?: number) => number | XYNumber;
@@ -42,7 +41,7 @@ interface OptionsSG2D {
           kind: 'gaussian',
         },`
    */
-  shape?: Shape2DOption;
+  shape?: Shape2DOptions;
 }
 
 interface AddPeak2DOptions {
@@ -54,7 +53,7 @@ interface AddPeak2DOptions {
   /**
    * Define the shape of the peak.
    */
-  shape?: Shape2DOption;
+  shape?: Shape2DOptions;
   /**
    * Number of times of fwhm to calculate length..
    * @default 'covers 99.99 % of volume'

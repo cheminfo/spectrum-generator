@@ -7,6 +7,6 @@
     "target": "es2020",
     "skipLibCheck": true
   },
-  "include": ["./src/**/*", "types"],
+  "include": ["./src/**/*", "src/types"],
   "exclude": ["node_modules"]
 }

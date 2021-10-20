@@ -2,9 +2,8 @@ import type { DataXY } from 'cheminfo-types';
 import { getShape1D } from 'ml-peak-shape-generator';
 import type { ShapeKind, Shape1D } from 'ml-peak-shape-generator';
 
-import type { PeakSeries, Peak1D } from '../types/Peaks1D';
-import type { Shape1DOption } from '../types/Shape1DOption';
-
+import type { PeakSeries, Peak1D } from './types/Peaks1D';
+import type { Shape1DOptions } from './types/Shape1DOptions';
 import addBaseline from './util/addBaseline';
 import type { AddNoiseOptions } from './util/addNoise';
 import addNoise from './util/addNoise';
@@ -38,7 +37,7 @@ interface OptionsSG1D {
           kind: 'gaussian',
         },`
    */
-  shape?: Shape1DOption;
+  shape?: Shape1DOptions;
 }
 
 interface AddPeakOptions {
@@ -60,7 +59,7 @@ interface AddPeakOptions {
   /**
    * Shape options
    */
-  shape?: Shape1DOption;
+  shape?: Shape1DOptions;
   /**
    * Number of times of fwhm to calculate length..
    * @default 'covers 99.99 % of volume'
@@ -243,7 +242,8 @@ export class SpectrumGenerator {
     if (!widthLeft) widthLeft = width;
     if (!widthRight) widthRight = width;
 
-    if (!widthLeft || !widthRight) throw new Error('Width left or right is undefined or zero');
+    if (!widthLeft || !widthRight)
+      {throw new Error('Width left or right is undefined or zero');}
 
     let factor =
       options.factor === undefined ? this.shape.getFactor() : options.factor;
