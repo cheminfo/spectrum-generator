@@ -49,6 +49,7 @@
   "devDependencies": {
     "@types/d3-random": "^3.0.1",
     "@types/jest": "^27.0.1",
+    "@typescript-eslint/eslint-plugin": "^4.29.3",
     "cheminfo-build": "^1.1.11",
     "cheminfo-types": "^0.3.1",
     "eslint": "^7.32.0",
