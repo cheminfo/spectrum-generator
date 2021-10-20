@@ -1,5 +1,14 @@
 # Changelog
 
+### [5.4.1](https://www.github.com/cheminfo/spectrum-generator/compare/v5.4.0...v5.4.1) (2021-10-20)
+
+
+### Bug Fixes
+
+* check if width is defined and != zero ([060ecf3](https://www.github.com/cheminfo/spectrum-generator/commit/060ecf3fe3ee5537190c09104c8669fad2adb590))
+* move types folder to src ([8895dfb](https://www.github.com/cheminfo/spectrum-generator/commit/8895dfb53d27e659cebe15bf160da2a7fd8c5be2))
+* update eslint and cheminfo-config ([a9c7787](https://www.github.com/cheminfo/spectrum-generator/commit/a9c77876a53156f7ccc0867ffe0d1a47a1f396b2))
+
 ## [5.4.0](https://www.github.com/cheminfo/spectrum-generator/compare/v5.3.0...v5.4.0) (2021-09-25)
 
 
