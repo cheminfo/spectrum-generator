@@ -1,12 +1,11 @@
 import { getShape2D } from 'ml-peak-shape-generator';
-import type { Shape2DKind, Shape2D, XYNumber } from 'ml-peak-shape-generator';
+import type { Shape2D, Shape2DClass, XYNumber } from 'ml-peak-shape-generator';
 
 import type { Data2D } from './types/Data2D';
 import type { Peak2D, Peak2DSeries } from './types/Peaks2D';
-import type { Shape2DOptions } from './types/Shape2DOptions';
 import { getMinMax } from './util/getMinMax';
 
-type numToNumFn = (x: number, y?: number) => number | XYNumber;
+type NumToNumFn = (x: number, y?: number) => number | XYNumber;
 
 type Axis2D = 'x' | 'y';
 const axis2D: Axis2D[] = ['x', 'y'];
@@ -34,14 +33,14 @@ interface OptionsSG2D {
    * Function that returns the width of a peak depending the x value.
    * @default `() => 5`
    */
-  peakWidthFct?: numToNumFn;
+  peakWidthFct?: NumToNumFn;
   /**
    * Define the shape of the peak.
    * @default `shape: {
           kind: 'gaussian',
         },`
    */
-  shape?: Shape2DOptions;
+  shape?: Shape2D;
 }
 
 interface AddPeak2DOptions {
@@ -50,10 +49,11 @@ interface AddPeak2DOptions {
    * @default `peakWidthFct(value)`
    */
   width?: XYNumber;
+  fwhm?: XYNumber;
   /**
    * Define the shape of the peak.
    */
-  shape?: Shape2DOptions;
+  shape?: Shape2D;
   /**
    * Number of times of fwhm to calculate length..
    * @default 'covers 99.99 % of volume'
@@ -97,8 +97,8 @@ export class Spectrum2DGenerator {
   public interval: XYNumber;
   private data: Data2D;
   private maxPeakHeight: number;
-  private shape: Shape2D;
-  private peakWidthFct: numToNumFn;
+  private shape: Shape2DClass;
+  private peakWidthFct: NumToNumFn;
 
   public constructor(options: OptionsSG2D = {}) {
     let {
@@ -129,9 +129,7 @@ export class Spectrum2DGenerator {
     this.peakWidthFct = peakWidthFct;
     this.maxPeakHeight = Number.MIN_SAFE_INTEGER;
 
-    const kind = shape.kind as Shape2DKind;
-    const { options: shapeOptions = {} } = shape;
-    let shapeGenerator = getShape2D(kind, shapeOptions);
+    let shapeGenerator = getShape2D(shape);
     this.shape = shapeGenerator;
 
     this.data = {
@@ -207,15 +205,15 @@ export class Spectrum2DGenerator {
     let xPosition;
     let yPosition;
     let intensity;
-    let peakWidth;
+    let peakFWHM;
     let peakShapeOptions;
     if (Array.isArray(peak)) {
-      [xPosition, yPosition, intensity, peakWidth, peakShapeOptions] = peak;
+      [xPosition, yPosition, intensity, peakFWHM, peakShapeOptions] = peak;
     } else {
       xPosition = peak.x;
       yPosition = peak.y;
       intensity = peak.z;
-      peakWidth = peak.width;
+      peakFWHM = peak.fwhm || peak.width;
       peakShapeOptions = peak.shape;
     }
 
@@ -223,9 +221,9 @@ export class Spectrum2DGenerator {
     if (intensity > this.maxPeakHeight) this.maxPeakHeight = intensity;
 
     let {
-      width = peakWidth === undefined
+      fwhm = peakFWHM === undefined
         ? this.peakWidthFct(xPosition, yPosition)
-        : peakWidth,
+        : peakFWHM,
       shape: shapeOptions,
     } = options;
 
@@ -236,12 +234,10 @@ export class Spectrum2DGenerator {
     }
 
     if (shapeOptions) {
-      const kind = shapeOptions.kind as Shape2DKind;
-      const { options: shapeParameters = {} } = shapeOptions;
-      this.shape = getShape2D(kind, shapeParameters);
+      this.shape = getShape2D(shapeOptions);
     }
 
-    width = ensureXYNumber(width);
+    fwhm = ensureXYNumber(fwhm);
 
     let factor =
       options.factor === undefined ? this.shape.getFactor() : options.factor;
@@ -251,8 +247,8 @@ export class Spectrum2DGenerator {
     const firstPoint: XYNumber = { x: 0, y: 0 };
     const lastPoint: XYNumber = { x: 0, y: 0 };
     for (const axis of axis2D) {
-      const first = position[axis] - (width[axis] / 2) * factor[axis];
-      const last = position[axis] + (width[axis] / 2) * factor[axis];
+      const first = position[axis] - (fwhm[axis] / 2) * factor[axis];
+      const last = position[axis] + (fwhm[axis] / 2) * factor[axis];
       firstPoint[axis] = Math.max(
         0,
         Math.floor((first - this.from[axis]) / this.interval[axis]),
@@ -263,8 +259,8 @@ export class Spectrum2DGenerator {
       );
     }
 
-    this.shape.fwhmX = width.x;
-    this.shape.fwhmY = width.y;
+    this.shape.fwhmX = fwhm.x;
+    this.shape.fwhmY = fwhm.y;
     for (let xIndex = firstPoint.x; xIndex < lastPoint.x; xIndex++) {
       for (let yIndex = firstPoint.y; yIndex < lastPoint.y; yIndex++) {
         this.data.z[yIndex][xIndex] +=

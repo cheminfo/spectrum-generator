@@ -41,9 +41,6 @@ describe('generateSpectrum with one peak and small window', () => {
         peakWidthFct: () => 0.1,
         shape: {
           kind: 'gaussian',
-          options: {
-            fwhm: 3,
-          },
         },
       },
     });
@@ -60,9 +57,6 @@ describe('generateSpectrum with one peak and small window', () => {
         peakWidthFct: () => 0.1,
         shape: {
           kind: 'gaussian',
-          options: {
-            fwhm: 3,
-          },
         },
       },
     });
@@ -81,9 +75,6 @@ describe('generateSpectrum with one peak and small window', () => {
         peakWidthFct: () => 0.4,
         shape: {
           kind: 'gaussian',
-          options: {
-            fwhm: 4,
-          },
         },
       },
     });
@@ -102,9 +93,6 @@ describe('generateSpectrum with one peak and small window', () => {
         peakWidthFct: () => 0.1,
         shape: {
           kind: 'gaussian',
-          options: {
-            fwhm: 3,
-          },
         },
       },
     });

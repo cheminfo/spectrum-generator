@@ -1,14 +1,13 @@
 import type { DataXY } from 'cheminfo-types';
 import { getShape1D } from 'ml-peak-shape-generator';
-import type { ShapeKind, Shape1D } from 'ml-peak-shape-generator';
+import type { Shape1D, Shape1DClass} from 'ml-peak-shape-generator';
 
 import type { PeakSeries, Peak1D } from './types/Peaks1D';
-import type { Shape1DOptions } from './types/Shape1DOptions';
 import addBaseline from './util/addBaseline';
 import type { AddNoiseOptions } from './util/addNoise';
 import addNoise from './util/addNoise';
 
-type numToNumFn = (x: number) => number;
+type NumToNumFn = (x: number) => number;
 
 interface OptionsSG1D {
   /**
@@ -30,14 +29,14 @@ interface OptionsSG1D {
    * Function that returns the width of a peak depending the x value.
    * @default `() => 5`
    */
-  peakWidthFct?: numToNumFn;
+  peakWidthFct?: NumToNumFn;
   /**
    * Define the shape of the peak.
    * @default `shape: {
           kind: 'gaussian',
         },`
    */
-  shape?: Shape1DOptions;
+  shape?: Shape1D;
 }
 
 interface AddPeakOptions {
@@ -45,21 +44,22 @@ interface AddPeakOptions {
    * Half-height width.
    * @default `peakWidthFct(value)`
    */
+  fwhm?: number;
   width?: number;
   /**
    * Half-height width left (asymmetric peak).
-   * @default `width`
+   * @default `fwhm`
    */
   widthLeft?: number;
   /**
    * Half-height width right (asymmetric peak).
-   * @default `width`
+   * @default `fwhm`
    */
   widthRight?: number;
   /**
    * Shape options
    */
-  shape?: Shape1DOptions;
+  shape?: Shape1D;
   /**
    * Number of times of fwhm to calculate length..
    * @default 'covers 99.99 % of volume'
@@ -75,7 +75,7 @@ interface GenerateSpectrumOptions {
   /**
    * Function to generate or add a baseline
    */
-  baseline?: numToNumFn;
+  baseline?: NumToNumFn;
   /**
    * Options to add noise to the spectrum
    */
@@ -109,9 +109,9 @@ export class SpectrumGenerator {
   private to: number;
   private nbPoints: number;
   public interval: number;
-  private peakWidthFct: numToNumFn;
+  private peakWidthFct: NumToNumFn;
   private maxPeakHeight: number;
-  private shape: Shape1D;
+  private shape: Shape1DClass;
   private data: DataXY;
   public constructor(options: OptionsSG1D = {}) {
     const {
@@ -134,9 +134,7 @@ export class SpectrumGenerator {
       y: new Float64Array(this.nbPoints),
     };
 
-    const kind = shape.kind as ShapeKind;
-    const { options: shapeOptions = {} } = shape;
-    let shapeGenerator = getShape1D(kind, shapeOptions);
+    let shapeGenerator = getShape1D(shape);
     this.shape = shapeGenerator;
 
     assertNumber(this.from, 'from');
@@ -188,6 +186,7 @@ export class SpectrumGenerator {
    * @param peak
    * @param options
    */
+
   public addPeak(peak: Peak1D, options: AddPeakOptions = {}) {
     if (Array.isArray(peak) && peak.length < 2) {
       throw new Error(
@@ -206,22 +205,22 @@ export class SpectrumGenerator {
 
     let xPosition;
     let intensity;
-    let peakWidth;
+    let peakFWHM;
     let peakShapeOptions;
     if (Array.isArray(peak)) {
-      [xPosition, intensity, peakWidth, peakShapeOptions] = peak;
+      [xPosition, intensity, peakFWHM, peakShapeOptions] = peak;
     } else {
       xPosition = peak.x;
       intensity = peak.y;
-      peakWidth = peak.width;
+      peakFWHM = peak.fwhm || peak.width;
       peakShapeOptions = peak.shape;
     }
     if (intensity > this.maxPeakHeight) this.maxPeakHeight = intensity;
 
     let {
-      width = peakWidth === undefined
+      fwhm = peakFWHM === undefined
         ? this.peakWidthFct(xPosition)
-        : peakWidth,
+        : peakFWHM,
       widthLeft,
       widthRight,
       shape: shapeOptions,
@@ -234,13 +233,11 @@ export class SpectrumGenerator {
     }
 
     if (shapeOptions) {
-      const kind = shapeOptions.kind as ShapeKind;
-      const { options: shapeParameters = {} } = shapeOptions;
-      this.shape = getShape1D(kind, shapeParameters);
+      this.shape = getShape1D(shapeOptions);
     }
 
-    if (!widthLeft) widthLeft = width;
-    if (!widthRight) widthRight = width;
+    if (!widthLeft) widthLeft = fwhm;
+    if (!widthRight) widthRight = fwhm;
 
     if (!widthLeft || !widthRight)
       {throw new Error('Width left or right is undefined or zero');}
@@ -287,7 +284,7 @@ export class SpectrumGenerator {
    * Add a baseline to the spectrum.
    * @param baselineFct - Mathematical function producing the baseline you want.
    */
-  public addBaseline(baselineFct: numToNumFn) {
+  public addBaseline(baselineFct: NumToNumFn) {
     addBaseline(this.data, baselineFct);
     return this;
   }

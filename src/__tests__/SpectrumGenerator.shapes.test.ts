@@ -49,7 +49,7 @@ describe('SpectrumGenerator various shapes', () => {
     generator.addPeak({
       x: 3,
       y: 10,
-      shape: { kind: 'pseudoVoigt', options: { mu: 1 } },
+      shape: { kind: 'pseudoVoigt', mu: 1 },
     });
 
     generator.addPeak(
@@ -62,7 +62,7 @@ describe('SpectrumGenerator various shapes', () => {
     );
 
     generator.addPeak(
-      { x: 7, y: 5, shape: { options: { mu: 0 } } },
+      { x: 7, y: 5, shape: { kind: 'pseudoVoigt', mu: 0 } },
       {
         shape: {
           kind: 'pseudoVoigt',
@@ -92,19 +92,16 @@ describe('SpectrumGenerator various shapes', () => {
     spectrumGenerator.addPeak(
       { x: 2.5, y: 2 },
       {
-        width: 0.1,
+        fwhm: 0.1,
         shape: {
           kind: 'lorentzian',
-          options: {
-            fwhm: 4,
-          },
         },
       },
     );
     spectrumGenerator.addPeak(
       { x: 5, y: 1 },
       {
-        width: 0.2,
+        fwhm: 0.2,
         shape: {
           kind: 'gaussian',
         },
@@ -156,7 +153,7 @@ describe('SpectrumGenerator various shapes', () => {
     spectrumGenerator.addPeak(
       { x: 2.5, y: 2 },
       {
-        width: 0.1,
+        fwhm: 0.1,
         shape: {
           kind: 'lorentzian',
         },
@@ -165,7 +162,7 @@ describe('SpectrumGenerator various shapes', () => {
     spectrumGenerator.addPeak(
       { x: 5, y: 1 },
       {
-        width: 0.2,
+        fwhm: 0.2,
         shape: {
           kind: 'gaussian',
         },

@@ -1,14 +1,13 @@
 import type { DoubleArray } from 'cheminfo-types';
-import type { XYNumber } from 'ml-peak-shape-generator';
-
-import type { Shape2DOptions } from './Shape2DOptions';
+import type { XYNumber, Shape2D } from 'ml-peak-shape-generator';
 
 export interface Peak2DObject {
   x: number;
   y: number;
   z: number;
+  fwhm?: number | XYNumber;
   width?: number | XYNumber;
-  shape?: Shape2DOptions;
+  shape?: Shape2D;
 }
 
 export interface Peak2DSeries {
@@ -17,5 +16,5 @@ export interface Peak2DSeries {
   z: DoubleArray;
 }
 
-export type Peak2DArray = [number, number, number, number?, Shape2DOptions?];
+export type Peak2DArray = [number, number, number, number?, Shape2D?];
 export type Peak2D = Peak2DArray | Peak2DObject;

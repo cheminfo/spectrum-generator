@@ -48,7 +48,7 @@ describe('Spectrum2DGenerator', () => {
       to: 100,
       nbPoints: 201,
     });
-    generator.addPeak([50, 50, 100], { width: { x: 15, y: 5 }, factor: 15 });
+    generator.addPeak([50, 50, 100], { fwhm: { x: 15, y: 5 }, factor: 15 });
     const spectrum = generator.getSpectrum();
     const zMatrix = spectrum.z as Float64Array[];
     const sumZ = zMatrix.reduce(

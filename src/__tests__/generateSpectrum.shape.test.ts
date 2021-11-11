@@ -1,6 +1,8 @@
 import { gaussian } from 'ml-peak-shape-generator';
 
 import { generateSpectrum } from '../SpectrumGenerator';
+import { Peak1D } from '../types/Peaks1D';
+
 
 describe('generateSpectrum', () => {
   it('derivative should be continuous', () => {
@@ -38,7 +40,7 @@ describe('generateSpectrum', () => {
   });
 
   it('The peak shape should be a gaussian', () => {
-    let peaks = [
+    let peaks: Peak1D[] = [
       {
         x: 0,
         y: 1,
