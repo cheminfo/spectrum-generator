@@ -1,4 +1,4 @@
-import { gaussian } from 'ml-peak-shape-generator';
+import { Gaussian } from 'ml-peak-shape-generator';
 
 import { SpectrumGenerator } from '../SpectrumGenerator';
 
@@ -56,8 +56,8 @@ describe('SpectrumGenerator', () => {
     const sumY = yArray.reduce((previous, value) => previous + value, 0);
     expect(sumX).toBe(10050);
     expect(sumY * generator.interval).toBeCloseTo(
-      (gaussian.getArea({ fwhm: 10, height: 100 }) +
-        gaussian.getArea({ fwhm: 30, height: 100 })) /
+      (Gaussian.getArea({ fwhm: 10, height: 100 }) +
+        Gaussian.getArea({ fwhm: 30, height: 100 })) /
         2,
       0,
     );

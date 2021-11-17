@@ -1,4 +1,4 @@
-import { gaussian2D } from 'ml-peak-shape-generator';
+import { Gaussian2D } from 'ml-peak-shape-generator';
 
 import { Spectrum2DGenerator } from '../Spectrum2DGenerator';
 
@@ -57,7 +57,7 @@ describe('Spectrum2DGenerator', () => {
       0,
     );
     expect(sumZ * generator.interval.x * generator.interval.y).toBeCloseTo(
-      gaussian2D.getSurface({ fwhm: { x: 15, y: 5 }, height: 100 }),
+      Gaussian2D.getSurface({ fwhm: { x: 15, y: 5 }, height: 100 }),
       0,
     );
   });
