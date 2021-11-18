@@ -1,5 +1,16 @@
 # Changelog
 
+## [6.0.0](https://www.github.com/cheminfo/spectrum-generator/compare/v5.4.1...v6.0.0) (2021-11-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* change input structure of shape parameter (#49)
+
+### Features
+
+* change input structure of shape parameter ([#49](https://www.github.com/cheminfo/spectrum-generator/issues/49)) ([77e6a19](https://www.github.com/cheminfo/spectrum-generator/commit/77e6a1942852043d93b6b889849c2a573076463d))
+
 ### [5.4.1](https://www.github.com/cheminfo/spectrum-generator/compare/v5.4.0...v5.4.1) (2021-10-20)
 
 
