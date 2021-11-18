@@ -1,19 +1,19 @@
 import type { DoubleArray } from 'cheminfo-types';
-
-import type { Shape1DOptions } from './Shape1DOptions';
+import type { Shape1D } from 'ml-peak-shape-generator';
 
 export interface PeakObject {
   x: number;
   y: number;
   width?: number;
-  shape?: Shape1DOptions;
+  fwhm?: number;
+  shape?: Shape1D;
 }
 
 export interface PeakSeries {
   x: DoubleArray;
   y: DoubleArray;
-  width?: DoubleArray;
+  fwhm?: DoubleArray;
 }
 
-export type PeakArray = [number, number, number?, Shape1DOptions?];
+export type PeakArray = [number, number, number?, Shape1D?];
 export type Peak1D = PeakArray | PeakObject;

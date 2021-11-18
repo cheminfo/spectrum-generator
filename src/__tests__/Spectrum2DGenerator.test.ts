@@ -1,4 +1,4 @@
-import { gaussian2D } from 'ml-peak-shape-generator';
+import { Gaussian2D } from 'ml-peak-shape-generator';
 
 import { Spectrum2DGenerator } from '../Spectrum2DGenerator';
 
@@ -48,7 +48,7 @@ describe('Spectrum2DGenerator', () => {
       to: 100,
       nbPoints: 201,
     });
-    generator.addPeak([50, 50, 100], { width: { x: 15, y: 5 }, factor: 15 });
+    generator.addPeak([50, 50, 100], { fwhm: { x: 15, y: 5 }, factor: 15 });
     const spectrum = generator.getSpectrum();
     const zMatrix = spectrum.z as Float64Array[];
     const sumZ = zMatrix.reduce(
@@ -57,7 +57,7 @@ describe('Spectrum2DGenerator', () => {
       0,
     );
     expect(sumZ * generator.interval.x * generator.interval.y).toBeCloseTo(
-      gaussian2D.getSurface({ fwhm: { x: 15, y: 5 }, height: 100 }),
+      Gaussian2D.getSurface({ fwhm: { x: 15, y: 5 }, height: 100 }),
       0,
     );
   });

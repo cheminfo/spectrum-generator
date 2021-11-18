@@ -1,4 +1,4 @@
-import { lorentzian, gaussian } from 'ml-peak-shape-generator';
+import { Lorentzian, Gaussian } from 'ml-peak-shape-generator';
 import { xyMaxYPoint } from 'ml-spectra-processing';
 
 import { SpectrumGenerator } from '../SpectrumGenerator';
@@ -29,7 +29,7 @@ describe('SpectrumGenerator various shapes', () => {
     const spectrum = generator.getSpectrum();
 
     const ys = spectrum.y;
-    expect(ys[30]).toBeCloseTo(10 + 10 * lorentzian.fct(3 - 7, 1), 7);
+    expect(ys[30]).toBeCloseTo(10 + 10 * Lorentzian.fct(3 - 7, 1), 7);
     expect(ys[70]).toBeCloseTo(10, 7);
 
     expect(ys[31] !== ys[71]).toBe(true);
@@ -49,7 +49,7 @@ describe('SpectrumGenerator various shapes', () => {
     generator.addPeak({
       x: 3,
       y: 10,
-      shape: { kind: 'pseudoVoigt', options: { mu: 1 } },
+      shape: { kind: 'pseudoVoigt', mu: 1 },
     });
 
     generator.addPeak(
@@ -62,7 +62,7 @@ describe('SpectrumGenerator various shapes', () => {
     );
 
     generator.addPeak(
-      { x: 7, y: 5, shape: { options: { mu: 0 } } },
+      { x: 7, y: 5, shape: { kind: 'pseudoVoigt', mu: 0 } },
       {
         shape: {
           kind: 'pseudoVoigt',
@@ -73,7 +73,7 @@ describe('SpectrumGenerator various shapes', () => {
     const spectrum = generator.getSpectrum();
 
     const ys = spectrum.y;
-    expect(ys[30]).toBeCloseTo(10 + 10 * lorentzian.fct(3 - 7, 1), 7);
+    expect(ys[30]).toBeCloseTo(10 + 10 * Lorentzian.fct(3 - 7, 1), 7);
     expect(ys[70]).toBeCloseTo(10, 7);
 
     expect(ys[31] !== ys[71]).toBe(true);
@@ -92,19 +92,16 @@ describe('SpectrumGenerator various shapes', () => {
     spectrumGenerator.addPeak(
       { x: 2.5, y: 2 },
       {
-        width: 0.1,
+        fwhm: 0.1,
         shape: {
           kind: 'lorentzian',
-          options: {
-            fwhm: 4,
-          },
         },
       },
     );
     spectrumGenerator.addPeak(
       { x: 5, y: 1 },
       {
-        width: 0.2,
+        fwhm: 0.2,
         shape: {
           kind: 'gaussian',
         },
@@ -156,7 +153,7 @@ describe('SpectrumGenerator various shapes', () => {
     spectrumGenerator.addPeak(
       { x: 2.5, y: 2 },
       {
-        width: 0.1,
+        fwhm: 0.1,
         shape: {
           kind: 'lorentzian',
         },
@@ -165,7 +162,7 @@ describe('SpectrumGenerator various shapes', () => {
     spectrumGenerator.addPeak(
       { x: 5, y: 1 },
       {
-        width: 0.2,
+        fwhm: 0.2,
         shape: {
           kind: 'gaussian',
         },
@@ -195,6 +192,6 @@ describe('SpectrumGenerator various shapes', () => {
 
     let spectrum = spectrumGenerator.getSpectrum();
     let index = spectrum.x.indexOf(0.06);
-    expect(spectrum.y[index]).toBe(gaussian.fct(0.06, 0.5));
+    expect(spectrum.y[index]).toBe(Gaussian.fct(0.06, 0.5));
   });
 });

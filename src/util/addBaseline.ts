@@ -1,8 +1,8 @@
 import type { DataXY } from 'cheminfo-types';
 
-type baseLineFn = (x: number) => number;
+type BaseLineFn = (x: number) => number;
 
-export default function addBaseline(data: DataXY, baselineFct: baseLineFn) {
+export default function addBaseline(data: DataXY, baselineFct: BaseLineFn) {
   if (!baselineFct) return data;
   let xs = data.x;
   let ys = data.y;
