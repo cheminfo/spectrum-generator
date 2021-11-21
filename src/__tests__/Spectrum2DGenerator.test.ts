@@ -57,7 +57,7 @@ describe('Spectrum2DGenerator', () => {
       0,
     );
     expect(sumZ * generator.interval.x * generator.interval.y).toBeCloseTo(
-      Gaussian2D.getSurface({ fwhm: { x: 15, y: 5 }, height: 100 }),
+      Gaussian2D.getVolume({ fwhm: { x: 15, y: 5 }, height: 100 }),
       0,
     );
   });

@@ -90,7 +90,14 @@ export interface Spectrum2D {
   z: Float64Array[] | number[][];
 }
 
-export class Spectrum2DGenerator {
+export interface ISpectrum2DGenerator {
+  addPeaks(peaks: Peak2D[] | Peak2DSeries, options?: AddPeak2DOptions): void;
+  addPeak(peak: Peak2D, options?: AddPeak2DOptions): void;
+  getSpectrum(options?: GetSpectrum2DOptions | boolean): void;
+  reset(): void;
+}
+
+export class Spectrum2DGenerator implements ISpectrum2DGenerator {
   private from: XYNumber;
   private to: XYNumber;
   private nbPoints: XYNumber;
