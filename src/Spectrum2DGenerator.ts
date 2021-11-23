@@ -245,7 +245,6 @@ export class Spectrum2DGenerator implements ISpectrum2DGenerator {
     }
 
     fwhm = ensureXYNumber(fwhm);
-
     let factor =
       options.factor === undefined ? this.shape.getFactor() : options.factor;
 
@@ -266,8 +265,7 @@ export class Spectrum2DGenerator implements ISpectrum2DGenerator {
       );
     }
 
-    this.shape.fwhmX = fwhm.x;
-    this.shape.fwhmY = fwhm.y;
+    this.shape.fwhm = fwhm;
     for (let xIndex = firstPoint.x; xIndex < lastPoint.x; xIndex++) {
       for (let yIndex = firstPoint.y; yIndex < lastPoint.y; yIndex++) {
         this.data.z[yIndex][xIndex] +=
