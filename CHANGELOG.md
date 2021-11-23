@@ -1,5 +1,12 @@
 # Changelog
 
+### [6.0.1](https://www.github.com/cheminfo/spectrum-generator/compare/v6.0.0...v6.0.1) (2021-11-23)
+
+
+### Bug Fixes
+
+* Implement interfaces in classes ([#51](https://www.github.com/cheminfo/spectrum-generator/issues/51)) ([b538606](https://www.github.com/cheminfo/spectrum-generator/commit/b5386066b91264c7c75306c18d345052066a1392))
+
 ## [6.0.0](https://www.github.com/cheminfo/spectrum-generator/compare/v5.4.1...v6.0.0) (2021-11-18)
 
 
