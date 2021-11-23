@@ -1,6 +1,6 @@
 import type { DataXY } from 'cheminfo-types';
 import { getShape1D } from 'ml-peak-shape-generator';
-import type { Shape1D, Shape1DClass} from 'ml-peak-shape-generator';
+import type { Shape1D, Shape1DClass } from 'ml-peak-shape-generator';
 
 import type { PeakSeries, Peak1D } from './types/Peaks1D';
 import addBaseline from './util/addBaseline';
@@ -104,7 +104,17 @@ export interface GetSpectrumOptions {
   threshold?: number;
 }
 
-export class SpectrumGenerator {
+export interface ISpectrumGenerator {
+  interval: number;
+  addPeaks(peaks: Peak1D[] | PeakSeries, options?: AddPeakOptions): void;
+  addPeak(peak: Peak1D, options?: AddPeakOptions): void;
+  addBaseline(baselineFct: NumToNumFn): void;
+  addNoise(percent: number, options?: AddNoiseOptions): void;
+  getSpectrum(options: GetSpectrumOptions | boolean): DataXY;
+  reset(): void;
+}
+
+export class SpectrumGenerator implements ISpectrumGenerator {
   private from: number;
   private to: number;
   private nbPoints: number;
@@ -151,6 +161,7 @@ export class SpectrumGenerator {
 
     this.reset();
   }
+
   /**
    * Add a series of peaks to the spectrum.
    * @param peaks - Peaks to add.
@@ -178,8 +189,6 @@ export class SpectrumGenerator {
         this.addPeak([peaks.x[i], peaks.y[i]], options);
       }
     }
-
-    return this;
   }
   /**
    * Add a single peak to the spectrum.
@@ -218,9 +227,7 @@ export class SpectrumGenerator {
     if (intensity > this.maxPeakHeight) this.maxPeakHeight = intensity;
 
     let {
-      fwhm = peakFWHM === undefined
-        ? this.peakWidthFct(xPosition)
-        : peakFWHM,
+      fwhm = peakFWHM === undefined ? this.peakWidthFct(xPosition) : peakFWHM,
       widthLeft,
       widthRight,
       shape: shapeOptions,
@@ -239,8 +246,9 @@ export class SpectrumGenerator {
     if (!widthLeft) widthLeft = fwhm;
     if (!widthRight) widthRight = fwhm;
 
-    if (!widthLeft || !widthRight)
-      {throw new Error('Width left or right is undefined or zero');}
+    if (!widthLeft || !widthRight) {
+      throw new Error('Width left or right is undefined or zero');
+    }
 
     let factor =
       options.factor === undefined ? this.shape.getFactor() : options.factor;
@@ -276,8 +284,6 @@ export class SpectrumGenerator {
       this.data.y[index] +=
         intensity * this.shape.fct(this.data.x[index] - xPosition);
     }
-
-    return this;
   }
 
   /**
@@ -293,7 +299,7 @@ export class SpectrumGenerator {
    * Add noise to the spectrum.
    * @param percent - Noise's amplitude in percents of the spectrum max value. Default: 0.
    */
-  public addNoise(percent: number, options: AddNoiseOptions) {
+  public addNoise(percent: number, options?: AddNoiseOptions) {
     addNoise(this.data, percent, options);
     return this;
   }

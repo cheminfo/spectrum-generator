@@ -2,7 +2,6 @@ import type { DataXY } from 'cheminfo-types';
 import { randomUniform, randomNormal } from 'd3-random';
 import XSAdd from 'ml-xsadd';
 
-
 type Distributions = 'uniform' | 'normal';
 
 export interface AddNoiseOptions {

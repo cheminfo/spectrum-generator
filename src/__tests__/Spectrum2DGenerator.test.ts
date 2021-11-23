@@ -56,8 +56,9 @@ describe('Spectrum2DGenerator', () => {
         previous + value.reduce((previous, value) => previous + value, 0),
       0,
     );
+    const gaussian2D = new Gaussian2D({ fwhm: { x: 15, y: 5 } });
     expect(sumZ * generator.interval.x * generator.interval.y).toBeCloseTo(
-      Gaussian2D.getSurface({ fwhm: { x: 15, y: 5 }, height: 100 }),
+      gaussian2D.getVolume(100),
       0,
     );
   });
@@ -145,7 +146,7 @@ describe('Spectrum2DGenerator', () => {
 
     expect(spectrum.z[500][0]).toBeCloseTo(1, 3);
     expect(spectrum.z[500][50 * 10]).toBeCloseTo(12, 3);
-    expect(spectrum.z[500][100*10]).toBeCloseTo(10, 3);
+    expect(spectrum.z[500][100 * 10]).toBeCloseTo(10, 3);
     expect(spectrum.z[500][14 * 10]).toBeCloseTo(2, 3);
   });
 

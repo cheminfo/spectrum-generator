@@ -3,7 +3,6 @@ import { Gaussian } from 'ml-peak-shape-generator';
 import { generateSpectrum } from '../SpectrumGenerator';
 import { Peak1D } from '../types/Peaks1D';
 
-
 describe('generateSpectrum', () => {
   it('derivative should be continuous', () => {
     const spectrum = generateSpectrum([[0, 1, 0.12]], {
@@ -59,6 +58,7 @@ describe('generateSpectrum', () => {
     });
 
     let index = spectrum.x.indexOf(0.06);
-    expect(spectrum.y[index]).toBe(Gaussian.fct(0.06, 0.5));
+    const gaussian = new Gaussian({ fwhm: 0.5 });
+    expect(spectrum.y[index]).toBe(gaussian.fct(0.06));
   });
 });

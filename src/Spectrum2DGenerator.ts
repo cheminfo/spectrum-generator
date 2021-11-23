@@ -90,7 +90,14 @@ export interface Spectrum2D {
   z: Float64Array[] | number[][];
 }
 
-export class Spectrum2DGenerator {
+export interface ISpectrum2DGenerator {
+  addPeaks(peaks: Peak2D[] | Peak2DSeries, options?: AddPeak2DOptions): void;
+  addPeak(peak: Peak2D, options?: AddPeak2DOptions): void;
+  getSpectrum(options?: GetSpectrum2DOptions | boolean): void;
+  reset(): void;
+}
+
+export class Spectrum2DGenerator implements ISpectrum2DGenerator {
   private from: XYNumber;
   private to: XYNumber;
   private nbPoints: XYNumber;
@@ -238,7 +245,6 @@ export class Spectrum2DGenerator {
     }
 
     fwhm = ensureXYNumber(fwhm);
-
     let factor =
       options.factor === undefined ? this.shape.getFactor() : options.factor;
 
@@ -259,8 +265,7 @@ export class Spectrum2DGenerator {
       );
     }
 
-    this.shape.fwhmX = fwhm.x;
-    this.shape.fwhmY = fwhm.y;
+    this.shape.fwhm = fwhm;
     for (let xIndex = firstPoint.x; xIndex < lastPoint.x; xIndex++) {
       for (let yIndex = firstPoint.y; yIndex < lastPoint.y; yIndex++) {
         this.data.z[yIndex][xIndex] +=

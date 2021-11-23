@@ -37,7 +37,7 @@ describe('generateSpectrum with one peak and small window', () => {
       generator: {
         from: 9,
         to: 11,
-        nbPoints: { x: 21, y: 41},
+        nbPoints: { x: 21, y: 41 },
         peakWidthFct: () => 0.1,
         shape: {
           kind: 'gaussian',
