@@ -58,8 +58,7 @@ describe('SpectrumGenerator', () => {
     const gaussian = new Gaussian({ fwhm: 10 });
     const gaussian2 = new Gaussian({ fwhm: 30 });
     expect(sumY * generator.interval).toBeCloseTo(
-      (gaussian2.getArea(100) + gaussian.getArea(100)) /
-        2,
+      (gaussian2.getArea(100) + gaussian.getArea(100)) / 2,
       0,
     );
   });
