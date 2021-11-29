@@ -53,7 +53,7 @@
     "cheminfo-types": "^0.8.0",
     "eslint": "^8.3.0",
     "eslint-config-cheminfo-typescript": "^10.2.4",
-    "jest": "^27.3.1",
+    "jest": "^27.4.0",
     "ml-array-max": "^1.2.3",
     "ml-savitzky-golay-generalized": "^2.0.3",
     "ml-spectra-processing": "^6.8.0",

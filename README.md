@@ -29,7 +29,6 @@ const spectrum = generateSpectrum(peaks, {
   from: 0, // default value: 0
   to: 1000, // default value: 1000
   nbPoints: 10001, // default value: 10001
-  factor: 3, // default value would covers 99.99% of the surface and depends on the shape
   shape: {
     kind: 'gaussian', // default value is gaussian
   },
@@ -52,7 +51,7 @@ const peaks = [
 Peaks can also be introduced as:
 - const peaks = [{x:1,y:10},{x:2,y:30},{x:3,y:1},{x:4,y:76}]
 - const peaks = {x:[1,2,3,4], y:[10,30,1,76]}
-- const peaks = [ [1,10,5], [2,30,10] ] // third argument is the peak width
+- const peaks = [ [1,10,5], [2,30,10] ] // third argument is the peak fwhm
 */
 
 const spectrum = generateSpectrum(peaks, {
