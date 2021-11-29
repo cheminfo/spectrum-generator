@@ -1,5 +1,9 @@
 import { getShape2D } from 'ml-peak-shape-generator';
-import type { Shape2D, Shape2DClass, XYNumber } from 'ml-peak-shape-generator';
+import type {
+  Shape2D,
+  Shape2DInstance,
+  XYNumber,
+} from 'ml-peak-shape-generator';
 
 import type { Data2D } from './types/Data2D';
 import type { Peak2D, Peak2DSeries } from './types/Peaks2D';
@@ -90,21 +94,21 @@ export interface Spectrum2D {
   z: Float64Array[] | number[][];
 }
 
-export interface ISpectrum2DGenerator {
+export interface Spectrum2DGenerator {
   addPeaks(peaks: Peak2D[] | Peak2DSeries, options?: AddPeak2DOptions): void;
   addPeak(peak: Peak2D, options?: AddPeak2DOptions): void;
   getSpectrum(options?: GetSpectrum2DOptions | boolean): void;
   reset(): void;
 }
 
-export class Spectrum2DGenerator implements ISpectrum2DGenerator {
+export class Spectrum2DGenerator implements Spectrum2DGenerator {
   private from: XYNumber;
   private to: XYNumber;
   private nbPoints: XYNumber;
   public interval: XYNumber;
   private data: Data2D;
   private maxPeakHeight: number;
-  private shape: Shape2DClass;
+  private shape: Shape2DInstance;
   private peakWidthFct: NumToNumFn;
 
   public constructor(options: OptionsSG2D = {}) {
