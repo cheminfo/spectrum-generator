@@ -1,6 +1,6 @@
 import type { DataXY } from 'cheminfo-types';
 import { getShape1D } from 'ml-peak-shape-generator';
-import type { Shape1D, Shape1DClass } from 'ml-peak-shape-generator';
+import type { Shape1D, Shape1DInstance } from 'ml-peak-shape-generator';
 
 import type { PeakSeries, Peak1D } from './types/Peaks1D';
 import addBaseline from './util/addBaseline';
@@ -121,7 +121,7 @@ export class SpectrumGenerator implements ISpectrumGenerator {
   public interval: number;
   private peakWidthFct: NumToNumFn;
   private maxPeakHeight: number;
-  private shape: Shape1DClass;
+  private shape: Shape1DInstance;
   private data: DataXY;
   public constructor(options: OptionsSG1D = {}) {
     const {
