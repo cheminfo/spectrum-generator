@@ -1,5 +1,12 @@
 # Changelog
 
+### [6.0.2](https://www.github.com/cheminfo/spectrum-generator/compare/v6.0.1...v6.0.2) (2021-11-29)
+
+
+### Bug Fixes
+
+* update ml-peak-shape-generator to 4.0.1 ([#53](https://www.github.com/cheminfo/spectrum-generator/issues/53)) ([e574fd1](https://www.github.com/cheminfo/spectrum-generator/commit/e574fd1a9b94d934c90931dbaf1d0360d04ca7a8))
+
 ### [6.0.1](https://www.github.com/cheminfo/spectrum-generator/compare/v6.0.0...v6.0.1) (2021-11-23)
 
 
