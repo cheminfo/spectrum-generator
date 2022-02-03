@@ -4,6 +4,7 @@ import type {
   Shape2DInstance,
   XYNumber,
 } from 'ml-peak-shape-generator';
+import { Shape2DClass } from 'ml-peak-shape-generator/lib/shapes/2d/Shape2DClass';
 
 import type { Data2D } from './types/Data2D';
 import type { Peak2D, Peak2DSeries } from './types/Peaks2D';
@@ -16,6 +17,14 @@ const axis2D: Axis2D[] = ['x', 'y'];
 
 type PeakCoordinates = 'x' | 'y' | 'z';
 const peakCoordinates: PeakCoordinates[] = ['x', 'y', 'z'];
+
+const convertWidthToFWHM = (shape: Shape2DClass, width: number | XYNumber) => {
+  const widthData = ensureXYNumber(width);
+  for (let key of axis2D) {
+    widthData[key] = shape.widthToFWHM(widthData[key]);
+  }
+  return widthData;
+};
 
 interface OptionsSG2D {
   /**
@@ -52,8 +61,8 @@ interface AddPeak2DOptions {
    * Half-height width.
    * @default `peakWidthFct(value)`
    */
-  width?: XYNumber;
-  fwhm?: XYNumber;
+  width?: number | XYNumber;
+  fwhm?: number | XYNumber;
   /**
    * Define the shape of the peak.
    */
@@ -231,12 +240,7 @@ export class Spectrum2DGenerator implements Spectrum2DGenerator {
     const position: XYNumber = { x: xPosition, y: yPosition };
     if (intensity > this.maxPeakHeight) this.maxPeakHeight = intensity;
 
-    let {
-      fwhm = peakFWHM === undefined
-        ? this.peakWidthFct(xPosition, yPosition)
-        : peakFWHM,
-      shape: shapeOptions,
-    } = options;
+    let { shape: shapeOptions, width } = options;
 
     if (peakShapeOptions) {
       shapeOptions = shapeOptions
@@ -248,7 +252,16 @@ export class Spectrum2DGenerator implements Spectrum2DGenerator {
       this.shape = getShape2D(shapeOptions);
     }
 
+    let {
+      fwhm = peakFWHM !== undefined
+        ? peakFWHM
+        : width
+        ? convertWidthToFWHM(this.shape, width)
+        : this.peakWidthFct(xPosition, yPosition),
+    } = options;
+
     fwhm = ensureXYNumber(fwhm);
+
     let factor =
       options.factor === undefined ? this.shape.getFactor() : options.factor;
 
@@ -272,12 +285,15 @@ export class Spectrum2DGenerator implements Spectrum2DGenerator {
     this.shape.fwhm = fwhm;
     for (let xIndex = firstPoint.x; xIndex < lastPoint.x; xIndex++) {
       for (let yIndex = firstPoint.y; yIndex < lastPoint.y; yIndex++) {
-        this.data.z[yIndex][xIndex] +=
+        const value =
           intensity *
           this.shape.fct(
             this.data.x[xIndex] - position.x,
             this.data.y[yIndex] - position.y,
           );
+        if (value > 1e-6) {
+          this.data.z[yIndex][xIndex] += value;
+        }
       }
     }
 
