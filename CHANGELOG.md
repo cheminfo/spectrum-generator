@@ -1,5 +1,12 @@
 # Changelog
 
+### [6.0.3](https://www.github.com/cheminfo/spectrum-generator/compare/v6.0.2...v6.0.3) (2022-02-03)
+
+
+### Bug Fixes
+
+* **spectrum2DGenerator:** use the width option in addPeak ([#55](https://www.github.com/cheminfo/spectrum-generator/issues/55)) ([e7ccbda](https://www.github.com/cheminfo/spectrum-generator/commit/e7ccbda8ee93836b32765f9e3dfda6ab85b5f46a))
+
 ### [6.0.2](https://www.github.com/cheminfo/spectrum-generator/compare/v6.0.1...v6.0.2) (2021-11-29)
 
 
