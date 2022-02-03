@@ -1,10 +1,9 @@
-import { getShape2D } from 'ml-peak-shape-generator';
+import { getShape2D, Shape2DClass } from 'ml-peak-shape-generator';
 import type {
   Shape2D,
   Shape2DInstance,
   XYNumber,
 } from 'ml-peak-shape-generator';
-import { Shape2DClass } from 'ml-peak-shape-generator/lib/shapes/2d/Shape2DClass';
 
 import type { Data2D } from './types/Data2D';
 import type { Peak2D, Peak2DSeries } from './types/Peaks2D';
