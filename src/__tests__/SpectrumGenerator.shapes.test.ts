@@ -124,7 +124,7 @@ describe('SpectrumGenerator various shapes', () => {
       peakWidthFct: () => 5,
     });
 
-    generator.addPeak({ x: 3, y: 10, width: 1 });
+    generator.addPeak({ x: 3, y: 10, fwhm: 1 });
 
     generator.addPeak([7, 10, 1]);
 
@@ -188,7 +188,7 @@ describe('SpectrumGenerator various shapes', () => {
     spectrumGenerator.addPeak({
       x: 0,
       y: 1,
-      width: 0.5,
+      fwhm: 0.5,
       shape: { kind: 'gaussian' },
     });
 

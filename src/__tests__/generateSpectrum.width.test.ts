@@ -18,7 +18,7 @@ describe('generateSpectrum width / fwhm', () => {
       },
     });
 
-    expect(Array.from(spectrumWidth.y)).toStrictEqual(
+    expect(Array.from(spectrumWidth.y)).not.toStrictEqual(
       Array.from(spectrumFWHM.y),
     );
   });
