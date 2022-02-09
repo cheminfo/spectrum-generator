@@ -215,23 +215,20 @@ export class SpectrumGenerator implements ISpectrumGenerator {
     let xPosition;
     let intensity;
     let peakFWHM;
+    let peakWidth;
     let peakShapeOptions;
     if (Array.isArray(peak)) {
       [xPosition, intensity, peakFWHM, peakShapeOptions] = peak;
     } else {
       xPosition = peak.x;
       intensity = peak.y;
-      peakFWHM = peak.fwhm || peak.width;
+      peakFWHM = peak.fwhm;
+      peakWidth = peak.width;
       peakShapeOptions = peak.shape;
     }
     if (intensity > this.maxPeakHeight) this.maxPeakHeight = intensity;
 
-    let {
-      fwhm = peakFWHM === undefined ? this.peakWidthFct(xPosition) : peakFWHM,
-      widthLeft,
-      widthRight,
-      shape: shapeOptions,
-    } = options;
+    let { shape: shapeOptions } = options;
 
     if (peakShapeOptions) {
       shapeOptions = shapeOptions
@@ -242,6 +239,16 @@ export class SpectrumGenerator implements ISpectrumGenerator {
     if (shapeOptions) {
       this.shape = getShape1D(shapeOptions);
     }
+
+    let {
+      fwhm = peakFWHM !== undefined
+        ? peakFWHM
+        : peakWidth
+        ? this.shape.widthToFWHM(peakWidth)
+        : this.peakWidthFct(xPosition),
+      widthLeft,
+      widthRight,
+    } = options;
 
     if (!widthLeft) widthLeft = fwhm;
     if (!widthRight) widthRight = fwhm;

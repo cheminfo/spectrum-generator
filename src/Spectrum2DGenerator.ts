@@ -225,6 +225,7 @@ export class Spectrum2DGenerator implements Spectrum2DGenerator {
     let yPosition;
     let intensity;
     let peakFWHM;
+    let peakWidth;
     let peakShapeOptions;
     if (Array.isArray(peak)) {
       [xPosition, yPosition, intensity, peakFWHM, peakShapeOptions] = peak;
@@ -232,7 +233,8 @@ export class Spectrum2DGenerator implements Spectrum2DGenerator {
       xPosition = peak.x;
       yPosition = peak.y;
       intensity = peak.z;
-      peakFWHM = peak.fwhm || peak.width;
+      peakFWHM = peak.fwhm;
+      peakWidth = peak.width;
       peakShapeOptions = peak.shape;
     }
 
@@ -254,6 +256,8 @@ export class Spectrum2DGenerator implements Spectrum2DGenerator {
     let {
       fwhm = peakFWHM !== undefined
         ? peakFWHM
+        : peakWidth
+        ? convertWidthToFWHM(this.shape, peakWidth)
         : width
         ? convertWidthToFWHM(this.shape, width)
         : this.peakWidthFct(xPosition, yPosition),

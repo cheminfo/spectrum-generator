@@ -1,5 +1,3 @@
-import { Gaussian } from 'ml-peak-shape-generator';
-
 import { generateSpectrum } from '../SpectrumGenerator';
 
 describe('generateSpectrum width / fwhm', () => {
