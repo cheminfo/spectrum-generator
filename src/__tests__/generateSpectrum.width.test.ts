@@ -1,5 +1,3 @@
-import { Gaussian } from 'ml-peak-shape-generator';
-
 import { generateSpectrum } from '../SpectrumGenerator';
 
 describe('generateSpectrum width / fwhm', () => {
@@ -20,7 +18,7 @@ describe('generateSpectrum width / fwhm', () => {
       },
     });
 
-    expect(Array.from(spectrumWidth.y)).not.toStrictEqual(
+    expect(Array.from(spectrumWidth.y)).toStrictEqual(
       Array.from(spectrumFWHM.y),
     );
   });
