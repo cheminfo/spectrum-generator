@@ -1,5 +1,12 @@
 # Changelog
 
+### [6.0.4](https://www.github.com/cheminfo/spectrum-generator/compare/v6.0.3...v6.0.4) (2022-02-09)
+
+
+### Bug Fixes
+
+* convert width to fwhm in spectrum2D ([#57](https://www.github.com/cheminfo/spectrum-generator/issues/57)) ([80a2586](https://www.github.com/cheminfo/spectrum-generator/commit/80a2586f019919668dde7c87efd303ad8acaf571))
+
 ### [6.0.3](https://www.github.com/cheminfo/spectrum-generator/compare/v6.0.2...v6.0.3) (2022-02-03)
 
 
