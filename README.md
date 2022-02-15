@@ -100,6 +100,23 @@ generator.addPeak({x: 10, y: 50}], { // customize peaks shape
 const otherSpectrum = generator.getSpectrum();
 ```
 
+Generate with some noise
+
+```js
+const spectrum = generateSpectrum([{ x: 5, y: 100 }], {
+  generator: {
+    from: 0,
+    to: 10,
+    nbPoints: 51,
+    peakWidthFct: () => 2,
+  },
+  noise: {
+    percent: 10,
+    distribution: 'uniform',
+  },
+});
+```
+
 ## [API Documentation](https://cheminfo.github.io/spectrum-generator/)
 
 ## License
@@ -112,3 +129,7 @@ const otherSpectrum = generator.getSpectrum();
 [ci-url]: https://github.com/cheminfo/spectrum-generator/actions?query=workflow%3A%22Node.js+CI%22
 [download-image]: https://img.shields.io/npm/dm/spectrum-generator.svg
 [download-url]: https://www.npmjs.com/package/spectrum-generator
+
+```
+
+```
