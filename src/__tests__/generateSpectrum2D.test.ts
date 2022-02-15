@@ -1,4 +1,4 @@
-import maxArray from 'ml-array-max';
+import { xMaxValue } from 'ml-spectra-processing';
 
 import type { Spectrum2D } from '../Spectrum2DGenerator';
 import { generateSpectrum2D } from '../Spectrum2DGenerator';
@@ -199,9 +199,9 @@ function checkMax(spectrum: Spectrum2D, center: number) {
 
   const maxRows = [];
   for (let row of z) {
-    maxRows.push(maxArray(row));
+    maxRows.push(xMaxValue(row));
   }
-  let max = maxArray(maxRows);
+  let max = xMaxValue(maxRows);
   let yIndex = maxRows.indexOf(max);
   let xIndex = z[yIndex].indexOf(maxRows[yIndex]);
   expect(minX + (xIndex * (maxX - minX)) / (maxRows.length - 1)).toBe(center);

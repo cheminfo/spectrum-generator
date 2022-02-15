@@ -1,5 +1,6 @@
 import type { DataXY } from 'cheminfo-types';
 import { randomUniform, randomNormal } from 'd3-random';
+import { xMaxValue } from 'ml-spectra-processing';
 import XSAdd from 'ml-xsadd';
 
 type Distributions = 'uniform' | 'normal';
@@ -43,7 +44,7 @@ export default function addNoise(
 
   if (!percent) return data;
   let ys = data.y;
-  let factor = (percent * findMax(ys)) / 100;
+  let factor = (percent * xMaxValue(ys)) / 100;
   for (let i = 0; i < ys.length; i++) {
     ys[i] += generateRandomNumber() * factor;
   }
@@ -58,12 +59,4 @@ function getRandom(
   return typeof seed === 'number'
     ? func.source(new XSAdd(seed).random)(...args)
     : func(...args);
-}
-
-function findMax(array: Float64Array | number[]) {
-  let max = Number.MIN_VALUE;
-  for (let item of array) {
-    if (item > max) max = item;
-  }
-  return max;
 }

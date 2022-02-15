@@ -4,10 +4,10 @@ import type {
   Shape2DInstance,
   XYNumber,
 } from 'ml-peak-shape-generator';
+import { matrixMinMaxZ } from 'ml-spectra-processing';
 
 import type { Data2D } from './types/Data2D';
 import type { Peak2D, Peak2DSeries } from './types/Peaks2D';
-import { getMinMax } from './util/getMinMax';
 
 type NumToNumFn = (x: number, y?: number) => number | XYNumber;
 
@@ -308,15 +308,15 @@ export class Spectrum2DGenerator implements Spectrum2DGenerator {
       options = { copy: options };
     }
     const { copy = true } = options;
-    let minMaxZ = getMinMax(this.data.z);
+    let minMaxZ = matrixMinMaxZ(this.data.z);
 
     return {
       minX: this.from.x,
       maxX: this.to.x,
       maxY: this.to.y,
       minY: this.from.y,
-      minZ: minMaxZ.min,
-      maxZ: minMaxZ.max,
+      minZ: minMaxZ.min as number, // todo remove as number with update of ml-spectra-processing
+      maxZ: minMaxZ.max as number,
       z: copy ? this.data.z.slice() : this.data.z,
     };
   }
