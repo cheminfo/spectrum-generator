@@ -1,5 +1,16 @@
 # Changelog
 
+## [7.0.0](https://www.github.com/cheminfo/spectrum-generator/compare/v6.0.4...v7.0.0) (2022-02-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* refactor addNoise to use createRandomArray
+
+### Miscellaneous Chores
+
+* refactor addNoise to use createRandomArray ([9abe344](https://www.github.com/cheminfo/spectrum-generator/commit/9abe3447edc7b5241816474f5c1a4e02ef2ea215))
+
 ### [6.0.4](https://www.github.com/cheminfo/spectrum-generator/compare/v6.0.3...v6.0.4) (2022-02-09)
 
 
