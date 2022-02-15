@@ -102,17 +102,7 @@ export interface GetSpectrumOptions {
   threshold?: number;
 }
 
-export interface ISpectrumGenerator {
-  interval: number;
-  addPeaks(peaks: Peak1D[] | PeakSeries, options?: PeakOptions): void;
-  addPeak(peak: Peak1D, options?: PeakOptions): void;
-  addBaseline(baselineFct: NumToNumFn): void;
-  addNoise(options?: NoiseOptions): void;
-  getSpectrum(options: GetSpectrumOptions | boolean): DataXY;
-  reset(): void;
-}
-
-export class SpectrumGenerator implements ISpectrumGenerator {
+export class SpectrumGenerator {
   private from: number;
   private to: number;
   private nbPoints: number;
