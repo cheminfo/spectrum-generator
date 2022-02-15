@@ -54,6 +54,7 @@
     "eslint": "^8.9.0",
     "eslint-config-cheminfo-typescript": "^10.3.0",
     "jest": "^27.5.1",
+    "jest-matcher-deep-close-to": "^3.0.2",
     "ml-savitzky-golay-generalized": "^4.0.0",
     "prettier": "^2.5.1",
     "rimraf": "^3.0.2",
@@ -61,9 +62,7 @@
     "typescript": "^4.5.5"
   },
   "dependencies": {
-    "d3-random": "^2.2.2",
     "ml-peak-shape-generator": "^4.0.3",
-    "ml-spectra-processing": "^10.1.2",
-    "ml-xsadd": "^2.0.0"
+    "ml-spectra-processing": "^10.1.2"
   }
 }

@@ -1,62 +1,38 @@
 import type { DataXY } from 'cheminfo-types';
-import { randomUniform, randomNormal } from 'd3-random';
-import { xMaxValue } from 'ml-spectra-processing';
-import XSAdd from 'ml-xsadd';
+import { xMaxValue, xAdd, createRandomArray } from 'ml-spectra-processing';
 
-type Distributions = 'uniform' | 'normal';
-
-export interface AddNoiseOptions {
+export interface NoiseOptions {
   /**
    * Type of random distribution.
    * 'uniform' (true random) or 'normal' (gaussian distribution)
+   * @default 'normal'
    */
-  distribution?: Distributions;
+  distribution?: 'uniform' | 'normal';
   /**
    * Seed for a deterministic sequence of random numbers.
+   * @default 0
    */
   seed?: number;
+  /**
+   * Percentage of noise. The range of the noise will be the percentage so if a peak is 100 and you
+   * have a percent of 10, the noise will be values between -5 and 5.
+   * In the case of normal distribution the range will correspond to the standard deviation
+   * @default 1
+   */
+  percent?: number;
 }
 
-export default function addNoise(
-  data: DataXY,
-  percent = 0,
-  options: AddNoiseOptions = {},
-) {
-  const { seed } = options;
-  const distribution = options.distribution || ('uniform' as Distributions);
-  let generateRandomNumber;
-
-  switch (distribution) {
-    case 'uniform': {
-      generateRandomNumber = getRandom(randomUniform, seed, -0.5, 0.5);
-      break;
-    }
-    case 'normal': {
-      generateRandomNumber = getRandom(randomNormal, seed);
-      break;
-    }
-    default: {
-      const unHandled: never = distribution;
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      throw Error(`Unknown distribution ${unHandled}`);
-    }
-  }
-
-  if (!percent) return data;
-  let ys = data.y;
-  let factor = (percent * xMaxValue(ys)) / 100;
-  for (let i = 0; i < ys.length; i++) {
-    ys[i] += generateRandomNumber() * factor;
-  }
+export default function addNoise(data: DataXY, options: NoiseOptions = {}) {
+  const { seed = 0, distribution = 'normal', percent = 1 } = options;
+  const range = (xMaxValue(data.y) * percent) / 100;
+  const noise = createRandomArray({
+    distribution,
+    seed,
+    mean: 0,
+    standardDeviation: range,
+    range,
+    length: data.x.length,
+  });
+  data.y = xAdd(data.y, noise);
   return data;
-}
-
-function getRandom(
-  func: typeof randomNormal | typeof randomUniform,
-  seed?: number,
-  ...args: [number, number | undefined] | []
-) {
-  return typeof seed === 'number'
-    ? func.source(new XSAdd(seed).random)(...args)
-    : func(...args);
 }

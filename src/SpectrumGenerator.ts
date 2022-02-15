@@ -4,7 +4,7 @@ import type { Shape1D, Shape1DInstance } from 'ml-peak-shape-generator';
 
 import type { PeakSeries, Peak1D } from './types/Peaks1D';
 import addBaseline from './util/addBaseline';
-import type { AddNoiseOptions } from './util/addNoise';
+import type { NoiseOptions } from './util/addNoise';
 import addNoise from './util/addNoise';
 
 type NumToNumFn = (x: number) => number;
@@ -12,34 +12,32 @@ type NumToNumFn = (x: number) => number;
 interface OptionsSG1D {
   /**
    * First x value (inclusive).
-   * @default `0`
+   * @default 0
    */
   from?: number;
   /**
    * Last x value (inclusive).
-   * @default `1000`
+   * @default 1000
    */
   to?: number;
   /**
    * Number of points in the final spectrum.
-   * @default `10001`
+   * @default 10001
    */
   nbPoints?: number;
   /**
    * Function that returns the width of a peak depending the x value.
-   * @default `() => 5`
+   * @default "() => 5"
    */
   peakWidthFct?: NumToNumFn;
   /**
    * Define the shape of the peak.
-   * @default `shape: {
-          kind: 'gaussian',
-        },`
+   * @default "{kind: 'gaussian'}"
    */
   shape?: Shape1D;
 }
 
-interface AddPeakOptions {
+interface PeakOptions {
   /**
    * Half-height width.
    * @default `peakWidthFct(value)`
@@ -62,7 +60,7 @@ interface AddPeakOptions {
   shape?: Shape1D;
   /**
    * Number of times of fwhm to calculate length..
-   * @default 'covers 99.99 % of volume'
+   * @default 'covers 99.99 % of surface'
    */
   factor?: number;
 }
@@ -79,11 +77,11 @@ interface GenerateSpectrumOptions {
   /**
    * Options to add noise to the spectrum
    */
-  noise?: { percent: number; options: AddNoiseOptions };
+  noise?: NoiseOptions;
   /**
    * Options for addPeaks method
    */
-  peaks?: AddPeakOptions;
+  peakOptions?: PeakOptions;
   /**
    * minimum intensity value
    * @default 0
@@ -106,10 +104,10 @@ export interface GetSpectrumOptions {
 
 export interface ISpectrumGenerator {
   interval: number;
-  addPeaks(peaks: Peak1D[] | PeakSeries, options?: AddPeakOptions): void;
-  addPeak(peak: Peak1D, options?: AddPeakOptions): void;
+  addPeaks(peaks: Peak1D[] | PeakSeries, options?: PeakOptions): void;
+  addPeak(peak: Peak1D, options?: PeakOptions): void;
   addBaseline(baselineFct: NumToNumFn): void;
-  addNoise(percent: number, options?: AddNoiseOptions): void;
+  addNoise(options?: NoiseOptions): void;
   getSpectrum(options: GetSpectrumOptions | boolean): DataXY;
   reset(): void;
 }
@@ -166,7 +164,7 @@ export class SpectrumGenerator implements ISpectrumGenerator {
    * Add a series of peaks to the spectrum.
    * @param peaks - Peaks to add.
    */
-  public addPeaks(peaks: Peak1D[] | PeakSeries, options?: AddPeakOptions) {
+  public addPeaks(peaks: Peak1D[] | PeakSeries, options?: PeakOptions) {
     if (
       !Array.isArray(peaks) &&
       (typeof peaks !== 'object' ||
@@ -196,7 +194,7 @@ export class SpectrumGenerator implements ISpectrumGenerator {
    * @param options
    */
 
-  public addPeak(peak: Peak1D, options: AddPeakOptions = {}) {
+  public addPeak(peak: Peak1D, options: PeakOptions = {}) {
     if (Array.isArray(peak) && peak.length < 2) {
       throw new Error(
         'peak must be an array with two (or three) values or an object with {x,y,width?}',
@@ -304,10 +302,11 @@ export class SpectrumGenerator implements ISpectrumGenerator {
 
   /**
    * Add noise to the spectrum.
-   * @param percent - Noise's amplitude in percents of the spectrum max value. Default: 0.
+   *
+   * @param percent - Noise's amplitude in percents of the spectrum max value. Default: 1.
    */
-  public addNoise(percent: number, options?: AddNoiseOptions) {
-    addNoise(this.data, percent, options);
+  public addNoise(options?: NoiseOptions) {
+    addNoise(this.data, options);
     return this;
   }
 
@@ -382,16 +381,15 @@ export function generateSpectrum(
     noise,
     baseline,
     threshold,
-    peaks: addPeaksOptions,
+    peakOptions,
   } = options;
 
   const generator = new SpectrumGenerator(generatorOptions);
 
-  generator.addPeaks(peaks, addPeaksOptions);
+  generator.addPeaks(peaks, peakOptions);
   if (baseline) generator.addBaseline(baseline);
   if (noise) {
-    const { percent, options: addNoiseOptions } = noise;
-    generator.addNoise(percent, addNoiseOptions);
+    generator.addNoise(noise);
   }
   return generator.getSpectrum({
     threshold,
