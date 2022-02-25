@@ -315,8 +315,8 @@ export class Spectrum2DGenerator implements Spectrum2DGenerator {
       maxX: this.to.x,
       maxY: this.to.y,
       minY: this.from.y,
-      minZ: minMaxZ.min as number, // todo remove as number with update of ml-spectra-processing
-      maxZ: minMaxZ.max as number,
+      minZ: minMaxZ.min,
+      maxZ: minMaxZ.max,
       z: copy ? this.data.z.slice() : this.data.z,
     };
   }

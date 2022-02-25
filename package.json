@@ -48,9 +48,9 @@
   },
   "devDependencies": {
     "@types/d3-random": "^3.0.1",
-    "@types/jest": "^27.4.0",
+    "@types/jest": "^27.4.1",
     "cheminfo-build": "^1.1.11",
-    "cheminfo-types": "^0.10.1",
+    "cheminfo-types": "^1.0.0",
     "eslint": "^8.9.0",
     "eslint-config-cheminfo-typescript": "^10.3.0",
     "jest": "^27.5.1",
@@ -62,7 +62,7 @@
     "typescript": "^4.5.5"
   },
   "dependencies": {
-    "ml-peak-shape-generator": "^4.0.3",
-    "ml-spectra-processing": "^10.1.2"
+    "ml-peak-shape-generator": "^4.1.1",
+    "ml-spectra-processing": "^11.0.0"
   }
 }
