@@ -1,5 +1,12 @@
 # Changelog
 
+### [7.0.1](https://www.github.com/cheminfo/spectrum-generator/compare/v7.0.0...v7.0.1) (2022-02-25)
+
+
+### Bug Fixes
+
+* update dependencies ([4f310e2](https://www.github.com/cheminfo/spectrum-generator/commit/4f310e2b5494f18fcf6f86dcdb35f0a61542aea1))
+
 ## [7.0.0](https://www.github.com/cheminfo/spectrum-generator/compare/v6.0.4...v7.0.0) (2022-02-15)
 
 
