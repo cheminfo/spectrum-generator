@@ -86,26 +86,26 @@ describe('SpectrumGenerator various shapes', () => {
       from: 0,
       to: 10,
       nbPoints: 101,
-      peakWidthFct: () => 0.1,
       shape: {
         kind: 'lorentzian',
+        fwhm: 0.1,
       },
     });
     spectrumGenerator.addPeak(
       { x: 2.5, y: 2 },
       {
-        fwhm: 0.1,
         shape: {
           kind: 'lorentzian',
+          fwhm: 0.1,
         },
       },
     );
     spectrumGenerator.addPeak(
       { x: 5, y: 1 },
       {
-        fwhm: 0.2,
         shape: {
           kind: 'gaussian',
+          fwhm: 0.2,
         },
       },
     );
@@ -121,10 +121,9 @@ describe('SpectrumGenerator various shapes', () => {
       from: 0,
       to: 10,
       nbPoints: 101,
-      peakWidthFct: () => 5,
     });
 
-    generator.addPeak({ x: 3, y: 10, fwhm: 1 });
+    generator.addPeak({ x: 3, y: 10, shape: { kind: 'gaussian', fwhm: 1 } });
 
     generator.addPeak([7, 10, 1]);
 
@@ -147,16 +146,16 @@ describe('SpectrumGenerator various shapes', () => {
       from: 0,
       to: 10,
       nbPoints: 101,
-      peakWidthFct: () => 0.1,
       shape: {
         kind: 'lorentzian',
+        fwhm: 0.1,
       },
     });
     spectrumGenerator.addPeak(
       { x: 2.5, y: 2 },
       {
-        fwhm: 0.1,
         shape: {
+          fwhm: 0.1,
           kind: 'lorentzian',
         },
       },
@@ -164,9 +163,9 @@ describe('SpectrumGenerator various shapes', () => {
     spectrumGenerator.addPeak(
       { x: 5, y: 1 },
       {
-        fwhm: 0.2,
         shape: {
           kind: 'gaussian',
+          fwhm: 0.2,
         },
       },
     );
@@ -188,8 +187,7 @@ describe('SpectrumGenerator various shapes', () => {
     spectrumGenerator.addPeak({
       x: 0,
       y: 1,
-      fwhm: 0.5,
-      shape: { kind: 'gaussian' },
+      shape: { kind: 'gaussian', fwhm: 0.5 },
     });
 
     let spectrum = spectrumGenerator.getSpectrum();

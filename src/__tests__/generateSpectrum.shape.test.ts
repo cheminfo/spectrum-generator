@@ -43,8 +43,7 @@ describe('generateSpectrum', () => {
       {
         x: 0,
         y: 1,
-        fwhm: 0.5,
-        shape: { kind: 'gaussian' },
+        shape: { kind: 'gaussian', fwhm: 0.5 },
       },
     ];
 

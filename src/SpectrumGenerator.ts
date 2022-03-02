@@ -42,7 +42,6 @@ interface PeakOptions {
    * Half-height width.
    * @default `peakWidthFct(value)`
    */
-  fwhm?: number;
   width?: number;
   /**
    * Half-height width left (asymmetric peak).
@@ -107,7 +106,7 @@ export class SpectrumGenerator {
   private to: number;
   private nbPoints: number;
   public interval: number;
-  private peakWidthFct: NumToNumFn;
+  private peakWidthFct: NumToNumFn | undefined;
   private maxPeakHeight: number;
   private shape: Shape1DInstance;
   private data: DataXY;
@@ -116,8 +115,8 @@ export class SpectrumGenerator {
       from = 0,
       to = 1000,
       nbPoints = 10001,
-      peakWidthFct = () => 5,
-      shape = { kind: 'gaussian' },
+      peakWidthFct,
+      shape = { kind: 'gaussian', fwhm: 5 },
     } = options;
 
     this.from = from;
@@ -143,7 +142,7 @@ export class SpectrumGenerator {
       throw new RangeError('to option must be larger than from');
     }
 
-    if (typeof this.peakWidthFct !== 'function') {
+    if (this.peakWidthFct && typeof this.peakWidthFct !== 'function') {
       throw new TypeError('peakWidthFct option must be a function');
     }
 
@@ -180,6 +179,7 @@ export class SpectrumGenerator {
   }
   /**
    * Add a single peak to the spectrum.
+   * A peak may be either defined as [x,y,fwhm,...] or as {x, y, shape}
    * @param peak
    * @param options
    */
@@ -210,7 +210,6 @@ export class SpectrumGenerator {
     } else {
       xPosition = peak.x;
       intensity = peak.y;
-      peakFWHM = peak.fwhm;
       peakWidth = peak.width;
       peakShapeOptions = peak.shape;
     }
@@ -228,15 +227,24 @@ export class SpectrumGenerator {
       this.shape = getShape1D(shapeOptions);
     }
 
-    let {
-      fwhm = peakFWHM !== undefined
+    let { widthLeft, widthRight } = options;
+    /*
+     if we don't force the fwhm we just take the one from the shape
+     however we have many way to force it:
+     - use [x,y,fwhm]
+     - define `width` that will be converted to fwhm
+     - define `widthLeft` and `widthRight` to define asymmetric peaks
+     - have a callback `peakWidthFct`
+     This should evolve in the future because we will not always have `fwhm`
+     */
+    const fwhm =
+      peakFWHM !== undefined
         ? peakFWHM
         : peakWidth
         ? this.shape.widthToFWHM(peakWidth)
-        : this.peakWidthFct(xPosition),
-      widthLeft,
-      widthRight,
-    } = options;
+        : this.peakWidthFct
+        ? this.peakWidthFct(xPosition)
+        : this.shape.fwhm;
 
     if (!widthLeft) widthLeft = fwhm;
     if (!widthRight) widthRight = fwhm;
