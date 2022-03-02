@@ -1,5 +1,16 @@
 # Changelog
 
+## [8.0.0](https://github.com/cheminfo/spectrum-generator/compare/v7.0.1...v8.0.0) (2022-03-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* fwhm is a property of the shape
+
+### Features
+
+* fwhm is a property of the shape ([3596ae4](https://github.com/cheminfo/spectrum-generator/commit/3596ae4ef33a37148d13b3104636e981493aeeaf))
+
 ### [7.0.1](https://www.github.com/cheminfo/spectrum-generator/compare/v7.0.0...v7.0.1) (2022-02-25)
 
 
