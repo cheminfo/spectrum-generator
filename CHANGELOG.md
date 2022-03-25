@@ -1,5 +1,12 @@
 # Changelog
 
+### [8.0.1](https://github.com/cheminfo/spectrum-generator/compare/v8.0.0...v8.0.1) (2022-03-25)
+
+
+### Bug Fixes
+
+* **spectrum2DGenerator:** avoid reference ([a32dbcd](https://github.com/cheminfo/spectrum-generator/commit/a32dbcd7ef86023d0176962c65cee01d2be8ccf1))
+
 ## [8.0.0](https://github.com/cheminfo/spectrum-generator/compare/v7.0.1...v8.0.0) (2022-03-02)
 
 
