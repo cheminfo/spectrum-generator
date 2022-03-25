@@ -351,8 +351,7 @@ export function generateSpectrum2D(
 }
 
 function ensureXYNumber(input: number | XYNumber) {
-  let result = typeof input !== 'object' ? { x: input, y: input } : input;
-  return result;
+  return typeof input !== 'object' ? { x: input, y: input } : { ...input };
 }
 
 function calculeIntervals(from: XYNumber, to: XYNumber, nbPoints: XYNumber) {
