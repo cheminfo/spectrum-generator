@@ -1,4 +1,3 @@
-import { Gaussian } from 'ml-peak-shape-generator';
 import { xSum } from 'ml-spectra-processing';
 
 import { generateSpectrum } from '../SpectrumGenerator';

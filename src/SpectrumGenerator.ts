@@ -227,7 +227,7 @@ export class SpectrumGenerator {
       this.shape = getShape1D(shapeOptions);
     }
 
-    let { widthLeft, widthRight } = options;
+    let { width, widthLeft, widthRight } = options;
     /*
      if we don't force the fwhm we just take the one from the shape
      however we have many way to force it:
@@ -244,6 +244,8 @@ export class SpectrumGenerator {
         ? this.shape.widthToFWHM(peakWidth)
         : this.peakWidthFct
         ? this.peakWidthFct(xPosition)
+        : width !== undefined
+        ? width
         : this.shape.fwhm;
 
     if (!widthLeft) widthLeft = fwhm;
