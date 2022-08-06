@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.0.3](https://github.com/cheminfo/spectrum-generator/compare/v8.0.2...v8.0.3) (2022-08-06)
+
+
+### Bug Fixes
+
+* **addPeak:** convert to pure function ([#68](https://github.com/cheminfo/spectrum-generator/issues/68)) ([3866bbe](https://github.com/cheminfo/spectrum-generator/commit/3866bbe95bc2f48c981cc5503ba7e922fc4d0f1e)), closes [#67](https://github.com/cheminfo/spectrum-generator/issues/67)
+
 ### [8.0.2](https://github.com/cheminfo/spectrum-generator/compare/v8.0.1...v8.0.2) (2022-05-12)
 
 
