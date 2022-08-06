@@ -226,7 +226,7 @@ export class SpectrumGenerator {
     const shape = shapeOptions
       ? getShape1D(shapeOptions)
       : (Object.assign(
-          Object.create(Object.getPrototypeOf()),
+          Object.create(Object.getPrototypeOf(this.shape)),
           this.shape,
         ) as Shape1DInstance);
 
