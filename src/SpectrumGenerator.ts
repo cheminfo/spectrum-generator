@@ -223,11 +223,15 @@ export class SpectrumGenerator {
         : peakShapeOptions;
     }
 
-    if (shapeOptions) {
-      this.shape = getShape1D(shapeOptions);
-    }
+    const shape = shapeOptions
+      ? getShape1D(shapeOptions)
+      : (Object.assign(
+          Object.create(Object.getPrototypeOf(this.shape)),
+          this.shape,
+        ) as Shape1DInstance);
 
     let { width, widthLeft, widthRight } = options;
+
     /*
      if we don't force the fwhm we just take the one from the shape
      however we have many way to force it:
@@ -241,12 +245,12 @@ export class SpectrumGenerator {
       peakFWHM !== undefined
         ? peakFWHM
         : peakWidth
-        ? this.shape.widthToFWHM(peakWidth)
+        ? shape.widthToFWHM(peakWidth)
         : this.peakWidthFct
         ? this.peakWidthFct(xPosition)
         : width !== undefined
         ? width
-        : this.shape.fwhm;
+        : shape.fwhm;
 
     if (!widthLeft) widthLeft = fwhm;
     if (!widthRight) widthRight = fwhm;
@@ -256,7 +260,7 @@ export class SpectrumGenerator {
     }
 
     let factor =
-      options.factor === undefined ? this.shape.getFactor() : options.factor;
+      options.factor === undefined ? shape.getFactor() : options.factor;
 
     const firstValue = xPosition - (widthLeft / 2) * factor;
     const lastValue = xPosition + (widthRight / 2) * factor;
@@ -273,21 +277,21 @@ export class SpectrumGenerator {
     // PEAK SHAPE MAY BE ASYMMETRC (widthLeft and widthRight) !
     // we calculate the left part of the shape
 
-    this.shape.fwhm = widthLeft;
+    shape.fwhm = widthLeft;
     for (let index = firstPoint; index < Math.max(middlePoint, 0); index++) {
       this.data.y[index] +=
-        intensity * this.shape.fct(this.data.x[index] - xPosition);
+        intensity * shape.fct(this.data.x[index] - xPosition);
     }
 
     // we calculate the right part of the gaussian
-    this.shape.fwhm = widthRight;
+    shape.fwhm = widthRight;
     for (
       let index = Math.min(middlePoint, lastPoint);
       index <= lastPoint;
       index++
     ) {
       this.data.y[index] +=
-        intensity * this.shape.fct(this.data.x[index] - xPosition);
+        intensity * shape.fct(this.data.x[index] - xPosition);
     }
   }
 
