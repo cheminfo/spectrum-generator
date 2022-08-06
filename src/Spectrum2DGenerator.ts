@@ -249,24 +249,27 @@ export class Spectrum2DGenerator implements Spectrum2DGenerator {
         : peakShapeOptions;
     }
 
-    if (shapeOptions) {
-      this.shape = getShape2D(shapeOptions);
-    }
+    const shape = shapeOptions
+      ? getShape2D(shapeOptions)
+      : (Object.assign(
+          Object.create(Object.getPrototypeOf(this.shape)),
+          JSON.parse(JSON.stringify(this.shape)),
+        ) as Shape2DInstance);
 
     let {
       fwhm = peakFWHM !== undefined
         ? peakFWHM
         : peakWidth
-        ? convertWidthToFWHM(this.shape, peakWidth)
+        ? convertWidthToFWHM(shape, peakWidth)
         : width
-        ? convertWidthToFWHM(this.shape, width)
+        ? convertWidthToFWHM(shape, width)
         : this.peakWidthFct(xPosition, yPosition),
     } = options;
 
     fwhm = ensureXYNumber(fwhm);
 
     let factor =
-      options.factor === undefined ? this.shape.getFactor() : options.factor;
+      options.factor === undefined ? shape.getFactor() : options.factor;
 
     factor = ensureXYNumber(factor);
 
@@ -285,12 +288,12 @@ export class Spectrum2DGenerator implements Spectrum2DGenerator {
       );
     }
 
-    this.shape.fwhm = fwhm;
+    shape.fwhm = fwhm;
     for (let xIndex = firstPoint.x; xIndex < lastPoint.x; xIndex++) {
       for (let yIndex = firstPoint.y; yIndex < lastPoint.y; yIndex++) {
         const value =
           intensity *
-          this.shape.fct(
+          shape.fct(
             this.data.x[xIndex] - position.x,
             this.data.y[yIndex] - position.y,
           );
