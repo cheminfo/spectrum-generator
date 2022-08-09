@@ -25,7 +25,7 @@ const convertWidthToFWHM = (shape: Shape2DClass, width: number | XYNumber) => {
   return widthData;
 };
 
-interface OptionsSG2D {
+export interface OptionsSG2D {
   /**
    * First x value (inclusive).
    * @default `0`
@@ -55,7 +55,7 @@ interface OptionsSG2D {
   shape?: Shape2D;
 }
 
-interface AddPeak2DOptions {
+export interface AddPeak2DOptions {
   /**
    * Half-height width.
    * @default `peakWidthFct(value)`
@@ -81,7 +81,7 @@ interface GetSpectrum2DOptions {
   copy?: boolean;
 }
 
-interface GenerateSpectrum2DOptions {
+export interface GenerateSpectrum2DOptions {
   /**
    * Options for spectrum generator
    */

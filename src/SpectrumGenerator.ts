@@ -9,7 +9,7 @@ import addNoise from './util/addNoise';
 
 type NumToNumFn = (x: number) => number;
 
-interface OptionsSG1D {
+export interface OptionsSG1D {
   /**
    * First x value (inclusive).
    * @default 0
@@ -37,7 +37,7 @@ interface OptionsSG1D {
   shape?: Shape1D;
 }
 
-interface PeakOptions {
+export interface PeakOptions {
   /**
    * Half-height width.
    * @default `peakWidthFct(value)`
@@ -64,7 +64,7 @@ interface PeakOptions {
   factor?: number;
 }
 
-interface GenerateSpectrumOptions {
+export interface GenerateSpectrumOptions {
   /**
    * Options for spectrum generator
    */
