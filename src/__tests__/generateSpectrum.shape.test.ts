@@ -25,7 +25,7 @@ describe('generateSpectrum', () => {
     let nbChanges = 0;
     for (let i = 1; i < yPrime.length; i++) {
       let diff = yPrime[i] - yPrime[i - 1];
-      if (diff > 0 && positive === false) {
+      if (diff > 0 && !positive) {
         positive = true;
         nbChanges++;
       }
