@@ -3,6 +3,7 @@
 [![NPM version][npm-image]][npm-url]
 [![build status][ci-image]][ci-url]
 [![npm download][download-image]][download-url]
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5172776.svg)](https://doi.org/10.5281/zenodo.5172776)
 
 Generates a spectrum from discrete peaks. The shape of the peaks can be customized.
 
