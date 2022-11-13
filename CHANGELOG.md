@@ -1,5 +1,13 @@
 # Changelog
 
+## [8.0.5](https://github.com/cheminfo/spectrum-generator/compare/v8.0.4...v8.0.5) (2022-11-13)
+
+
+### Documentation
+
+* add CITATION.cff ([2c7b014](https://github.com/cheminfo/spectrum-generator/commit/2c7b014277da61f34dbb89079f5087755e91a8bf))
+* add link to Zenodo ([67907eb](https://github.com/cheminfo/spectrum-generator/commit/67907eb4bcb6b8254067b3046c8a46614e7d4932))
+
 ## [8.0.4](https://github.com/cheminfo/spectrum-generator/compare/v8.0.3...v8.0.4) (2022-08-09)
 
 
