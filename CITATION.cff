@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: 'If you use this software, please cite it as below.'
 title: 'Javascript library allowing to generate spectra using gaussian or lorentzian shapes'
-abstract: ''
+abstract: 'Based on peaks position, height, width and shape this library will create a spectrum containing a define number of points'
 repository-artifact: http://cheminfo.github.io/spectra-generator/
 repository-code: https://github.com/cheminfo/spectra-generator
 authors:
