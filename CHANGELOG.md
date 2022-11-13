@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.0.6](https://github.com/cheminfo/spectrum-generator/compare/v8.0.5...v8.0.6) (2022-11-13)
+
+
+### Documentation
+
+* fix the abstract of CITATION.cff ([4f2d133](https://github.com/cheminfo/spectrum-generator/commit/4f2d13354a84f519140871c6762e703067a948c2))
+
 ## [8.0.5](https://github.com/cheminfo/spectrum-generator/compare/v8.0.4...v8.0.5) (2022-11-13)
 
 
