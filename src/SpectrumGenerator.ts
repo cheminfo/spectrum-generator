@@ -109,7 +109,7 @@ export class SpectrumGenerator {
   private peakWidthFct: NumToNumFn | undefined;
   private maxPeakHeight: number;
   private shape: Shape1DInstance;
-  private data: DataXY;
+  private data: DataXY<Float64Array>;
   public constructor(options: OptionsSG1D = {}) {
     const {
       from = 0,
@@ -332,7 +332,7 @@ export class SpectrumGenerator {
           y.push(this.data.y[i]);
         }
       }
-      return { x, y };
+      return { x: Float64Array.from(x), y: Float64Array.from(y) };
     }
     if (copy) {
       return {
@@ -379,7 +379,7 @@ function assertNumber(value: number, name: string) {
 export function generateSpectrum(
   peaks: Peak1D[] | PeakSeries,
   options: GenerateSpectrumOptions = {},
-): DataXY {
+): DataXY<Float64Array> {
   const {
     generator: generatorOptions,
     noise,
