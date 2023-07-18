@@ -50,8 +50,8 @@ describe('SpectrumGenerator', () => {
     });
     generator.addPeak([50, 100], { widthLeft: 30, widthRight: 10, factor: 15 });
     const spectrum = generator.getSpectrum();
-    const xArray = spectrum.x as Float64Array;
-    const yArray = spectrum.y as Float64Array;
+    const xArray = spectrum.x;
+    const yArray = spectrum.y;
     const sumX = xArray.reduce((previous, value) => previous + value, 0);
     const sumY = yArray.reduce((previous, value) => previous + value, 0);
     expect(sumX).toBe(10050);
@@ -166,8 +166,8 @@ describe('SpectrumGenerator', () => {
 
     const spectrum = generator.getSpectrum({ threshold: 0.001 });
 
-    const xArray = spectrum.x as Float64Array;
-    const yArray = spectrum.y as Float64Array;
+    const xArray = spectrum.x;
+    const yArray = spectrum.y;
     const sumX = xArray.reduce((previous, value) => previous + value, 0);
     const sumY = yArray.reduce((previous, value) => previous + value, 0);
     expect(sumX).toBeCloseTo(5028, 4);
