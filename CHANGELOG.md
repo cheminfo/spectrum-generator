@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.0.8](https://github.com/cheminfo/spectrum-generator/compare/v8.0.7...v8.0.8) (2023-07-18)
+
+
+### Bug Fixes
+
+* Float64Array for spectrum data ([#76](https://github.com/cheminfo/spectrum-generator/issues/76)) ([ef50fac](https://github.com/cheminfo/spectrum-generator/commit/ef50fac5e6f251b8f18b70bac340210e916d42ad))
+
 ## [8.0.7](https://github.com/cheminfo/spectrum-generator/compare/v8.0.6...v8.0.7) (2023-03-24)
 
 
