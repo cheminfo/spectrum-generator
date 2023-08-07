@@ -46,7 +46,7 @@ describe('generateSpectrum with one peak and small window', () => {
     });
     checkSymmetry(spectrum);
     expect(spectrum.y[9]).toBeCloseTo(0.0625, 3);
-    let max = xyMaxYPoint(spectrum);
+    const max = xyMaxYPoint(spectrum);
     expect(max.x).toBe(10);
     expect(max.y).toBe(1);
   });
@@ -66,7 +66,7 @@ describe('generateSpectrum with one peak and small window', () => {
     expect(spectrum.y[8]).toBeCloseTo(0.5, 10);
 
     checkSymmetry(spectrum);
-    let max = xyMaxYPoint(spectrum);
+    const max = xyMaxYPoint(spectrum);
     expect(max.x).toBe(10);
     expect(max.y).toBe(1);
   });
@@ -83,7 +83,7 @@ describe('generateSpectrum with one peak and small window', () => {
         },
       },
     });
-    let max = xyMaxYPoint(spectrum);
+    const max = xyMaxYPoint(spectrum);
     expect(spectrum.y[9]).toBeCloseTo(0.0625, 4);
     expect(max.x).toBe(10);
     expect(max.y).toBe(1);
@@ -101,7 +101,7 @@ describe('generateSpectrum with one peak and small window', () => {
         },
       },
     });
-    let max = xyMaxYPoint(spectrum);
+    const max = xyMaxYPoint(spectrum);
     expect(spectrum.y[49]).toBeCloseTo(0.5, 10);
     expect(max.x).toBe(5);
     expect(max.y).toBe(1);
@@ -121,7 +121,7 @@ describe('generateSpectrum with one peak and small window', () => {
     });
     checkSymmetry(spectrum);
     expect(spectrum.y[40]).toBe(0.5);
-    let max = xyMaxYPoint(spectrum);
+    const max = xyMaxYPoint(spectrum);
     expect(max.x).toBe(15);
     expect(max.y).toBe(1);
   });
@@ -137,7 +137,7 @@ describe('generateSpectrum with one peak and small window', () => {
     });
     checkSymmetry(spectrum);
     expect(spectrum.y[5]).toBe(1);
-    let max = xyMaxYPoint(spectrum);
+    const max = xyMaxYPoint(spectrum);
     expect(max.x).toBe(2);
     expect(max.y).toBe(1);
   });
@@ -153,7 +153,7 @@ describe('generateSpectrum with one peak and small window', () => {
     });
     expect(spectrum.y[3]).toBe(spectrum.y[5]);
 
-    let max = xyMaxYPoint(spectrum);
+    const max = xyMaxYPoint(spectrum);
     expect(max.x).toBe(2.5);
     expect(max.y).toBe(1);
   });

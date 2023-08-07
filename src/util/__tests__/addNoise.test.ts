@@ -5,7 +5,7 @@ import addNoise from '../addNoise';
 expect.extend({ toBeDeepCloseTo, toMatchCloseTo });
 describe('addNoise', () => {
   it('percent = 0', () => {
-    let corrected = addNoise(
+    const corrected = addNoise(
       { x: [1, 2, 3], y: [10, 20, 100] },
       {
         distribution: 'uniform',
@@ -18,7 +18,7 @@ describe('addNoise', () => {
   });
 
   it('uniform', () => {
-    let corrected = addNoise(
+    const corrected = addNoise(
       { x: [1, 2, 3], y: [10, 20, 100] },
       {
         distribution: 'uniform',

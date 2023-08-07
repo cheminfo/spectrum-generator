@@ -5,7 +5,7 @@ import { Peak1D } from '../types/Peaks1D';
 
 describe('generateSpectrum factor', () => {
   it('lorentzian specified', () => {
-    let peaks: Peak1D[] = [
+    const peaks: Peak1D[] = [
       {
         x: 0,
         y: 1,
@@ -26,7 +26,7 @@ describe('generateSpectrum factor', () => {
   });
 
   it('lorentzian by default', () => {
-    let peaks: Peak1D[] = [
+    const peaks: Peak1D[] = [
       {
         x: 0,
         y: 1,
@@ -46,7 +46,7 @@ describe('generateSpectrum factor', () => {
   });
 
   it('gaussian by default', () => {
-    let peaks: Peak1D[] = [
+    const peaks: Peak1D[] = [
       {
         x: 0,
         y: 1,

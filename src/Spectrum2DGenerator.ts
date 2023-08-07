@@ -19,7 +19,7 @@ const peakCoordinates: PeakCoordinates[] = ['x', 'y', 'z'];
 
 const convertWidthToFWHM = (shape: Shape2DClass, width: number | XYNumber) => {
   const widthData = ensureXYNumber(width);
-  for (let key of axis2D) {
+  for (const key of axis2D) {
     widthData[key] = shape.widthToFWHM(widthData[key]);
   }
   return widthData;
@@ -120,14 +120,17 @@ export class Spectrum2DGenerator implements Spectrum2DGenerator {
   private peakWidthFct: NumToNumFn;
 
   public constructor(options: OptionsSG2D = {}) {
-    let {
-      from = 0,
-      to = 100,
-      nbPoints = 1001,
+    const {
       peakWidthFct = () => 5,
       shape = {
         kind: 'gaussian',
       },
+    }= options
+    let {
+      from = 0,
+      to = 100,
+      nbPoints = 1001,
+
     } = options;
 
     from = ensureXYNumber(from);
@@ -148,7 +151,7 @@ export class Spectrum2DGenerator implements Spectrum2DGenerator {
     this.peakWidthFct = peakWidthFct;
     this.maxPeakHeight = Number.MIN_SAFE_INTEGER;
 
-    let shapeGenerator = getShape2D(shape);
+    const shapeGenerator = getShape2D(shape);
     this.shape = shapeGenerator;
 
     this.data = {
@@ -189,7 +192,7 @@ export class Spectrum2DGenerator implements Spectrum2DGenerator {
         this.addPeak(peak, options);
       }
     } else {
-      let nbPeaks = peaks.x.length;
+      const nbPeaks = peaks.x.length;
       for (const c of peakCoordinates) {
         if (peaks[c] && Array.isArray(peaks[c])) {
           if (nbPeaks !== peaks[c].length) {
@@ -241,7 +244,8 @@ export class Spectrum2DGenerator implements Spectrum2DGenerator {
     const position: XYNumber = { x: xPosition, y: yPosition };
     if (intensity > this.maxPeakHeight) this.maxPeakHeight = intensity;
 
-    let { shape: shapeOptions, width } = options;
+    const {width} = options
+    let { shape: shapeOptions, } = options;
 
     if (peakShapeOptions) {
       shapeOptions = shapeOptions
@@ -311,7 +315,7 @@ export class Spectrum2DGenerator implements Spectrum2DGenerator {
       options = { copy: options };
     }
     const { copy = true } = options;
-    let minMaxZ = matrixMinMaxZ(this.data.z);
+    const minMaxZ = matrixMinMaxZ(this.data.z);
 
     return {
       minX: this.from.x,
@@ -332,7 +336,7 @@ export class Spectrum2DGenerator implements Spectrum2DGenerator {
         spectrum[axis][i] = this.from[axis] + i * this.interval[axis];
       }
     }
-    for (let row of spectrum.z) {
+    for (const row of spectrum.z) {
       for (let j = 0; j < row.length; j++) {
         row[j] = 0;
       }

@@ -82,7 +82,7 @@ describe('SpectrumGenerator various shapes', () => {
   });
 
   it('second test', () => {
-    let spectrumGenerator = new SpectrumGenerator({
+    const spectrumGenerator = new SpectrumGenerator({
       from: 0,
       to: 10,
       nbPoints: 101,
@@ -110,7 +110,7 @@ describe('SpectrumGenerator various shapes', () => {
       },
     );
     const spectrum = spectrumGenerator.getSpectrum();
-    let max = xyMaxYPoint(spectrum);
+    const max = xyMaxYPoint(spectrum);
     expect(spectrum.y[49]).toBeCloseTo(0.5, 2);
     expect(max.x).toBe(2.5);
     expect(max.y).toBeCloseTo(2, 3);
@@ -142,7 +142,7 @@ describe('SpectrumGenerator various shapes', () => {
   });
 
   it('test various width', () => {
-    let spectrumGenerator = new SpectrumGenerator({
+    const spectrumGenerator = new SpectrumGenerator({
       from: 0,
       to: 10,
       nbPoints: 101,
@@ -170,7 +170,7 @@ describe('SpectrumGenerator various shapes', () => {
       },
     );
     const spectrum = spectrumGenerator.getSpectrum();
-    let max = xyMaxYPoint(spectrum);
+    const max = xyMaxYPoint(spectrum);
     expect(spectrum.y[49]).toBeCloseTo(0.5, 2);
     expect(max.x).toBe(2.5);
     expect(max.y).toBeCloseTo(2, 2);
@@ -190,8 +190,8 @@ describe('SpectrumGenerator various shapes', () => {
       shape: { kind: 'gaussian', fwhm: 0.5 },
     });
 
-    let spectrum = spectrumGenerator.getSpectrum();
-    let index = spectrum.x.indexOf(0.06);
+    const spectrum = spectrumGenerator.getSpectrum();
+    const index = spectrum.x.indexOf(0.06);
     const gaussian = new Gaussian({ fwhm: 0.5 });
     expect(spectrum.y[index]).toBe(gaussian.fct(0.06));
   });

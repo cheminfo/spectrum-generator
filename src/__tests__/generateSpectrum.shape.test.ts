@@ -13,8 +13,8 @@ describe('generateSpectrum', () => {
       },
     });
 
-    let y = Array.from(spectrum.y);
-    let yPrime = [0];
+    const y = Array.from(spectrum.y);
+    const yPrime = [0];
 
     for (let i = 1; i < y.length; i++) {
       // first derivative
@@ -24,7 +24,7 @@ describe('generateSpectrum', () => {
     let positive = true;
     let nbChanges = 0;
     for (let i = 1; i < yPrime.length; i++) {
-      let diff = yPrime[i] - yPrime[i - 1];
+      const diff = yPrime[i] - yPrime[i - 1];
       if (diff > 0 && !positive) {
         positive = true;
         nbChanges++;
@@ -39,7 +39,7 @@ describe('generateSpectrum', () => {
   });
 
   it('The peak shape should be a gaussian', () => {
-    let peaks: Peak1D[] = [
+    const peaks: Peak1D[] = [
       {
         x: 0,
         y: 1,
@@ -56,7 +56,7 @@ describe('generateSpectrum', () => {
       },
     });
 
-    let index = spectrum.x.indexOf(0.06);
+    const index = spectrum.x.indexOf(0.06);
     const gaussian = new Gaussian({ fwhm: 0.5 });
     expect(spectrum.y[index]).toBe(gaussian.fct(0.06));
   });

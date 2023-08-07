@@ -9,7 +9,7 @@ describe('rounding', () => {
       peakWidthFct: () => 1,
     });
     generator.addPeak({ x: 359.9994514200909, y: 100 });
-    let result = generator.getSpectrum();
+    const result = generator.getSpectrum();
     expect(Math.min(...result.y)).toBeGreaterThan(99);
     expect(Math.max(...result.y)).toBeLessThanOrEqual(100);
   });
@@ -22,7 +22,7 @@ describe('rounding', () => {
       peakWidthFct: () => 0.013,
     });
     generator.addPeak({ x: 360, y: 100 });
-    let result = generator.getSpectrum();
+    const result = generator.getSpectrum();
     expect(Math.min(...result.y)).toBeGreaterThan(90);
     expect(Math.max(...result.y)).toBeLessThan(100);
   });

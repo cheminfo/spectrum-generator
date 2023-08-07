@@ -181,7 +181,7 @@ function assertSize(spectrum: Spectrum2D, size: number) {
 }
 
 function checkSymmetry(spectrum: Spectrum2D) {
-  let yCenter = Math.floor(spectrum.z.length / 2);
+  const yCenter = Math.floor(spectrum.z.length / 2);
   for (let i = 0; i <= yCenter; i++) {
     expect(
       spectrum.z[yCenter][i] - spectrum.z[yCenter][spectrum.z.length - i - 1],
@@ -198,12 +198,12 @@ function checkMax(spectrum: Spectrum2D, center: number) {
   const { maxX, minX, maxY, minY, z } = spectrum;
 
   const maxRows = [];
-  for (let row of z) {
+  for (const row of z) {
     maxRows.push(xMaxValue(row));
   }
-  let max = xMaxValue(maxRows);
-  let yIndex = maxRows.indexOf(max);
-  let xIndex = z[yIndex].indexOf(maxRows[yIndex]);
+  const max = xMaxValue(maxRows);
+  const yIndex = maxRows.indexOf(max);
+  const xIndex = z[yIndex].indexOf(maxRows[yIndex]);
   expect(minX + (xIndex * (maxX - minX)) / (maxRows.length - 1)).toBe(center);
   expect(minY + (yIndex * (maxY - minY)) / (maxRows.length - 1)).toBe(center);
   expect(max).toBe(1);

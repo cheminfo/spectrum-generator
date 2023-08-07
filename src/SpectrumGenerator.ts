@@ -131,7 +131,7 @@ export class SpectrumGenerator {
       y: new Float64Array(this.nbPoints),
     };
 
-    let shapeGenerator = getShape1D(shape);
+    const shapeGenerator = getShape1D(shape);
     this.shape = shapeGenerator;
 
     assertNumber(this.from, 'from');
@@ -230,7 +230,8 @@ export class SpectrumGenerator {
           this.shape,
         ) as Shape1DInstance);
 
-    let { width, widthLeft, widthRight } = options;
+    const { width } = options;
+    let { widthLeft, widthRight } = options;
 
     /*
      if we don't force the fwhm we just take the one from the shape
@@ -259,7 +260,7 @@ export class SpectrumGenerator {
       throw new Error('Width left or right is undefined or zero');
     }
 
-    let factor =
+    const factor =
       options.factor === undefined ? shape.getFactor() : options.factor;
 
     const firstValue = xPosition - (widthLeft / 2) * factor;
@@ -323,9 +324,9 @@ export class SpectrumGenerator {
     }
     const { copy = true, threshold = 0 } = options;
     if (threshold) {
-      let minPeakHeight = this.maxPeakHeight * threshold;
-      let x = [];
-      let y = [];
+      const minPeakHeight = this.maxPeakHeight * threshold;
+      const x = [];
+      const y = [];
       for (let i = 0; i < this.data.x.length; i++) {
         if (this.data.y[i] >= minPeakHeight) {
           x.push(this.data.x[i]);
