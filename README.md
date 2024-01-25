@@ -27,9 +27,11 @@ const peaks = [
   [569, 76],
 ];
 const spectrum = generateSpectrum(peaks, {
-  from: 0, // default value: 0
-  to: 1000, // default value: 1000
-  nbPoints: 10001, // default value: 10001
+  generator: {
+    from: 0,
+    to: 1000,
+    nbPoints: 10001,
+  },
   shape: {
     kind: 'gaussian', // default value is gaussian
   },
@@ -56,9 +58,11 @@ Peaks can also be introduced as:
 */
 
 const spectrum = generateSpectrum(peaks, {
-  nbPoints: 1001,
-  from: 0,
-  to: 10,
+  generator: {
+    from: 0,
+    to: 10,
+    nbPoints: 1001,
+  },
   shape: {
     kind: 'lorentzian',
   },
