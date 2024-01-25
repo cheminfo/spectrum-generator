@@ -246,12 +246,12 @@ export class SpectrumGenerator {
       peakFWHM !== undefined
         ? peakFWHM
         : peakWidth
-        ? shape.widthToFWHM(peakWidth)
-        : this.peakWidthFct
-        ? this.peakWidthFct(xPosition)
-        : width !== undefined
-        ? width
-        : shape.fwhm;
+          ? shape.widthToFWHM(peakWidth)
+          : this.peakWidthFct
+            ? this.peakWidthFct(xPosition)
+            : width !== undefined
+              ? width
+              : shape.fwhm;
 
     if (!widthLeft) widthLeft = fwhm;
     if (!widthRight) widthRight = fwhm;

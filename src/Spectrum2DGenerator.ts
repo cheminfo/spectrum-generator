@@ -125,13 +125,8 @@ export class Spectrum2DGenerator implements Spectrum2DGenerator {
       shape = {
         kind: 'gaussian',
       },
-    }= options
-    let {
-      from = 0,
-      to = 100,
-      nbPoints = 1001,
-
     } = options;
+    let { from = 0, to = 100, nbPoints = 1001 } = options;
 
     from = ensureXYNumber(from);
     to = ensureXYNumber(to);
@@ -244,8 +239,8 @@ export class Spectrum2DGenerator implements Spectrum2DGenerator {
     const position: XYNumber = { x: xPosition, y: yPosition };
     if (intensity > this.maxPeakHeight) this.maxPeakHeight = intensity;
 
-    const {width} = options
-    let { shape: shapeOptions, } = options;
+    const { width } = options;
+    let { shape: shapeOptions } = options;
 
     if (peakShapeOptions) {
       shapeOptions = shapeOptions
@@ -264,10 +259,10 @@ export class Spectrum2DGenerator implements Spectrum2DGenerator {
       fwhm = peakFWHM !== undefined
         ? peakFWHM
         : peakWidth
-        ? convertWidthToFWHM(shape, peakWidth)
-        : width
-        ? convertWidthToFWHM(shape, width)
-        : this.peakWidthFct(xPosition, yPosition),
+          ? convertWidthToFWHM(shape, peakWidth)
+          : width
+            ? convertWidthToFWHM(shape, width)
+            : this.peakWidthFct(xPosition, yPosition),
     } = options;
 
     fwhm = ensureXYNumber(fwhm);
