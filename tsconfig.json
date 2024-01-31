@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
     "esModuleInterop": true,
-    "moduleResolution": "node16",
+    "moduleResolution": "node",
     "sourceMap": true,
     "strict": true,
     "target": "es2020",
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "typeRoots": ["src/types/**/*", "./node_modules/@types"]
+    "typeRoots": ["src/types/**/*", "./node_modules/@types"],
   },
   "include": ["./src/**/*", ".src/types/**/*"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
 }
