@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.0.11](https://github.com/cheminfo/spectrum-generator/compare/v8.0.10...v8.0.11) (2024-03-07)
+
+
+### Bug Fixes
+
+* update dependencies ([c39baf8](https://github.com/cheminfo/spectrum-generator/commit/c39baf8c81cd88df56a7f4c398fd7fa0b9c65d37))
+
 ## [8.0.10](https://github.com/cheminfo/spectrum-generator/compare/v8.0.9...v8.0.10) (2024-03-06)
 
 
