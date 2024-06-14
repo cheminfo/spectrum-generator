@@ -1,3 +1,4 @@
+import { NumberArray } from 'cheminfo-types';
 import { getShape2D, Shape2DClass } from 'ml-peak-shape-generator';
 import type {
   Shape2D,
@@ -99,7 +100,7 @@ export interface Spectrum2D {
   maxY: number;
   minZ: number;
   maxZ: number;
-  z: Float64Array[];
+  z: NumberArray[];
 }
 
 export class Spectrum2DGenerator {
