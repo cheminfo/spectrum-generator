@@ -4,7 +4,7 @@ import type {
   Shape2DInstance,
   XYNumber,
 } from 'ml-peak-shape-generator';
-import { matrixMinMaxZ } from 'ml-spectra-processing';
+import { matrixCreateEmpty, matrixMinMaxZ } from 'ml-spectra-processing';
 
 import type { Data2D } from './types/Data2D';
 import type { Peak2D, Peak2DSeries } from './types/Peaks2D';
@@ -27,12 +27,12 @@ const convertWidthToFWHM = (shape: Shape2DClass, width: number | XYNumber) => {
 
 export interface OptionsSG2D {
   /**
-   * First x value (inclusive).
+   * First xy value (inclusive).
    * @default `0`
    */
   from?: number | XYNumber;
   /**
-   * Last x value (inclusive).
+   * Last xy value (inclusive).
    * @default `100`
    */
   to?: number | XYNumber;
@@ -99,7 +99,7 @@ export interface Spectrum2D {
   maxY: number;
   minZ: number;
   maxZ: number;
-  z: Float64Array[] | number[][];
+  z: Float64Array[];
 }
 
 export class Spectrum2DGenerator {
@@ -145,7 +145,10 @@ export class Spectrum2DGenerator {
     this.data = {
       x: new Float64Array(nbPoints.x),
       y: new Float64Array(nbPoints.y),
-      z: createMatrix(this.nbPoints),
+      z: matrixCreateEmpty({
+        nbRows: this.nbPoints.y,
+        nbColumns: this.nbPoints.x,
+      }),
     };
 
     for (const axis of axis2D) {
@@ -289,7 +292,7 @@ export class Spectrum2DGenerator {
             this.data.x[xIndex] - position.x,
             this.data.y[yIndex] - position.y,
           );
-        if (value > 1e-6) {
+        if (Math.abs(value) > 1e-6) {
           this.data.z[yIndex][xIndex] += value;
         }
       }
@@ -366,12 +369,4 @@ function assertNumber(value: number, name: string) {
   if (!Number.isFinite(value)) {
     throw new TypeError(`${name} option must be a number`);
   }
-}
-
-function createMatrix(nbPoints: XYNumber) {
-  const zMatrix = new Array(nbPoints.y);
-  for (let i = 0; i < nbPoints.y; i++) {
-    zMatrix[i] = new Float64Array(nbPoints.x);
-  }
-  return zMatrix;
 }
