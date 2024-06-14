@@ -62,6 +62,6 @@
   },
   "dependencies": {
     "ml-peak-shape-generator": "^4.1.2",
-    "ml-spectra-processing": "^14.2.0"
+    "ml-spectra-processing": "^14.2.2"
   }
 }
