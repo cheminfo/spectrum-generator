@@ -1,5 +1,5 @@
-import { xMaxValue } from 'ml-spectra-processing';
 import { describe, it, expect } from 'vitest';
+import { xMaxValue, xMinMaxValues } from 'ml-spectra-processing';
 
 import type { Spectrum2D } from '../Spectrum2DGenerator';
 import { generateSpectrum2D } from '../Spectrum2DGenerator';
@@ -67,6 +67,31 @@ describe('generateSpectrum with one peak and small window', () => {
     checkMax(spectrum, 10);
   });
 
+  it('should have negative min value', () => {
+    const spectrum = generateSpectrum2D(
+      [
+        { x: 1, y: 1, z: 0.3, width: 0.01 },
+        { x: 1.3, y: 0.8, z: -0.3, width: 0.01 },
+      ],
+      {
+        generator: {
+          nbPoints: 101,
+          from: { x: 0.6, y: 0.6 },
+          to: { x: 2, y: 1.5 },
+        },
+      },
+    );
+
+    let max = Number.MIN_SAFE_INTEGER;
+    let min = Number.MAX_SAFE_INTEGER;
+    for (const row of spectrum.z) {
+      const rowMinMax = xMinMaxValues(row);
+      if (max < rowMinMax.max) max = rowMinMax.max;
+      if (min > rowMinMax.min) min = rowMinMax.min;
+    }
+    expect(max).toBeCloseTo(0.3, 0);
+    expect(min).toBeCloseTo(-0.3, 0);
+  });
   it('should work with shape 17/4, peak width 0.2', () => {
     const spectrum = generateSpectrum2D([[10, 10, 1]], {
       generator: {
