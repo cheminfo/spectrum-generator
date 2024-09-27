@@ -60,4 +60,41 @@ describe('generateSpectrum', () => {
     const gaussian = new Gaussian({ fwhm: 0.5 });
     expect(spectrum.y[index]).toBe(gaussian.fct(0.06));
   });
+
+  it('Those two peak shape should be a pure lorentzian', () => {
+    const lorentzianPeak: Peak1D[] = [
+      {
+        x: 0,
+        y: 1,
+        shape: { kind: 'lorentzian', fwhm: 0.5 },
+      },
+    ];
+
+    const spectrum = generateSpectrum(lorentzianPeak, {
+      generator: {
+        from: -0.1,
+        to: 0.1,
+        nbPoints: 51,
+        shape: { kind: 'gaussian' },
+      },
+    });
+
+    const generalizedLorentzianPeak: Peak1D[] = [
+      {
+        x: 0,
+        y: 1,
+        shape: { kind: 'generalizedLorentzian', fwhm: 0.5, gamma: 0 },
+      },
+    ];
+    const spectrum2 = generateSpectrum(generalizedLorentzianPeak, {
+      generator: {
+        from: -0.1,
+        to: 0.1,
+        nbPoints: 51,
+        shape: { kind: 'gaussian' },
+      },
+    });
+
+    expect(spectrum.y).toStrictEqual(spectrum2.y);
+  });
 });
