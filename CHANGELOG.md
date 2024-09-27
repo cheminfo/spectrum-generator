@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.0.12](https://github.com/cheminfo/spectrum-generator/compare/v8.0.11...v8.0.12) (2024-09-27)
+
+
+### Bug Fixes
+
+* generalizedLorentzian shape supported ([#86](https://github.com/cheminfo/spectrum-generator/issues/86)) ([a2f4dc8](https://github.com/cheminfo/spectrum-generator/commit/a2f4dc8cf208640483cce6fd3357d4a6f6fbbc7b))
+
 ## [8.0.11](https://github.com/cheminfo/spectrum-generator/compare/v8.0.10...v8.0.11) (2024-03-07)
 
 
