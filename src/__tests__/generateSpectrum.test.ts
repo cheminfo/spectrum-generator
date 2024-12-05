@@ -1,5 +1,6 @@
 import type { DataXY } from 'cheminfo-types';
 import { xyMaxYPoint } from 'ml-spectra-processing';
+import { describe, it, expect } from 'vitest';
 
 import { generateSpectrum } from '../SpectrumGenerator';
 

@@ -1,4 +1,5 @@
 import { Gaussian2D } from 'ml-peak-shape-generator';
+import { describe, it, expect } from 'vitest';
 
 import { Spectrum2DGenerator } from '../Spectrum2DGenerator';
 

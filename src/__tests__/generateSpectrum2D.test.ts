@@ -1,4 +1,5 @@
 import { xMaxValue } from 'ml-spectra-processing';
+import { describe, it, expect } from 'vitest';
 
 import type { Spectrum2D } from '../Spectrum2DGenerator';
 import { generateSpectrum2D } from '../Spectrum2DGenerator';

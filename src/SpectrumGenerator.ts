@@ -152,6 +152,7 @@ export class SpectrumGenerator {
   /**
    * Add a series of peaks to the spectrum.
    * @param peaks - Peaks to add.
+   * @param options
    */
   public addPeaks(peaks: Peak1D[] | PeakSeries, options?: PeakOptions) {
     if (
@@ -307,8 +308,8 @@ export class SpectrumGenerator {
 
   /**
    * Add noise to the spectrum.
-   *
    * @param percent - Noise's amplitude in percents of the spectrum max value. Default: 1.
+   * @param options
    */
   public addNoise(options?: NoiseOptions) {
     addNoise(this.data, options);
@@ -317,6 +318,7 @@ export class SpectrumGenerator {
 
   /**
    * Get the generated spectrum.
+   * @param options
    */
   public getSpectrum(options: GetSpectrumOptions | boolean = {}) {
     if (typeof options === 'boolean') {

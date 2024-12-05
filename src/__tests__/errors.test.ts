@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest';
+
 import { SpectrumGenerator } from '../SpectrumGenerator';
 
 const endStartReg = /^to option must be larger than from$/;

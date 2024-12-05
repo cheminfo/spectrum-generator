@@ -1,8 +1,9 @@
-import { getShape2D, Shape2DClass } from 'ml-peak-shape-generator';
+import { getShape2D } from 'ml-peak-shape-generator';
 import type {
   Shape2D,
   Shape2DInstance,
   XYNumber,
+  Shape2DClass,
 } from 'ml-peak-shape-generator';
 import { matrixMinMaxZ } from 'ml-spectra-processing';
 
@@ -49,8 +50,8 @@ export interface OptionsSG2D {
   /**
    * Define the shape of the peak.
    * @default `shape: {
-          kind: 'gaussian',
-        },`
+   * kind: 'gaussian',
+   * },`
    */
   shape?: Shape2D;
 }
@@ -182,10 +183,12 @@ export class Spectrum2DGenerator {
     } else {
       const nbPeaks = peaks.x.length;
       for (const c of peakCoordinates) {
-        if (peaks[c] && Array.isArray(peaks[c])) {
-          if (nbPeaks !== peaks[c].length) {
-            throw new Error('x, y, z should have the same length');
-          }
+        if (
+          peaks[c] &&
+          Array.isArray(peaks[c]) &&
+          nbPeaks !== peaks[c].length
+        ) {
+          throw new Error('x, y, z should have the same length');
         }
       }
       for (let i = 0; i < peaks.x.length; i++) {
@@ -245,7 +248,7 @@ export class Spectrum2DGenerator {
       ? getShape2D(shapeOptions)
       : (Object.assign(
           Object.create(Object.getPrototypeOf(this.shape)),
-          JSON.parse(JSON.stringify(this.shape)),
+          structuredClone(this.shape),
         ) as Shape2DInstance);
 
     let {

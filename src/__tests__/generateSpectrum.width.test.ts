@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest';
+
 import { generateSpectrum } from '../SpectrumGenerator';
 
 describe('generateSpectrum width / fwhm', () => {
