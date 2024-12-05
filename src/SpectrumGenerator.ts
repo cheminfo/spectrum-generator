@@ -276,6 +276,7 @@ export class SpectrumGenerator {
       Math.ceil((lastValue - this.from) / this.interval),
     );
     const middlePoint = Math.round((xPosition - this.from) / this.interval);
+
     // PEAK SHAPE MAY BE ASYMMETRC (widthLeft and widthRight) !
     // we calculate the left part of the shape
 
@@ -351,12 +352,13 @@ export class SpectrumGenerator {
    * Resets the generator with an empty spectrum.
    */
   public reset() {
-    const spectrum = this.data;
-
-    for (let i = 0; i < this.nbPoints; i++) {
-      spectrum.x[i] = this.from + i * this.interval;
+    if (this.nbPoints === 1) {
+      this.data.x[0] = (this.from + this.to) / 2;
+    } else {
+      for (let i = 0; i < this.nbPoints; i++) {
+        this.data.x[i] = this.from + i * this.interval;
+      }
     }
-
     return this;
   }
 }

@@ -33,6 +33,40 @@ describe('generateSpectrum', () => {
 });
 
 describe('generateSpectrum with one peak and small window', () => {
+  it('No points', () => {
+    const spectrum = generateSpectrum([{ x: 1, y: 10 }], {
+      generator: {
+        from: 0,
+        to: 2,
+        nbPoints: 0,
+        peakWidthFct: () => 0.1,
+        shape: {
+          kind: 'gaussian',
+        },
+      },
+    });
+    expect(spectrum).toStrictEqual({
+      x: Float64Array.from([]),
+      y: Float64Array.from([]),
+    });
+  });
+  it('Very small window, only 1 point', () => {
+    const spectrum = generateSpectrum([{ x: 1, y: 10 }], {
+      generator: {
+        from: 0,
+        to: 2,
+        nbPoints: 1,
+        peakWidthFct: () => 0.1,
+        shape: {
+          kind: 'gaussian',
+        },
+      },
+    });
+    expect(spectrum).toStrictEqual({
+      x: Float64Array.from([1]),
+      y: Float64Array.from([10]),
+    });
+  });
   it('should work with shape 9/3, peak width 0.2', () => {
     const spectrum = generateSpectrum([[10, 1]], {
       generator: {
