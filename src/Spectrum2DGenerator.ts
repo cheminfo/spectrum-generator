@@ -1,4 +1,4 @@
-import { NumberArray } from 'cheminfo-types';
+import type { NumberArray } from 'cheminfo-types';
 import { getShape2D } from 'ml-peak-shape-generator';
 import type {
   Shape2D,
