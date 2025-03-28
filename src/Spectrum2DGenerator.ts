@@ -19,6 +19,12 @@ const axis2D: Axis2D[] = ['x', 'y'];
 type PeakCoordinates = 'x' | 'y' | 'z';
 const peakCoordinates: PeakCoordinates[] = ['x', 'y', 'z'];
 
+/**
+ * Converts a width value to full width at half maximum (FWHM).
+ * @param shape - The 2D shape to use for conversion.
+ * @param width - The width value to convert.
+ * @returns The converted FWHM value as an XYNumber object.
+ */
 const convertWidthToFWHM = (shape: Shape2DClass, width: number | XYNumber) => {
   const widthData = ensureXYNumber(width);
   for (const key of axis2D) {
@@ -166,6 +172,12 @@ export class Spectrum2DGenerator {
     this.reset();
   }
 
+  /**
+   * Adds multiple peaks to the 2D spectrum.
+   * @param peaks - Array of peaks or peak series to add.
+   * @param options - Options for adding peaks.
+   * @returns The generator instance.
+   */
   public addPeaks(peaks: Peak2D[] | Peak2DSeries, options?: AddPeak2DOptions) {
     if (
       !Array.isArray(peaks) &&
@@ -203,6 +215,12 @@ export class Spectrum2DGenerator {
     return this;
   }
 
+  /**
+   * Adds a single peak to the 2D spectrum.
+   * @param peak - Peak to add, can be array or object format.
+   * @param options - Options for adding the peak.
+   * @returns The generator instance.
+   */
   public addPeak(peak: Peak2D, options: AddPeak2DOptions = {}) {
     if (Array.isArray(peak) && peak.length < 3) {
       throw new Error(
@@ -305,6 +323,11 @@ export class Spectrum2DGenerator {
     return this;
   }
 
+  /**
+   * Gets the generated 2D spectrum data.
+   * @param options - Options for getting the spectrum.
+   * @returns The spectrum data object.
+   */
   public getSpectrum(options: GetSpectrum2DOptions | boolean = {}) {
     if (typeof options === 'boolean') {
       options = { copy: options };
@@ -323,6 +346,10 @@ export class Spectrum2DGenerator {
     };
   }
 
+  /**
+   * Resets the generator to initial state.
+   * @returns The generator instance.
+   */
   public reset() {
     const spectrum: Data2D = this.data;
 
@@ -340,6 +367,12 @@ export class Spectrum2DGenerator {
   }
 }
 
+/**
+ * Generates a 2D spectrum with the given peaks.
+ * @param peaks - Peaks to include in the spectrum.
+ * @param options - Options for spectrum generation.
+ * @returns The generated spectrum data.
+ */
 export function generateSpectrum2D(
   peaks: Peak2D[] | Peak2DSeries,
   options: GenerateSpectrum2DOptions = {},
@@ -352,10 +385,22 @@ export function generateSpectrum2D(
   return generator.getSpectrum();
 }
 
+/**
+ * Ensures the input is an XYNumber object.
+ * @param input - Number or XYNumber to process.
+ * @returns An XYNumber object.
+ */
 function ensureXYNumber(input: number | XYNumber) {
   return typeof input !== 'object' ? { x: input, y: input } : { ...input };
 }
 
+/**
+ * Calculates the intervals between points for both x and y axes.
+ * @param from - Starting point coordinates.
+ * @param to - Ending point coordinates.
+ * @param nbPoints - Number of points in each dimension.
+ * @returns The calculated intervals as an XYNumber object.
+ */
 function calculeIntervals(from: XYNumber, to: XYNumber, nbPoints: XYNumber) {
   return {
     x: (to.x - from.x) / (nbPoints.x - 1),
@@ -363,12 +408,24 @@ function calculeIntervals(from: XYNumber, to: XYNumber, nbPoints: XYNumber) {
   };
 }
 
+/**
+ * Validates if a value is an integer.
+ * @param value - Number to validate.
+ * @param name - Name of the parameter for error message.
+ * @throws {TypeError} If value is not an integer.
+ */
 function assertInteger(value: number, name: string) {
   if (!Number.isInteger(value)) {
     throw new TypeError(`${name} option must be an integer`);
   }
 }
 
+/**
+ * Validates if a value is a finite number.
+ * @param value - Number to validate.
+ * @param name - Name of the parameter for error message.
+ * @throws {TypeError} If value is not a finite number.
+ */
 function assertNumber(value: number, name: string) {
   if (!Number.isFinite(value)) {
     throw new TypeError(`${name} option must be a number`);

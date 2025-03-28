@@ -22,6 +22,12 @@ export interface NoiseOptions {
   percent?: number;
 }
 
+/**
+ * Adds noise to the spectrum data.
+ * @param data - The spectrum data to modify.
+ * @param options - Configuration for noise generation.
+ * @returns The modified spectrum data.
+ */
 export default function addNoise(data: DataXY, options: NoiseOptions = {}) {
   const { seed = 0, distribution = 'normal', percent = 1 } = options;
   const range = (xMaxValue(data.y) * percent) / 100;
