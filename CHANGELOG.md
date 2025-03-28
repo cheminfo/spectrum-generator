@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.1.0](https://github.com/cheminfo/spectrum-generator/compare/v8.0.12...v8.1.0) (2025-03-28)
+
+
+### Features
+
+* support to negative peaks in 2D spectra generation([#85](https://github.com/cheminfo/spectrum-generator/issues/85)) ([70f81b0](https://github.com/cheminfo/spectrum-generator/commit/70f81b0df4f7cbea6392375572d35cf48ad68509))
+
 ## [8.0.12](https://github.com/cheminfo/spectrum-generator/compare/v8.0.11...v8.0.12) (2024-12-05)
 
 
