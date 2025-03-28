@@ -178,6 +178,7 @@ export class SpectrumGenerator {
         this.addPeak([peaks.x[i], peaks.y[i]], options);
       }
     }
+    return this;
   }
   /**
    * Add a single peak to the spectrum.
@@ -298,6 +299,8 @@ export class SpectrumGenerator {
       this.data.y[index] +=
         intensity * shape.fct(this.data.x[index] - xPosition);
     }
+
+    return this;
   }
 
   /**
