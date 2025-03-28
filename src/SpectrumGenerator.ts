@@ -152,7 +152,8 @@ export class SpectrumGenerator {
   /**
    * Add a series of peaks to the spectrum.
    * @param peaks - Peaks to add.
-   * @param options
+   * @param options - Options for adding peaks.
+   * @returns The generator instance.
    */
   public addPeaks(peaks: Peak1D[] | PeakSeries, options?: PeakOptions) {
     if (
@@ -177,12 +178,14 @@ export class SpectrumGenerator {
         this.addPeak([peaks.x[i], peaks.y[i]], options);
       }
     }
+    return this;
   }
   /**
    * Add a single peak to the spectrum.
    * A peak may be either defined as [x,y,fwhm,...] or as {x, y, shape}
-   * @param peak
-   * @param options
+   * @param peak - The peak to add, defined as array or object.
+   * @param options - Options for adding the peak.
+   * @returns The generator instance.
    */
 
   public addPeak(peak: Peak1D, options: PeakOptions = {}) {
@@ -296,11 +299,14 @@ export class SpectrumGenerator {
       this.data.y[index] +=
         intensity * shape.fct(this.data.x[index] - xPosition);
     }
+
+    return this;
   }
 
   /**
    * Add a baseline to the spectrum.
    * @param baselineFct - Mathematical function producing the baseline you want.
+   * @returns The generator instance.
    */
   public addBaseline(baselineFct: NumToNumFn) {
     addBaseline(this.data, baselineFct);
@@ -309,8 +315,8 @@ export class SpectrumGenerator {
 
   /**
    * Add noise to the spectrum.
-   * @param percent - Noise's amplitude in percents of the spectrum max value. Default: 1.
-   * @param options
+   * @param options - Configuration for noise generation.
+   * @returns The generator instance.
    */
   public addNoise(options?: NoiseOptions) {
     addNoise(this.data, options);
@@ -319,7 +325,8 @@ export class SpectrumGenerator {
 
   /**
    * Get the generated spectrum.
-   * @param options
+   * @param options - Options for getting the spectrum.
+   * @returns The generated spectrum data.
    */
   public getSpectrum(options: GetSpectrumOptions | boolean = {}) {
     if (typeof options === 'boolean') {
@@ -350,6 +357,7 @@ export class SpectrumGenerator {
 
   /**
    * Resets the generator with an empty spectrum.
+   * @returns The generator instance.
    */
   public reset() {
     if (this.nbPoints === 1) {
@@ -378,9 +386,9 @@ function assertNumber(value: number, name: string) {
 /**
  * Generates a spectrum and returns it.
  * @param peaks - List of peaks to put in the spectrum.
- * @param options
+ * @param options - Configuration for spectrum generation.
+ * @returns The generated spectrum data.
  */
-
 export function generateSpectrum(
   peaks: Peak1D[] | PeakSeries,
   options: GenerateSpectrumOptions = {},
