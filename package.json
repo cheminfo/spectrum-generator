@@ -2,9 +2,10 @@
   "name": "spectrum-generator",
   "version": "8.1.0",
   "description": "generate a spectrum from discrete peaks",
-  "main": "./lib/index.js",
-  "module": "./lib-esm/index.js",
-  "types": "./lib/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": "./lib/index.js"
+  },
   "keywords": [],
   "author": "Luc Patiny",
   "contributors": [
@@ -27,11 +28,10 @@
     "prepack": "npm run tsc",
     "prettier": "prettier --check src",
     "prettier-write": "prettier --write src",
-    "test": "npm run test-only && npm run eslint && npm run prettier && npm run check-types",
+    "test": "npm run test-only && npm run check-types && npm run eslint && npm run prettier",
     "test-only": "vitest run --coverage",
-    "tsc": "npm run clean && npm run tsc-cjs && npm run tsc-esm",
-    "tsc-cjs": "tsc --project tsconfig.cjs.json",
-    "tsc-esm": "tsc --project tsconfig.esm.json"
+    "tsc": "npm run clean && npm run tsc-build",
+    "tsc-build": "tsc --project tsconfig.build.json"
   },
   "repository": {
     "type": "git",
@@ -41,25 +41,21 @@
     "url": "https://github.com/cheminfo/spectrum-generator/issues"
   },
   "homepage": "https://github.com/cheminfo/spectrum-generator#readme",
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node"
-  },
   "devDependencies": {
     "@types/d3-random": "^3.0.3",
-    "@types/jest": "^29.5.14",
-    "@vitest/coverage-v8": "3.0.9",
+    "@types/node": "^24.3.0",
+    "@vitest/coverage-v8": "^3.0.9",
+    "@zakodium/tsconfig": "^1.0.2",
     "cheminfo-build": "^1.2.1",
     "cheminfo-types": "^1.8.1",
     "eslint": "^9.23.0",
-    "eslint-config-cheminfo-typescript": "^18.0.0",
-    "jest": "^29.7.0",
+    "eslint-config-cheminfo-typescript": "^18.0.1",
     "jest-matcher-deep-close-to": "^3.0.2",
     "ml-savitzky-golay-generalized": "^4.2.0",
     "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
     "ts-jest": "^29.3.0",
-    "typescript": "^5.8.2",
+    "typescript": "^5.9.2",
     "vitest": "^3.0.9"
   },
   "dependencies": {
