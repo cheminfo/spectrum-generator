@@ -1,8 +1,8 @@
 import { Gaussian } from 'ml-peak-shape-generator';
 import { describe, it, expect } from 'vitest';
 
-import { generateSpectrum } from '../SpectrumGenerator';
-import type { Peak1D } from '../types/Peaks1D';
+import { generateSpectrum } from '../SpectrumGenerator.ts';
+import type { Peak1D } from '../types/Peaks1D.ts';
 
 describe('generateSpectrum', () => {
   it('derivative should be continuous', () => {

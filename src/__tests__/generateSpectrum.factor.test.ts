@@ -1,8 +1,8 @@
 import { xSum } from 'ml-spectra-processing';
 import { describe, it, expect } from 'vitest';
 
-import { generateSpectrum } from '../SpectrumGenerator';
-import type { Peak1D } from '../types/Peaks1D';
+import { generateSpectrum } from '../SpectrumGenerator.ts';
+import type { Peak1D } from '../types/Peaks1D.ts';
 
 describe('generateSpectrum factor', () => {
   it('lorentzian specified', () => {

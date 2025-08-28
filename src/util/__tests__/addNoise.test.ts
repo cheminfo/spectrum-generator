@@ -1,7 +1,7 @@
 import { toBeDeepCloseTo, toMatchCloseTo } from 'jest-matcher-deep-close-to';
 import { describe, it, expect } from 'vitest';
 
-import addNoise from '../addNoise';
+import addNoise from '../addNoise.ts';
 
 expect.extend({ toBeDeepCloseTo, toMatchCloseTo });
 describe('addNoise', () => {

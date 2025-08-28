@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { generateSpectrum } from '../SpectrumGenerator';
+import { generateSpectrum } from '../SpectrumGenerator.ts';
 
 describe('generateSpectrum width / fwhm', () => {
   it('derivative should be continuous', () => {

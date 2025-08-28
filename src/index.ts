@@ -1,5 +1,5 @@
-export * from './SpectrumGenerator';
-export * from './Spectrum2DGenerator';
+export * from './SpectrumGenerator.ts';
+export * from './Spectrum2DGenerator.ts';
 
-export { NoiseOptions } from './util/addNoise';
-export { XYNumber } from 'ml-peak-shape-generator';
+export type { NoiseOptions } from './util/addNoise.ts';
+export type { XYNumber } from 'ml-peak-shape-generator';
