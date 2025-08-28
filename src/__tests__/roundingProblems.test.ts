@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { SpectrumGenerator } from '../SpectrumGenerator';
+import { SpectrumGenerator } from '../SpectrumGenerator.ts';
 
 describe('rounding', () => {
   it('should be continuous', () => {

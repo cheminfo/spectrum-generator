@@ -2,10 +2,10 @@ import type { DataXY } from 'cheminfo-types';
 import { getShape1D } from 'ml-peak-shape-generator';
 import type { Shape1D, Shape1DInstance } from 'ml-peak-shape-generator';
 
-import type { PeakSeries, Peak1D } from './types/Peaks1D';
-import addBaseline from './util/addBaseline';
-import type { NoiseOptions } from './util/addNoise';
-import addNoise from './util/addNoise';
+import type { PeakSeries, Peak1D } from './types/Peaks1D.ts';
+import addBaseline from './util/addBaseline.ts';
+import type { NoiseOptions } from './util/addNoise.ts';
+import addNoise from './util/addNoise.ts';
 
 type NumToNumFn = (x: number) => number;
 

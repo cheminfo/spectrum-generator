@@ -2,7 +2,7 @@ import { Lorentzian, Gaussian } from 'ml-peak-shape-generator';
 import { xyMaxYPoint } from 'ml-spectra-processing';
 import { describe, it, expect } from 'vitest';
 
-import { SpectrumGenerator } from '../SpectrumGenerator';
+import { SpectrumGenerator } from '../SpectrumGenerator.ts';
 
 describe('SpectrumGenerator various shapes', () => {
   it('full generation with {x:[],y:[]}', () => {

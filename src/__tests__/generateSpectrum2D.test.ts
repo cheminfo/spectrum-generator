@@ -1,8 +1,8 @@
 import { xMaxValue, xMinMaxValues } from 'ml-spectra-processing';
 import { describe, it, expect } from 'vitest';
 
-import type { Spectrum2D } from '../Spectrum2DGenerator';
-import { generateSpectrum2D } from '../Spectrum2DGenerator';
+import type { Spectrum2D } from '../Spectrum2DGenerator.ts';
+import { generateSpectrum2D } from '../Spectrum2DGenerator.ts';
 
 const simplepeakWidthFct = () => 1;
 

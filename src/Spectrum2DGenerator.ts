@@ -8,8 +8,8 @@ import type {
 } from 'ml-peak-shape-generator';
 import { matrixCreateEmpty, matrixMinMaxZ } from 'ml-spectra-processing';
 
-import type { Data2D } from './types/Data2D';
-import type { Peak2D, Peak2DSeries } from './types/Peaks2D';
+import type { Data2D } from './types/Data2D.ts';
+import type { Peak2D, Peak2DSeries } from './types/Peaks2D.ts';
 
 type NumToNumFn = (x: number, y?: number) => number | XYNumber;
 
@@ -197,17 +197,18 @@ export class Spectrum2DGenerator {
         this.addPeak(peak, options);
       }
     } else {
-      const nbPeaks = peaks.x.length;
-      for (const c of peakCoordinates) {
-        if (
-          peaks[c] &&
-          Array.isArray(peaks[c]) &&
-          nbPeaks !== peaks[c].length
-        ) {
-          throw new Error('x, y, z should have the same length');
-        }
+      if (
+        !Array.isArray(peaks.x) ||
+        !Array.isArray(peaks.y) ||
+        !Array.isArray(peaks.z)
+      ) {
+        throw new TypeError('x, y, z must all be arrays');
       }
-      for (let i = 0; i < peaks.x.length; i++) {
+      const nbPeaks = peaks.x.length;
+      if (peaks.y.length !== nbPeaks || peaks.z.length !== nbPeaks) {
+        throw new Error('x, y, z should have the same length');
+      }
+      for (let i = 0; i < nbPeaks; i++) {
         this.addPeak([peaks.x[i], peaks.y[i], peaks.z[i]], options);
       }
     }
