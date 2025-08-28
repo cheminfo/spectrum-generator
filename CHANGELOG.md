@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.1.1](https://github.com/cheminfo/spectrum-generator/compare/v8.1.0...v8.1.1) (2025-08-28)
+
+
+### Bug Fixes
+
+* migrate to new tsconfig ([#91](https://github.com/cheminfo/spectrum-generator/issues/91)) ([a2ddf05](https://github.com/cheminfo/spectrum-generator/commit/a2ddf051ff79e16dd9e7a1c161a4a9909543801f))
+
 ## [8.1.0](https://github.com/cheminfo/spectrum-generator/compare/v8.0.12...v8.1.0) (2025-03-28)
 
 
