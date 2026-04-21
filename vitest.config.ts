@@ -5,6 +5,9 @@ export default defineConfig({
     coverage: {
       include: ['src/**'],
     },
-    setupFiles: ['vitest.setup.js'],
+    setupFiles: ['vitest.setup.ts'],
+    snapshotFormat: {
+      maxOutputLength: Number.MAX_SAFE_INTEGER,
+    },
   },
 });
