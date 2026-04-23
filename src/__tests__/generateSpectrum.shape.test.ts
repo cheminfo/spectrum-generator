@@ -1,5 +1,7 @@
+import type { NumberArray } from 'cheminfo-types';
 import { Gaussian } from 'ml-peak-shape-generator';
-import { describe, it, expect } from 'vitest';
+import { xMaxValue } from 'ml-spectra-processing';
+import { describe, it, expect, test } from 'vitest';
 
 import { generateSpectrum } from '../SpectrumGenerator.ts';
 import type { Peak1D } from '../types/Peaks1D.ts';
@@ -99,3 +101,137 @@ describe('generateSpectrum', () => {
     expect(spectrum.y).toStrictEqual(spectrum2.y);
   });
 });
+
+test('test the FWHM', () => {
+  const expectedFWHM = 0.11;
+  const peak: Peak1D[] = [
+    {
+      x: 0,
+      y: 1,
+      shape: { kind: 'gaussian', fwhm: expectedFWHM },
+    },
+  ];
+
+  const spectrum = generateSpectrum(peak, {
+    generator: {
+      from: -1,
+      to: 1,
+      nbPoints: 510,
+    },
+  });
+  const currentFWHM = computeFWHM(spectrum.x, spectrum.y);
+  expect(currentFWHM).toBeCloseTo(expectedFWHM, 2);
+});
+
+test('test the FWHM lorentzian', () => {
+  const expectedFWHM = 0.11;
+  const peak: Peak1D[] = [
+    {
+      x: 0,
+      y: 1,
+      shape: { kind: 'lorentzian', fwhm: expectedFWHM },
+    },
+  ];
+
+  const spectrum = generateSpectrum(peak, {
+    generator: {
+      from: -1,
+      to: 1,
+      nbPoints: 510,
+    },
+  });
+  const currentFWHM = computeFWHM(spectrum.x, spectrum.y);
+  expect(currentFWHM).toBeCloseTo(expectedFWHM, 2);
+});
+
+test('test the FWHM pseudovoigt', () => {
+  const expectedFWHM = 0.11;
+  const peak: Peak1D[] = [
+    {
+      x: 0,
+      y: 1,
+      shape: { kind: 'pseudoVoigt', fwhm: expectedFWHM, mu: 0.5 },
+    },
+  ];
+
+  const spectrum = generateSpectrum(peak, {
+    generator: {
+      from: -1,
+      to: 1,
+      nbPoints: 510,
+    },
+  });
+  const currentFWHM = computeFWHM(spectrum.x, spectrum.y);
+  expect(currentFWHM).toBeCloseTo(expectedFWHM, 2);
+});
+
+test('test the FWHM generalizedLorentzian', () => {
+  const expectedFWHM = 0.11;
+  const peak: Peak1D[] = [
+    {
+      x: 0,
+      y: 1,
+      shape: { kind: 'generalizedLorentzian', fwhm: expectedFWHM, gamma: 0.5 },
+    },
+  ];
+
+  const spectrum = generateSpectrum(peak, {
+    generator: {
+      from: -1,
+      to: 1,
+      nbPoints: 510,
+    },
+  });
+  const currentFWHM = computeFWHM(spectrum.x, spectrum.y);
+  expect(currentFWHM).toBeCloseTo(expectedFWHM, 2);
+});
+
+function computeFWHM(x: NumberArray, y: NumberArray) {
+  const xs = Array.from(x);
+  const ys = Array.from(y);
+  const yMax = xMaxValue(ys);
+  const half = yMax / 2;
+
+  let leftIndex = -1;
+  for (let i = 0; i < ys.length; i++) {
+    if (ys[i] >= half) {
+      leftIndex = i;
+      break;
+    }
+  }
+
+  if (leftIndex === -1) return NaN;
+  let leftX;
+  if (leftIndex === 0) {
+    leftX = xs[0];
+  } else {
+    const x1 = xs[leftIndex - 1];
+    const y1 = ys[leftIndex - 1];
+    const x2 = xs[leftIndex];
+    const y2 = ys[leftIndex];
+    const t = (half - y1) / (y2 - y1);
+    leftX = x1 + t * (x2 - x1);
+  }
+
+  let rightIndex = -1;
+  for (let i = ys.length - 1; i >= 0; i--) {
+    if (ys[i] >= half) {
+      rightIndex = i;
+      break;
+    }
+  }
+  if (rightIndex === -1) return NaN;
+  let rightX;
+  if (rightIndex === ys.length - 1) {
+    rightX = xs[xs.length - 1];
+  } else {
+    const x1 = xs[rightIndex];
+    const y1 = ys[rightIndex];
+    const x2 = xs[rightIndex + 1];
+    const y2 = ys[rightIndex + 1];
+    const t = (half - y1) / (y2 - y1);
+    rightX = x1 + t * (x2 - x1);
+  }
+
+  return rightX - leftX;
+}
