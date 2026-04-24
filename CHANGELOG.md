@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.2.0](https://github.com/cheminfo/spectrum-generator/compare/v8.1.1...v8.2.0) (2026-04-24)
+
+
+### Features
+
+* add SparseSpectrumGenerator and generateSparseSpectrum ([82a6fc6](https://github.com/cheminfo/spectrum-generator/commit/82a6fc6fdac870eaf7565a684723680e3f0ca0b7))
+
 ## [8.1.1](https://github.com/cheminfo/spectrum-generator/compare/v8.1.0...v8.1.1) (2025-08-28)
 
 
