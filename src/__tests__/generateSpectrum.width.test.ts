@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { generateSpectrum } from '../SpectrumGenerator.ts';
+import { generateSpectrum } from '../generateSpectrum.ts';
 
 test('derivative should be continuous', () => {
   const spectrumFWHM = generateSpectrum(

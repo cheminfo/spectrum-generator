@@ -1,7 +1,7 @@
 import { toBeDeepCloseTo, toMatchCloseTo } from 'jest-matcher-deep-close-to';
 import { expect, test } from 'vitest';
 
-import { generateSpectrum } from '../SpectrumGenerator.ts';
+import { generateSpectrum } from '../generateSpectrum.ts';
 
 expect.extend({ toBeDeepCloseTo, toMatchCloseTo });
 

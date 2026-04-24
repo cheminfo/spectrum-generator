@@ -1,7 +1,7 @@
 import { xSum } from 'ml-spectra-processing';
 import { expect, test } from 'vitest';
 
-import { generateSpectrum } from '../SpectrumGenerator.ts';
+import { generateSpectrum } from '../generateSpectrum.ts';
 import type { Peak1D } from '../types/Peaks1D.ts';
 
 test('lorentzian specified', () => {
