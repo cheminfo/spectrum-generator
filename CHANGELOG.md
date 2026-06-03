@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.2.1](https://github.com/cheminfo/spectrum-generator/compare/v8.2.0...v8.2.1) (2026-06-03)
+
+
+### Bug Fixes
+
+* update ml-peak-shape-generator ([#95](https://github.com/cheminfo/spectrum-generator/issues/95)) ([c405b10](https://github.com/cheminfo/spectrum-generator/commit/c405b10a20e4dc2d62c239f5979c37923089b91f))
+
 ## [8.2.0](https://github.com/cheminfo/spectrum-generator/compare/v8.1.1...v8.2.0) (2026-04-24)
 
 
