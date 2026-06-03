@@ -119,3 +119,6 @@ dist
 
 .claude
 lib
+lib-esm
+
+.yalc
