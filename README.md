@@ -138,6 +138,33 @@ generator.addPeak({x: 10, y: 50}], { // customize peaks shape
 const otherSpectrum = generator.getSpectrum();
 ```
 
+### Asymmetric peaks
+
+`widthLeft` and `widthRight` draw the two halves of a peak with a different
+FWHM, and work with every kind of shape:
+
+```js
+generator.addPeak({ x: 10, y: 50 }, { widthLeft: 1, widthRight: 3 });
+```
+
+Each width is the FWHM of the shape drawn on that side, so a symmetric shape
+reaches half height at `widthLeft / 2` and `widthRight / 2`.
+
+A shape that is already asymmetric, like `splitGaussian`, is scaled to the
+requested FWHM and keeps the ratio between its own halves. Both asymmetries
+then combine:
+
+```js
+// fwhmLow:fwhmHigh is 1:3, and widthRight scales the shape to a FWHM of 0.3,
+// so the right side reaches half height at 0.225, not at 0.15
+generator.addPeak(
+  { x: 0, y: 1, shape: { kind: 'splitGaussian', fwhmLow: 0.05, fwhmHigh: 0.15 } },
+  { widthLeft: 0.1, widthRight: 0.3 },
+);
+```
+
+Use one mechanism or the other unless that combination is what you want.
+
 ## [API Documentation](https://cheminfo.github.io/spectrum-generator/)
 
 ## License

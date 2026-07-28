@@ -40,12 +40,14 @@ export interface PeakOptions {
    */
   width?: number;
   /**
-   * Half-height width left (asymmetric peak).
+   * Half-height width left (asymmetric peak). It is the fwhm of the shape drawn
+   * left of the centre; an already asymmetric shape is scaled to it and keeps
+   * its own ratio, so both asymmetries combine.
    * @default `fwhm`
    */
   widthLeft?: number;
   /**
-   * Half-height width right (asymmetric peak).
+   * Half-height width right (asymmetric peak). Mirrors `widthLeft`.
    * @default `fwhm`
    */
   widthRight?: number;
@@ -54,8 +56,14 @@ export interface PeakOptions {
    */
   shape?: Shape1D;
   /**
+   * Fraction of the peak surface that should be covered, in the range ]0, 1[.
+   * Ignored if `factor` is specified.
+   * @default 0.9999
+   */
+  area?: number;
+  /**
    * Number of times of fwhm to calculate length.
-   * @default 'covers 99.99 % of surface'
+   * @default `shape.getFactor(area)`
    */
   factor?: number;
 }
@@ -158,14 +166,10 @@ export class BaseSpectrumGenerator {
       throw new Error('Width left or right is undefined or zero');
     }
 
-    const factor =
-      options.factor === undefined ? shape.getFactor() : options.factor;
+    const factor = options.factor ?? shape.getFactor(options.area);
 
-    const shapeLeft = cloneShape(shape);
-    shapeLeft.fwhm = widthLeft;
-
-    const shapeRight = cloneShape(shape);
-    shapeRight.fwhm = widthRight;
+    const shapeLeft = cloneShapeWithFWHM(shape, widthLeft);
+    const shapeRight = cloneShapeWithFWHM(shape, widthRight);
 
     return {
       x0,
@@ -184,6 +188,18 @@ function cloneShape(shape: Shape1DInstance): Shape1DInstance {
     Object.create(Object.getPrototypeOf(shape)),
     shape,
   ) as Shape1DInstance;
+}
+
+/**
+ * Clone a shape and give the copy the requested full width at half maximum.
+ */
+function cloneShapeWithFWHM(
+  shape: Shape1DInstance,
+  fwhm: number,
+): Shape1DInstance {
+  const clone = cloneShape(shape);
+  clone.fwhm = fwhm;
+  return clone;
 }
 
 function assertInteger(value: number, name: string) {
