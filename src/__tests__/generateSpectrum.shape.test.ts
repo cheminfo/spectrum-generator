@@ -184,6 +184,72 @@ test('test the FWHM generalizedLorentzian', () => {
   expect(currentFWHM).toBeCloseTo(expectedFWHM, 2);
 });
 
+test('splitGaussian keeps its own halves', () => {
+  const spectrum = generateSpectrum([{ x: 0, y: 1 }], {
+    generator: {
+      from: -1,
+      to: 1,
+      nbPoints: 2001,
+      shape: { kind: 'splitGaussian', fwhmLow: 0.05, fwhmHigh: 0.15 },
+    },
+  });
+
+  expect(halfMaxCrossings(spectrum)).toStrictEqual([-0.024, 0.075]);
+});
+
+test('splitGaussian is scaled to an imposed width', () => {
+  const spectrum = generateSpectrum([{ x: 0, y: 1 }], {
+    generator: {
+      from: -1,
+      to: 1,
+      nbPoints: 2001,
+      shape: { kind: 'splitGaussian', fwhmLow: 0.05, fwhmHigh: 0.15 },
+      peakWidthFct: () => 0.2,
+    },
+  });
+
+  // both halves scaled by 2, so the 1:3 ratio holds and the total is 0.2
+  expect(halfMaxCrossings(spectrum)).toStrictEqual([-0.05, 0.149]);
+});
+
+test('widthLeft and widthRight combine with the halves of a splitGaussian', () => {
+  const spectrum = generateSpectrum([{ x: 0, y: 1 }], {
+    generator: {
+      from: -1,
+      to: 1,
+      nbPoints: 2001,
+      shape: { kind: 'splitGaussian', fwhmLow: 0.05, fwhmHigh: 0.15 },
+    },
+    peakOptions: { widthLeft: 0.1, widthRight: 0.3 },
+  });
+
+  // widthRight scales the shape to fwhm 0.3, and its high half is 3/2 of that
+  // fwhm, so the right side reaches half height at 0.225 rather than 0.15
+  expect(halfMaxCrossings(spectrum)).toStrictEqual([-0.024, 0.224]);
+});
+
+/**
+ * Finds the first and last x where the spectrum reaches half of its maximum.
+ */
+function halfMaxCrossings(spectrum: { x: NumberArray; y: NumberArray }) {
+  const half = xMaxValue(spectrum.y) / 2;
+  let left = 0;
+  let right = 0;
+  for (let index = 0; index < spectrum.y.length; index++) {
+    if (spectrum.y[index] >= half) {
+      left = spectrum.x[index];
+      break;
+    }
+  }
+  for (let index = spectrum.y.length - 1; index >= 0; index--) {
+    if (spectrum.y[index] >= half) {
+      right = spectrum.x[index];
+      break;
+    }
+  }
+  return [Number(left.toFixed(6)), Number(right.toFixed(6))];
+}
+
 function computeFWHM(x: NumberArray, y: NumberArray) {
   const xs = Array.from(x);
   const ys = Array.from(y);

@@ -75,8 +75,14 @@ export interface AddPeak2DOptions {
    */
   shape?: Shape2D;
   /**
+   * Fraction of the peak volume that should be covered, in the range ]0, 1[.
+   * Ignored if `factor` is specified.
+   * @default 0.9999
+   */
+  volume?: number;
+  /**
    * Number of times of fwhm to calculate length..
-   * @default 'covers 99.99 % of volume'
+   * @default `shape.getFactor(volume)`
    */
   factor?: number | XYNumber;
 }
@@ -286,8 +292,7 @@ export class Spectrum2DGenerator {
 
     fwhm = ensureXYNumber(fwhm);
 
-    let factor =
-      options.factor === undefined ? shape.getFactor() : options.factor;
+    let factor = options.factor ?? shape.getFactor(options.volume);
 
     factor = ensureXYNumber(factor);
 

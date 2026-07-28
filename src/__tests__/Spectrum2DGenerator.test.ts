@@ -64,6 +64,23 @@ describe('Spectrum2DGenerator', { timeout: 15000 }, () => {
     );
   });
 
+  test('volume is equivalent to the matching factor', () => {
+    const options = { from: 0, to: 100, nbPoints: 201 };
+
+    const withVolume = new Spectrum2DGenerator(options);
+    withVolume.addPeak([50, 50, 100], { fwhm: { x: 15, y: 5 }, volume: 0.995 });
+
+    const withFactor = new Spectrum2DGenerator(options);
+    withFactor.addPeak([50, 50, 100], {
+      fwhm: { x: 15, y: 5 },
+      factor: new Gaussian2D().getFactor(0.995),
+    });
+
+    expect(withVolume.getSpectrum().z).toStrictEqual(
+      withFactor.getSpectrum().z,
+    );
+  });
+
   test('1 middle peak check width', () => {
     const generator = new Spectrum2DGenerator({
       from: 0,
